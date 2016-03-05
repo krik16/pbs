@@ -10,7 +10,6 @@ import com.rongyi.easy.rpb.domain.PaymentItemEntity;
 import com.rongyi.easy.rpb.domain.PaymentLogInfo;
 import com.rongyi.easy.rpb.domain.WeixinMch;
 import com.rongyi.easy.rpb.vo.PaymentEntityVO;
-import com.rongyi.easy.tms.vo.MQDrawParam;
 import com.rongyi.rpb.Exception.TradeException;
 import com.rongyi.rpb.common.pay.weixin.model.PaySignData;
 import com.rongyi.rpb.constants.ConstantEnum;
@@ -519,41 +518,7 @@ public class PaymentServiceImpl extends BaseServiceImpl implements PaymentServic
     @Override
     @SuppressWarnings("unchecked")
     public PaymentEntity insertDrawApply(MessageEvent event) {
-        PaymentEntity paymentEntity = new PaymentEntity();
-        try {
-            Map<String, Object> bodyMap = JsonUtil.getMapFromJson(event.getBody().toString());
-            MQDrawParam mqDrawParam = MQDrawParam.mapToEntity(bodyMap);
-//            PaymentEntity oldPaymentEntity = validateOrderNumExist(mqDrawParam.getDrawNo(), mqDrawParam.getPayType(), Constants.PAYMENT_TRADE_TYPE.TRADE_TYPE3);
-//            if (oldPaymentEntity != null && StringUtils.isNotEmpty(oldPaymentEntity.getPayNo())) {
-//                LOGGER.info("提现单号已存在，返回历史付款单号" + oldPaymentEntity.getPayNo());
-//            }
-            if (mqDrawParam.getOrderType() != null)
-                paymentEntity.setOrderType(mqDrawParam.getOrderType());
-            if (mqDrawParam.getDrawAmount() != null)
-                paymentEntity.setAmountMoney(BigDecimal.valueOf(mqDrawParam.getDrawAmount()));
-            paymentEntity.setStatus(Constants.PAYMENT_STATUS.STAUS0);
-            if (PaymentEventType.DRAW_PAY.equals(event.getType())) {// 提现
-                LOGGER.info("生成提现申请记录，提现单号：" + mqDrawParam.getDrawNo());
-                paymentEntity.setTradeType(Constants.PAYMENT_TRADE_TYPE.TRADE_TYPE3);
-                paymentEntity.setPayNo(getPayNo());
-                paymentEntity.setOrderNum(mqDrawParam.getDrawNo());
-            } else {// 异常支付
-                LOGGER.info("生成异常记录，异常单号：" + bodyMap.get("exceTradeNo"));
-                paymentEntity.setTradeType(Constants.PAYMENT_TRADE_TYPE.TRADE_TYPE4);
-                paymentEntity.setPayNo(String.valueOf(bodyMap.get("exceTradeNo")));
-                paymentEntity.setOrderNum(mqDrawParam.getOrderNo());
-            }
-            paymentEntity.setCreateTime(DateUtil.getCurrDateTime());
-            paymentEntity.setPayChannel(mqDrawParam.getPayType());
-            paymentEntity.setOutAccount(mqDrawParam.getPayAccount());
-            paymentEntity.setPayName(mqDrawParam.getPayName());
-            paymentEntity.setDrawUserId(mqDrawParam.getUserId());
-            insert(paymentEntity);
-        } catch (Exception e) {
-            LOGGER.error("插入提现(或异常支付)申请记录失败，失败原因：");
-            e.printStackTrace();
-        }
-        return paymentEntity;
+        return null;
     }
 
     @Override

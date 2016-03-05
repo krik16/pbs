@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="pbs:war">
+    <output-path>$PROJECT_DIR$/business/pbs/target</output-path>
+    <root id="archive" name="pbs-1.0.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="pbs:war exploded" />
+    </root>
+  </artifact>
+</component>

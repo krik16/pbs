@@ -1,19 +1,10 @@
 package com.rongyi.rpb.common.pay.weixin.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-
-import javax.net.ssl.SSLContext;
-
 import com.google.common.base.Strings;
+import com.rongyi.rpb.common.pay.weixin.service.IServiceRequest;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -26,13 +17,16 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
-import com.rongyi.rpb.common.pay.weixin.service.IServiceRequest;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.SSLContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.security.*;
+import java.security.cert.CertificateException;
 
 /**
  * User: rizenguo
@@ -70,7 +64,7 @@ public class HttpsRequest implements IServiceRequest {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         String cretFilePath = configure.getCertLocalPath();
         if (Strings.isNullOrEmpty(cretFilePath)) {
-            cretFilePath = "/data/etc/projects/easy-rpb-cert/1268956601.p12";
+            cretFilePath = "/data/etc/projects/pbs/1268956601.p12";
             LOGGER.info("设置默认证书路径，certFilePath={}", cretFilePath);
         }
         FileInputStream instream = new FileInputStream(new File(cretFilePath));//加载本地的证书进行https加密传输

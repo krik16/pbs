@@ -31,7 +31,7 @@ public class TimeExpireUnitTest extends BaseTest{
 
     }
 
-    @Test
+//    @Test
     public void testWeixinPayTimeExpire(){
         String startTime = null;
         String expireTime = null;

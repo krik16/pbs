@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.rongyi</groupId>
-		<artifactId>easy-common</artifactId>
-		<version>2.9.5-SNAPSHOT</version>	
+		<groupId>com.shouyingbao</groupId>
+		<artifactId>common</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>easy-entity</artifactId>
+	<artifactId>entity</artifactId>
 	<packaging>jar</packaging>
 	<properties>
 		<tomcat7-maven-plugin-version>2.1</tomcat7-maven-plugin-version>
@@ -14,7 +14,7 @@
 		<!--这个是jdbc的配置信息 必须把路径的文件文也写上 -->
 		<mybatis.generator.dbConfigFile>properties/jdbc.properties</mybatis.generator.dbConfigFile>
 		<!--要生成的项目的包名字 -->
-		<mybatis.generator.package.path>com.rongyi.easy</mybatis.generator.package.path>
+		<mybatis.generator.package.path>com.rongyi.shouyingbao</mybatis.generator.package.path>
 		<mybatis.generator.javaFileDir>${basedir}/src/main/java</mybatis.generator.javaFileDir>
 		<!--这个一般是xml所在的地方不过可以修改 -->
 		<mybatis.generator.resourcesFileDir>${basedir}/src/main/resources</mybatis.generator.resourcesFileDir>
@@ -22,8 +22,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.rongyi</groupId>
-			<artifactId>easy-core</artifactId>
+			<groupId>com.shouyingbao</groupId>
+			<artifactId>core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mongodb.morphia</groupId>
