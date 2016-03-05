@@ -5,10 +5,5 @@
     http://code.alibabatech.com/schema/dubbo          
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-	<!-- 声明需要暴露的服务接口 -->
-	<dubbo:service interface="com.rongyi.rss.rpb.OrderNoGenService" version="${dubbo.version}" ref="orderNoGenService" />
-	<bean id="orderNoGenService" class="com.rongyi.rpb.service.impl.OrderNoGenServiceImpl" />
-	<dubbo:service interface="com.rongyi.rss.rpb.IRpbService" version="${dubbo.version}" ref="rpbService" />
-	<bean id="rpbService" class="com.rongyi.rpb.service.impl.RpbServiceImpl" />
-	
+
 </beans>  

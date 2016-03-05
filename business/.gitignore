@@ -3,7 +3,8 @@
 .project
 classes
 target
-*.iml*.properties
+*.iml
+*.properties
 .idea
 *.iml
 .gitignore

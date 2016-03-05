@@ -16,7 +16,7 @@
 
 	<bean id="springContextUtil"
 		class="com.rongyi.core.framework.spring.context.utils.SpringContextUtil"></bean>
-	<bean id="propertyConfigurer" class="com.rongyi.core.common.PropertyConfigurer">
+	<bean id="propertyConfigurer" class="com.shouyingbao.core.common.PropertyConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:/properties/config.properties</value>
@@ -26,7 +26,7 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="idGenService" class="com.rongyi.rpb.service.impl.IdGenService">
+	<bean id="idGenService" class="com.shouyingbao.service.impl.IdGenService">
 		<constructor-arg name="workerId" value="1" type="long"/>
 	</bean>
 </beans>

@@ -1,1 +1,1 @@
-rpb: rongyi payment bill(支付账单系统)
+pbs: payment bill service(支付账单服务)

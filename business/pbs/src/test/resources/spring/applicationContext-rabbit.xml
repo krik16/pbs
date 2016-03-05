@@ -16,7 +16,7 @@
 	<rabbit:admin connection-factory="connectionFactory" />
 
 	<!-- queue 队列声明 -->
-	<rabbit:queue id="rpb" durable="true"
+	<rabbit:queue id="pbs" durable="true"
 		auto-delete="false" exclusive="false" name="${mq.queuename}"/>
 
 	<!-- exchange queue binging key 绑定 -->
@@ -27,7 +27,7 @@
 		</rabbit:bindings>
 	</rabbit:direct-exchange>
 
-	<bean id="receiver" class="com.rongyi.rpb.mq.Receiver" />
+	<bean id="receiver" class="com.shouyingbao.mq.Receiver" />
 
 	<rabbit:listener-container
 		connection-factory="connectionFactory" auto-startup="false" acknowledge="manual" prefetch="1000">
