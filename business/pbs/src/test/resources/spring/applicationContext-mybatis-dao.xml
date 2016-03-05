@@ -25,7 +25,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations">
 			<list>
-				<value>classpath*:com/shouyingbao/mapper/xml/*.xml</value>
+				<!--<value>classpath*:com/shouyingbao/mapper/xml/*.xml</value>-->
 			</list>
 		</property>
 	</bean>
@@ -42,7 +42,7 @@
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
-	<bean id="baseDao" class="com.rongyi.core.framework.mybatis.dao.impl.BaseDaoImpl">
+	<bean id="baseDao" class="com.shouyingbao.core.framework.mybatis.dao.impl.BaseDaoImpl">
 		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
 	</bean>
 

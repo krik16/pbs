@@ -28,7 +28,7 @@
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
-	<bean id="baseDao" class="com.rongyi.core.framework.mybatis.dao.impl.BaseDaoImpl">
+	<bean id="baseDao" class="com.shouyingbao.core.framework.mybatis.dao.impl.BaseDaoImpl">
 		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
 	</bean>
 

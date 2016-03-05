@@ -9,7 +9,7 @@
 
 
 <bean id="springContextUtil"
-		class="com.rongyi.core.framework.spring.context.utils.SpringContextUtil"></bean>
+		class="com.shouyingbao.core.util.SpringContextUtil"></bean>
 	<bean id="propertyConfigurer" class="com.shouyingbao.core.common.PropertyConfigurer">
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 		<property name="ignoreResourceNotFound" value="true" />
