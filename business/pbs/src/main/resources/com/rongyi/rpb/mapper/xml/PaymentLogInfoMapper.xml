@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rongyi.rpb.mapper.PaymentLogInfoLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.rongyi.easy.rpb.domain.PaymentLogInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="notify_time" property="notifyTime" jdbcType="TIMESTAMP"/>
+        <result column="notify_id" property="notifyId" jdbcType="VARCHAR"/>
+        <result column="notify_type" property="notifyType" jdbcType="VARCHAR"/>
+        <result column="sign" property="sign" jdbcType="VARCHAR"/>
+        <result column="sign_type" property="signType" jdbcType="VARCHAR"/>
+        <result column="trade_mode" property="tradeMode" jdbcType="INTEGER"/>
+        <result column="transaction_id" property="transactionId"
+                jdbcType="VARCHAR"/>
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+        <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP"/>
+        <result column="replayFlag" property="replayFlag" jdbcType="INTEGER"/>
+        <result column="request_token" property="request_token"
+                jdbcType="VARCHAR"/>
+        <result column="trade_no" property="trade_no" jdbcType="VARCHAR"/>
+        <result column="result" property="result" jdbcType="VARCHAR"/>
+        <result column="request_time" property="request_time" jdbcType="TIMESTAMP"/>
+        <result column="total_fee" property="total_fee" jdbcType="DOUBLE"/>
+        <result column="buyer_id" property="buyer_id" jdbcType="VARCHAR"/>
+        <result column="buyer_email" property="buyer_email" jdbcType="VARCHAR"/>
+        <result column="buyer_type" property="buyer_type" jdbcType="VARCHAR"/>
+        <result column="eventType" property="event_type" jdbcType="INTEGER"/>
+        <result column="deleteStatus" property="delete_status"
+                jdbcType="INTEGER"/>
+        <result column="tradeType" property="trade_type" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="PayAccountUserTotalMap" type="com.rongyi.easy.rpb.vo.PayAccountUseTotal">
+        <result column="pay_account" property="payAccount" jdbcType="VARCHAR"/>
+        <result column="pay_type" property="payType" jdbcType="VARCHAR"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, notify_time, notify_id, notify_type, sign, sign_type,
+        trade_mode,
+        transaction_id,out_trade_no,time_end,replayFlag
+        ,request_token,trade_no, result,
+        request_time,total_fee,buyer_id,buyer_email,buyer_type,event_type,trade_type
+        <!-- ,delete_status -->
+    </sql>
+
+    <insert id="insert" parameterType="com.rongyi.easy.rpb.domain.PaymentLogInfo"
+            useGeneratedKeys="true" keyProperty="id">
+        <!-- <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
+            SELECT LAST_INSERT_ID() </selectKey> -->
+
+        insert into payment_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="notifyTime != null">
+                notify_time,
+            </if>
+            <if test="notifyId != null">
+                notify_id,
+            </if>
+            <if test="notifyType != null">
+                notify_type,
+            </if>
+            <if test="sign != null">
+                sign,
+            </if>
+            <if test="signType != null">
+                sign_type,
+            </if>
+            <if test="tradeMode != null">
+                trade_mode,
+            </if>
+            <if test="transactionId != null">
+                transaction_id,
+            </if>
+            <if test="outTradeNo != null">
+                out_trade_no,
+            </if>
+            <if test="timeEnd != null">
+                time_end,
+            </if>
+            <if test="replayFlag != null">
+                replayFlag,
+            </if>
+            <if test="request_token != null">
+                request_token,
+            </if>
+            <if test="trade_no != null">
+                trade_no,
+            </if>
+            <if test="result != null">
+                result,
+            </if>
+            <if test="request_time != null">
+                request_time,
+            </if>
+            <if test="total_fee != null">
+                total_fee,
+            </if>
+            <if test="buyer_id != null">
+                buyer_id,
+            </if>
+            <if test="buyer_email != null">
+                buyer_email,
+            </if>
+            <if test="buyer_type != null">
+                buyer_type,
+            </if>
+            <if test="eventType != null">
+                event_type,
+            </if>
+            <if test="deleteStatus != null">
+                delete_status,
+            </if>
+            <if test="tradeType != null">
+                trade_type
+            </if>
+
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="notifyTime != null">
+                #{notifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="notifyId != null">
+                #{notifyId,jdbcType=VARCHAR},
+            </if>
+            <if test="notifyType != null">
+                #{notifyType,jdbcType=VARCHAR},
+            </if>
+            <if test="sign != null">
+                #{sign,jdbcType=VARCHAR},
+            </if>
+            <if test="signType != null">
+                #{signType,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeMode != null">
+                #{tradeMode,jdbcType=INTEGER},
+            </if>
+            <if test="transactionId != null">
+                #{transactionId,jdbcType=VARCHAR},
+            </if>
+            <if test="outTradeNo != null">
+                #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="timeEnd != null">
+                #{timeEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="replayFlag != null">
+                #{replayFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="request_token != null">
+                #{request_token,jdbcType=VARCHAR},
+            </if>
+            <if test="trade_no != null">
+                #{trade_no,jdbcType=VARCHAR},
+            </if>
+            <if test="result != null">
+                #{result,jdbcType=VARCHAR},
+            </if>
+            <if test="request_time != null">
+                #{request_time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="total_fee != null">
+                #{total_fee,jdbcType=DOUBLE},
+            </if>
+            <if test="buyer_id != null">
+                #{buyer_id,jdbcType=VARCHAR},
+            </if>
+            <if test="buyer_email != null">
+                #{buyer_email,jdbcType=VARCHAR},
+            </if>
+            <if test="buyer_type != null">
+                #{buyer_type,jdbcType=VARCHAR},
+            </if>
+            <if test="eventType != null">
+                #{eventType,jdbcType=INTEGER},
+            </if>
+            <if test="deleteStatus != null">
+                #{deleteStatus,jdbcType=INTEGER},
+            </if>
+            <if test="tradeType != null">
+                #{tradeType,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByPayNoAndTradeType" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from payment_event
+        where out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
+        <if test="tradeType != null">
+            <!-- trade_type is null 兼容老数据trade_type为空 -->
+            and (trade_type is null or trade_type =
+            #{tradeType,jdbcType=INTEGER})
+        </if>
+    </select>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from payment_event
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByNotifyId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from payment_event
+        where notify_id = #{notifyId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByTradeNo" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from payment_event
+        where trade_no = #{tradeNo,jdbcType=VARCHAR}
+       <!--  and
+        (event_type = 0 or event_type = 1) -->
+    </select>
+    <update id="updateDeleteStatus" parameterType="map">
+		update
+		payment_event set delete_status =
+		#{deleteStatus,jdbcType=INTEGER}
+		where id =#{id,jdbcType=INTEGER}
+	</update>
+
+    <select id="selectPayAccountUseTotal" resultMap="PayAccountUserTotalMap"
+            parameterType="java.lang.Integer">
+        select buyer_email as pay_account,pay_channel as
+        pay_type,COUNT(buyer_email) as count from payment_event pe
+        left join
+        payment_order po ON pe.out_trade_no = po.pay_no
+        where (buyer_email IS
+        NOT null and buyer_email != '')
+        <if test="startTime != null and startTime != ''">
+            and time_end >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and #{endTime,jdbcType=TIMESTAMP} >= time_end
+        </if>
+        <if test="payAccount != null and pay_account != ''">
+            and buyer_email = #{payAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="notPayAccountList != null and notPayAccountList != ''">
+            and buyer_email not in
+            <foreach collection="notPayAccountList" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="orderType != 2 and orderType != ''">
+        	and po.order_type = #{orderType,jdbcType=INTEGER}
+        </if>
+        GROUP BY buyer_email
+        <if test="count != null">
+            HAVING count >= #{count,jdbcType=INTEGER}
+        </if>
+        order by count desc
+    </select>
+
+    <select id="validateByTradeNoAndPayNo" resultType="java.lang.Integer"
+            parameterType="java.lang.String">
+		select
+		count(pe.id)
+		from payment_event pe
+		left join
+		payment_order po
+		on pe.out_trade_no =
+		po.pay_no
+		where trade_no =
+		#{tradeNo,jdbcType=VARCHAR}
+		and
+		pay_no =
+		#{payNo,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

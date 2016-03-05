@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.rongyi</groupId>
+		<artifactId>easy-common</artifactId>
+		<version>2.9.5-SNAPSHOT</version>	
+	</parent>
+	<artifactId>easy-entity</artifactId>
+	<packaging>jar</packaging>
+	<properties>
+		<tomcat7-maven-plugin-version>2.1</tomcat7-maven-plugin-version>
+		<!--这个是generatorConfig.xml的路径信息 -->
+		<mybatis.generator.configFile>${basedir}/src/main/resources/maven_build/generatorConfig.xml</mybatis.generator.configFile>
+		<!--这个是jdbc的配置信息 必须把路径的文件文也写上 -->
+		<mybatis.generator.dbConfigFile>properties/jdbc.properties</mybatis.generator.dbConfigFile>
+		<!--要生成的项目的包名字 -->
+		<mybatis.generator.package.path>com.rongyi.easy</mybatis.generator.package.path>
+		<mybatis.generator.javaFileDir>${basedir}/src/main/java</mybatis.generator.javaFileDir>
+		<!--这个一般是xml所在的地方不过可以修改 -->
+		<mybatis.generator.resourcesFileDir>${basedir}/src/main/resources</mybatis.generator.resourcesFileDir>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.rongyi</groupId>
+			<artifactId>easy-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb.morphia</groupId>
+			<artifactId>morphia</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
+
+	<!-- <dependency>
+			<groupId>com.sun.rt</groupId>
+			<artifactId>rt</artifactId>
+			<version>1.0.0</version>
+		</dependency> -->
+		<dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+
+
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<configuration>
+					<verbose>true</verbose>
+					<overwrite>true</overwrite>
+					<configurationFile>${mybatis.generator.configFile}</configurationFile>
+				</configuration>
+
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.26</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>

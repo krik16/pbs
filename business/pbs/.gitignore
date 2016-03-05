@@ -1,0 +1,6 @@
+/target/
+*.class
+classes
+/sonar-project.properties
+/rongyi-dubbo-rmc
+/test-output

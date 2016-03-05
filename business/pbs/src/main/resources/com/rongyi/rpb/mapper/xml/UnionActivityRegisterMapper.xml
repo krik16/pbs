@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.rongyi.rpb.mapper.UnionActivityRegisterMapper" >
+  <resultMap id="BaseResultMap" type="com.rongyi.easy.rpb.entity.UnionActivityRegister" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="msg_crrltn_id" property="msgCrrltnId" jdbcType="VARCHAR" />
+    <result column="msg_txn_code" property="msgTxnCode" jdbcType="VARCHAR" />
+    <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
+    <result column="msg_flg" property="msgFlg" jdbcType="CHAR" />
+    <result column="msg_sender" property="msgSender" jdbcType="VARCHAR" />
+    <result column="msg_time" property="msgTime" jdbcType="DATE" />
+    <result column="msg_sys_sn" property="msgSysSn" jdbcType="VARCHAR" />
+    <result column="msg_ver" property="msgVer" jdbcType="VARCHAR" />
+    <result column="sp_chnl_no" property="spChnlNo" jdbcType="VARCHAR" />
+    <result column="event_no" property="eventNo" jdbcType="VARCHAR" />
+    <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />
+    <result column="event_title" property="eventTitle" jdbcType="VARCHAR" />
+    <result column="event_desc" property="eventDesc" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="DATE" />
+    <result column="end_at" property="endAt" jdbcType="DATE" />
+    <result column="event_link" property="eventLink" jdbcType="VARCHAR" />
+    <result column="event_rule" property="eventRule" jdbcType="VARCHAR" />
+    <result column="rule_desc" property="ruleDesc" jdbcType="VARCHAR" />
+    <result column="spec_bank_flag" property="specBankFlag" jdbcType="CHAR" />
+    <result column="event_status" property="eventStatus" jdbcType="CHAR" />
+    <result column="sign" property="sign" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, msg_crrltn_id, msg_txn_code, msg_type, msg_flg, msg_sender, msg_time, 
+    msg_sys_sn, msg_ver, sp_chnl_no, event_no, shop_no, event_title, event_desc, create_at, 
+    end_at, event_link, event_rule, rule_desc, spec_bank_flag, event_status, sign
+  </sql>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+ 
+  
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <select id="selectByShopNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from union_activity_register
+		where shop_no like CONCAT('%',#{shopNo},'%')  
+	</select>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from union_activity_register
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from union_activity_register
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+   
+  
+  <delete id="deleteByExample" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" >
+    delete from union_activity_register
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <select id="countByExample" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" resultType="java.lang.Integer" >
+    select count(*) from union_activity_register
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update union_activity_register
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.msgCrrltnId != null" >
+        msg_crrltn_id = #{record.msgCrrltnId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgTxnCode != null" >
+        msg_txn_code = #{record.msgTxnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgType != null" >
+        msg_type = #{record.msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgFlg != null" >
+        msg_flg = #{record.msgFlg,jdbcType=CHAR},
+      </if>
+      <if test="record.msgSender != null" >
+        msg_sender = #{record.msgSender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgTime != null" >
+        msg_time = #{record.msgTime,jdbcType=DATE},
+      </if>
+      <if test="record.msgSysSn != null" >
+        msg_sys_sn = #{record.msgSysSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgVer != null" >
+        msg_ver = #{record.msgVer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spChnlNo != null" >
+        sp_chnl_no = #{record.spChnlNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eventNo != null" >
+        event_no = #{record.eventNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopNo != null" >
+        shop_no = #{record.shopNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eventTitle != null" >
+        event_title = #{record.eventTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eventDesc != null" >
+        event_desc = #{record.eventDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=DATE},
+      </if>
+      <if test="record.endAt != null" >
+        end_at = #{record.endAt,jdbcType=DATE},
+      </if>
+      <if test="record.eventLink != null" >
+        event_link = #{record.eventLink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eventRule != null" >
+        event_rule = #{record.eventRule,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ruleDesc != null" >
+        rule_desc = #{record.ruleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specBankFlag != null" >
+        spec_bank_flag = #{record.specBankFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.eventStatus != null" >
+        event_status = #{record.eventStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.sign != null" >
+        sign = #{record.sign,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update union_activity_register
+    set id = #{record.id,jdbcType=INTEGER},
+      msg_crrltn_id = #{record.msgCrrltnId,jdbcType=VARCHAR},
+      msg_txn_code = #{record.msgTxnCode,jdbcType=VARCHAR},
+      msg_type = #{record.msgType,jdbcType=VARCHAR},
+      msg_flg = #{record.msgFlg,jdbcType=CHAR},
+      msg_sender = #{record.msgSender,jdbcType=VARCHAR},
+      msg_time = #{record.msgTime,jdbcType=DATE},
+      msg_sys_sn = #{record.msgSysSn,jdbcType=VARCHAR},
+      msg_ver = #{record.msgVer,jdbcType=VARCHAR},
+      sp_chnl_no = #{record.spChnlNo,jdbcType=VARCHAR},
+      event_no = #{record.eventNo,jdbcType=VARCHAR},
+      shop_no = #{record.shopNo,jdbcType=VARCHAR},
+      event_title = #{record.eventTitle,jdbcType=VARCHAR},
+      event_desc = #{record.eventDesc,jdbcType=VARCHAR},
+      create_at = #{record.createAt,jdbcType=DATE},
+      end_at = #{record.endAt,jdbcType=DATE},
+      event_link = #{record.eventLink,jdbcType=VARCHAR},
+      event_rule = #{record.eventRule,jdbcType=VARCHAR},
+      rule_desc = #{record.ruleDesc,jdbcType=VARCHAR},
+      spec_bank_flag = #{record.specBankFlag,jdbcType=CHAR},
+      event_status = #{record.eventStatus,jdbcType=CHAR},
+      sign = #{record.sign,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from union_activity_register
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from union_activity_register
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" useGeneratedKeys="true" keyProperty="id" >
+    insert into union_activity_register (msg_crrltn_id, msg_txn_code, msg_type, 
+      msg_flg, msg_sender, msg_time, 
+      msg_sys_sn, msg_ver, sp_chnl_no, 
+      event_no, shop_no, event_title, 
+      event_desc, create_at, end_at, 
+      event_link, event_rule, rule_desc, 
+      spec_bank_flag, event_status, sign
+      )
+    values (#{msgCrrltnId,jdbcType=VARCHAR}, #{msgTxnCode,jdbcType=VARCHAR}, #{msgType,jdbcType=VARCHAR}, 
+      #{msgFlg,jdbcType=CHAR}, #{msgSender,jdbcType=VARCHAR}, #{msgTime,jdbcType=DATE}, 
+      #{msgSysSn,jdbcType=VARCHAR}, #{msgVer,jdbcType=VARCHAR}, #{spChnlNo,jdbcType=VARCHAR}, 
+      #{eventNo,jdbcType=VARCHAR}, #{shopNo,jdbcType=VARCHAR}, #{eventTitle,jdbcType=VARCHAR}, 
+      #{eventDesc,jdbcType=VARCHAR}, #{createAt,jdbcType=DATE}, #{endAt,jdbcType=DATE}, 
+      #{eventLink,jdbcType=VARCHAR}, #{eventRule,jdbcType=VARCHAR}, #{ruleDesc,jdbcType=VARCHAR}, 
+      #{specBankFlag,jdbcType=CHAR}, #{eventStatus,jdbcType=CHAR}, #{sign,jdbcType=VARCHAR}
+      
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" useGeneratedKeys="true" keyProperty="id" >
+    insert into union_activity_register
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      msg_crrltn_id,
+      msg_txn_code,
+      msg_type,
+      msg_flg,
+      msg_sender,
+      msg_time,
+      msg_sys_sn,
+      msg_ver,
+      sp_chnl_no,
+      event_no,
+      shop_no,
+      event_title,
+      event_desc,
+      create_at,
+      end_at,
+      event_link,
+      event_rule,
+      rule_desc,
+      spec_bank_flag,
+      event_status,
+      sign,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{msgCrrltnId,jdbcType=VARCHAR},
+      #{msgTxnCode,jdbcType=VARCHAR},
+      #{msgType,jdbcType=VARCHAR},
+      #{msgFlg,jdbcType=CHAR},
+      #{msgSender,jdbcType=VARCHAR},
+      #{msgTime,jdbcType=DATE},
+      #{msgSysSn,jdbcType=VARCHAR},
+      #{msgVer,jdbcType=VARCHAR},
+      #{spChnlNo,jdbcType=VARCHAR},
+      #{eventNo,jdbcType=VARCHAR},
+      #{shopNo,jdbcType=VARCHAR},
+      #{eventTitle,jdbcType=VARCHAR},
+      #{eventDesc,jdbcType=VARCHAR},
+      #{createAt,jdbcType=DATE},
+      #{endAt,jdbcType=DATE},
+      #{eventLink,jdbcType=VARCHAR},
+      #{eventRule,jdbcType=VARCHAR},
+      #{ruleDesc,jdbcType=VARCHAR},
+      #{specBankFlag,jdbcType=CHAR},
+      #{eventStatus,jdbcType=CHAR},
+      #{sign,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" >
+    update union_activity_register
+    <set >
+      <if test="msgCrrltnId != null" >
+        msg_crrltn_id = #{msgCrrltnId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgTxnCode != null" >
+        msg_txn_code = #{msgTxnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null" >
+        msg_type = #{msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="msgFlg != null" >
+        msg_flg = #{msgFlg,jdbcType=CHAR},
+      </if>
+      <if test="msgSender != null" >
+        msg_sender = #{msgSender,jdbcType=VARCHAR},
+      </if>
+      <if test="msgTime != null" >
+        msg_time = #{msgTime,jdbcType=DATE},
+      </if>
+      <if test="msgSysSn != null" >
+        msg_sys_sn = #{msgSysSn,jdbcType=VARCHAR},
+      </if>
+      <if test="msgVer != null" >
+        msg_ver = #{msgVer,jdbcType=VARCHAR},
+      </if>
+      <if test="spChnlNo != null" >
+        sp_chnl_no = #{spChnlNo,jdbcType=VARCHAR},
+      </if>
+      <if test="eventNo != null" >
+        event_no = #{eventNo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopNo != null" >
+        shop_no = #{shopNo,jdbcType=VARCHAR},
+      </if>
+      <if test="eventTitle != null" >
+        event_title = #{eventTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="eventDesc != null" >
+        event_desc = #{eventDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=DATE},
+      </if>
+      <if test="endAt != null" >
+        end_at = #{endAt,jdbcType=DATE},
+      </if>
+      <if test="eventLink != null" >
+        event_link = #{eventLink,jdbcType=VARCHAR},
+      </if>
+      <if test="eventRule != null" >
+        event_rule = #{eventRule,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleDesc != null" >
+        rule_desc = #{ruleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="specBankFlag != null" >
+        spec_bank_flag = #{specBankFlag,jdbcType=CHAR},
+      </if>
+      <if test="eventStatus != null" >
+        event_status = #{eventStatus,jdbcType=CHAR},
+      </if>
+      <if test="sign != null" >
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rongyi.easy.rpb.entity.UnionActivityRegister" >
+    update union_activity_register
+    set msg_crrltn_id = #{msgCrrltnId,jdbcType=VARCHAR},
+      msg_txn_code = #{msgTxnCode,jdbcType=VARCHAR},
+      msg_type = #{msgType,jdbcType=VARCHAR},
+      msg_flg = #{msgFlg,jdbcType=CHAR},
+      msg_sender = #{msgSender,jdbcType=VARCHAR},
+      msg_time = #{msgTime,jdbcType=DATE},
+      msg_sys_sn = #{msgSysSn,jdbcType=VARCHAR},
+      msg_ver = #{msgVer,jdbcType=VARCHAR},
+      sp_chnl_no = #{spChnlNo,jdbcType=VARCHAR},
+      event_no = #{eventNo,jdbcType=VARCHAR},
+      shop_no = #{shopNo,jdbcType=VARCHAR},
+      event_title = #{eventTitle,jdbcType=VARCHAR},
+      event_desc = #{eventDesc,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=DATE},
+      end_at = #{endAt,jdbcType=DATE},
+      event_link = #{eventLink,jdbcType=VARCHAR},
+      event_rule = #{eventRule,jdbcType=VARCHAR},
+      rule_desc = #{ruleDesc,jdbcType=VARCHAR},
+      spec_bank_flag = #{specBankFlag,jdbcType=CHAR},
+      event_status = #{eventStatus,jdbcType=CHAR},
+      sign = #{sign,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

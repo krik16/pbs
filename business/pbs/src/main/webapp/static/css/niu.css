@@ -1,0 +1,79 @@
+BODY {background-color:#FFFFFF;	font-size:12px;}
+DL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+DT {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+DD {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+
+IMG {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+.title-font{
+	color: #FFFFFF;
+    font-size: 16px;
+    line-height: 24px;
+}
+.second-title-font{
+	color: #999292;
+    font-size: 14px;
+    line-height: 24px;
+}
+.mallName-font{
+	font-size:20px;color:#2d3e50;font-weight: bold;margin-top: 10px;
+}
+#newsSlider .container {
+	MARGIN: 0px; OVERFLOW: hidden; max-width: 640px; POSITION: relative; max-height: 360px;
+}
+#newsSlider DIV.slides {
+	LEFT: 0px; POSITION: absolute; TOP: 0px
+}
+#newsSlider UL.slides {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none; POSITION: absolute; TOP: 0px
+}
+#newsSlider UL.slides DL {
+	MARGIN-TOP: 32px
+}
+#newsSlider UL.slides DT A {
+	FONT: bold 14px/30px "Lucida Grande", "Lucida Sans Unicode", Arial, Verdana, sans-serif; COLOR: #2a609f
+}
+#newsSlider UL.slides DD {
+	LINE-HEIGHT: 22px
+}
+#newsSlider UL.slides DD .more {
+	MARGIN-TOP: -18px; BACKGROUND: url(../images/more.gif); FLOAT: right; OVERFLOW: hidden; WIDTH: 14px; TEXT-INDENT: -100em; HEIGHT: 12px
+}
+#newsSlider DIV.slides DIV {
+	PADDING-RIGHT: 0px; DISPLAY: none; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; max-width: 100%; PADDING-TOP: 0px; POSITION: absolute; TOP: 0px
+}
+UL.slides LI {
+	PADDING-RIGHT: 0px; DISPLAY: none; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; max-WIDTH: 640px; PADDING-TOP: 0px; POSITION: absolute; TOP: 0px
+}
+#newsSlider #loopedSlider {
+	CLEAR: both; MARGIN: 0px auto; max-width:100% ; POSITION: relative
+}
+#newsSlider {
+	CLEAR: both; MARGIN: 0px auto; max-width: 100%; POSITION: relative
+}
+#newsSlider {
+	BORDER-BOTTOM: #eee 1px solid
+}
+#newsSlider UL.pagination {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; POSITION: absolute; TOP: 327px;
+}
+#newsSlider UL.pagination LI {
+	FLOAT: left; MARGIN-RIGHT: 5px;container:none;padding-left:20px;
+}
+#newsSlider UL.pagination LI A {
+	DISPLAY: block; BACKGROUND: url(../images/imgnews_side_Number.gif) no-repeat 0px 0px; FONT: bold 12px/15px "Times New Roman", Times, serif; WIDTH: 15px; COLOR: #fff; TEXT-ALIGN: center;
+	text-decoration:none;
+}
+#newsSlider UL.pagination LI.active A {
+	BACKGROUND-POSITION: 0px 100%; COLOR: #fff; TEXT-DECORATION: none
+}
+UL.pagination LI A:hover {
+	BACKGROUND-POSITION: 0px 100%; COLOR: #fff; TEXT-DECORATION: none
+}

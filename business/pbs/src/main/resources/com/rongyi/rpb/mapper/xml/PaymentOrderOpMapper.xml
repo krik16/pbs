@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.rongyi.rpb.mapper.PaymentOrderOpMapper" >
+  <resultMap id="BaseResultMap" type="com.rongyi.easy.rpb.domain.PaymentOrderOp" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="op_time" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="op_user" property="opUser" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, payment_id, create_at, op_time, op_user, is_delete
+  </sql>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from payment_order_op
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from payment_order_op
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rongyi.easy.rpb.domain.PaymentOrderOp" useGeneratedKeys="true" keyProperty="id" >
+    insert into payment_order_op (payment_id, create_at, op_time, 
+      op_user, is_delete)
+    values (#{paymentId,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{opTime,jdbcType=TIMESTAMP}, 
+      #{opUser,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rongyi.easy.rpb.domain.PaymentOrderOp" useGeneratedKeys="true" keyProperty="id" >
+    insert into payment_order_op
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      payment_id,
+      create_at,
+      op_time,
+      op_user,
+      is_delete,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{paymentId,jdbcType=INTEGER},
+      #{createAt,jdbcType=TIMESTAMP},
+      #{opTime,jdbcType=TIMESTAMP},
+      #{opUser,jdbcType=VARCHAR},
+      #{isDelete,jdbcType=TINYINT},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rongyi.easy.rpb.domain.PaymentOrderOp" >
+    update payment_order_op
+    <set >
+      <if test="paymentId != null" >
+        payment_id = #{paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opTime != null" >
+        op_time = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUser != null" >
+        op_user = #{opUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rongyi.easy.rpb.domain.PaymentOrderOp" >
+    update payment_order_op
+    set payment_id = #{paymentId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      op_time = #{opTime,jdbcType=TIMESTAMP},
+      op_user = #{opUser,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPaymentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from payment_order_op
+    where payment_id = #{paymentId,jdbcType=INTEGER}
+  </select>
+</mapper>

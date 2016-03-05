@@ -1,0 +1,136 @@
+/*����*/
+body{
+   padding:0 10px;
+   margin:0; 
+   font-size: 1em;
+   font-family:"Microsoft YaHei" arial;
+  }
+   p,h1,h2,h3,h4,h5,h6,a,div,button,div,input,ul,li,img,dl,dt,dd,ol,table,tr,td{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    outline: none;
+    border:0;
+    font-weight: normal;  
+
+  } 
+.signature p {
+	font-size: 9px;
+	color: #808a94;
+	line-height: 1.4;
+	padding-left: 5px;
+	margin: 0;
+	border-left: 2px solid #d1dbdc;
+	font-weight: normal;
+}
+.comment{
+  overflow: hidden;
+}
+.comment .comment-link {
+  width: 100%;
+  display: block;
+   box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  text-decoration: none;
+  color: #b4b4b4;
+  font-size: 0.75em;
+  padding-bottom: 10px;
+  position: relative;
+}
+.comment .comment-link span{
+  background:url(../img/new/comment-icon.jpg) left center no-repeat;
+  background-size: 12px 12px;
+  padding-left:20px;
+}
+.comment .comment-link i{
+  font-style: normal;
+  position: absolute;
+  right: 3.125%;
+  background:url(../img/new/right-arrow.jpg) right no-repeat;
+  background-size: 9px 15px;
+  padding-right:15px;
+}
+.market-comments-content{
+      overflow: hidden;
+      font-size: 12px;
+      color: #2d3e50;
+    }
+    .market-comments-content li{
+     border-bottom: 1px solid #eee;
+     padding:10px 0px;
+    }
+    .market-comments-content li:last-child{
+     border-bottom: 0;
+    }
+    .market-comments-content li h3{ 
+      font-size: 12px;
+    }
+    .head-title{
+      overflow: hidden;
+    /*  padding-bottom: 10px;*/
+    }
+    .right-txt{
+      padding-top: 9px;
+      color: #323232;
+    }
+     .right-txt .data{
+      padding-left: 10px;
+      color:#969696;
+    }
+    .head-title p{
+      padding-top: 6px;
+      color:#969696;
+    }
+    .head-title img{
+      float: left;
+      width: 40px;
+      height: 40px;
+      margin-right:10px;
+    }
+    .comments-data{
+      float: right;
+    }
+    .star{
+      background: url(../img/new/stars.png) no-repeat;
+      background-size: cover;
+      display: inline-block;
+      height: 10px;
+      width: 60px;
+      float: right;
+      margin-top: 5px;
+    }
+    .star1{
+     background-position: left 0px;
+    }
+    .star2{
+     background-position: left -10px;
+    }
+    .star3{
+     background-position: left -21px;
+    }
+    .star4{
+     background-position: left -31px;
+    }
+    .star5{
+     background-position: left -41px;
+    }
+    .star0{
+      background-position: left -51px;
+    }
+    .head-content{
+      padding-left: 50px;
+      color:#969696;
+    }
+.through-line{
+  height: 10px;
+  width:100%;
+  background: #ebebeb;
+}
+.grey-line{
+  height: 1px;
+  width:100%;
+  background:#eee;
+  text-align: center;
+  margin: 0 auto;
+}

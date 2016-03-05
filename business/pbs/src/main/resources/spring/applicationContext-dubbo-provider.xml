@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans          
+    http://www.springframework.org/schema/beans/spring-beans.xsd          
+    http://code.alibabatech.com/schema/dubbo          
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 声明需要暴露的服务接口 -->
+	<dubbo:service interface="com.rongyi.rss.rpb.OrderNoGenService" version="${dubbo.version}" ref="orderNoGenService" />
+	<bean id="orderNoGenService" class="com.rongyi.rpb.service.impl.OrderNoGenServiceImpl" />
+	<dubbo:service interface="com.rongyi.rss.rpb.IRpbService" version="${dubbo.version}" ref="rpbService" />
+	<bean id="rpbService" class="com.rongyi.rpb.service.impl.RpbServiceImpl" />
+
+	<!-- 微信批量退款定时任务 -->
+	 <dubbo:service interface="com.rongyi.rss.service.trigger.WeixinBatchRefundTrigger" version="${dubbo.version}" ref="weixinBatchRefundTrigger" retries="0"/>	
+	 <bean id="weixinBatchRefundTrigger" class="com.rongyi.rpb.service.impl.WeixinBatchRefundTriggerImpl" />
+</beans>  

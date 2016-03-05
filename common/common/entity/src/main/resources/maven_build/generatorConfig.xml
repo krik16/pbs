@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+	<properties resource="${mybatis.generator.dbConfigFile}"/>
+	
+	<context id="com.rongyi" targetRuntime="MyBatis3">
+		<plugin type="com.rongyi.framework.mybatis.generator.EntityCommentPlugin"></plugin>  
+<!-- 		<plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"></plugin>   -->
+<!--         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin> -->
+<!-- 		<plugin type="com.rongyi.framework.mybatis.plugins.OraclePaginationPlugin"/> -->
+<!-- 		<plugin type="com.rongyi.framework.mybatis.plugins.EntityExtraMethodPlugin"/> -->
+	
+		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->  
+		<commentGenerator>
+			<property name="suppressAllComments" value="true"/>
+		</commentGenerator>
+	
+		<!-- 数据库连接信息 -->
+		<jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}"/>
+		<!-- 配置model生成目录和其它参数 -->
+		<javaModelGenerator targetPackage="${mybatis.generator.package.path}" targetProject="${mybatis.generator.javaFileDir}">
+<!-- 			<property name="rootClass" value="com.rongyi.merchant.biz.domain.BaseEntity"/> -->
+		</javaModelGenerator>
+		<!-- 配置mapper生成目录和其它参数 -->
+		<sqlMapGenerator targetPackage="${mybatis.generator.package.path}" targetProject="${mybatis.generator.resourcesFileDir}"/>
+		<javaClientGenerator type="XMLMAPPER" targetPackage="${mybatis.generator.package.path}" targetProject="${mybatis.generator.javaFileDir}">
+<!-- 			<property name="rootInterface" value="com.rongyi.merchant.biz.mapper.BaseMapper"/> -->
+		</javaClientGenerator>
+		
+		<table tableName="integral_history_add" domainObjectName="domain.member.IntegralHistoryAdd"></table>
+
+	</context>
+</generatorConfiguration>

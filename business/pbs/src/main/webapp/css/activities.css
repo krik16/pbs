@@ -1,0 +1,41 @@
+@charset "utf-8";
+.shop-name-delete{
+	display: none;
+}
+a.icon-page-left{
+	padding: 0 15px;
+	background: url("../images/icon_page_left.png") 50% 50% no-repeat #e7e8eb;
+}
+.shop-name{
+	margin-right: 5px;
+	margin-top:3px;
+	float: left;
+	line-height: 20px;
+	background: #e7e8eb;
+	height: 24px;
+	padding: 0px;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: relative;
+	border-radius: 15px;
+}
+.line-heights{
+	line-height: 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

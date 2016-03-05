@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	  <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+	  <meta content="yes" name="apple-mobile-web-app-capable" />
+	  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+	  <title>优惠详情</title>
+	  <link rel="stylesheet" type="text/css" href="${rc.contextPath}/static/css/normalv5.css"/>
+	  <script type="text/javascript" src="${rc.contextPath}/static/js/jquery-1.8.3.min.js"></script>
+	  <script type="text/javascript" src="${rc.contextPath}/static/js/preferentialPayment.js"></script>
+  </head>
+	<body>
+		<!-- <div class="apply-header">
+  		<a href="#"></a>
+  		<h2>优惠详情</h2>
+  	</div> -->
+  	<div class="city-shuffling ">
+      <ul>
+        <li>
+           <img src="$!{actionPicture0}"/>
+        </li>
+        <li style="display:none"><img src="$!{actionPicture1}"  ></li>
+        <li style="display:none"><img src="$!{actionPicture2}"></li>
+        <li style="display:none"><img src="$!{actionPicture3}"></li>
+      </ul>
+      <!-- <div class="pic-overlay"></div> -->
+    </div>
+  	<div class="all-brand-wrap">
+
+      <div class="all-brand-title">
+        <h1>$!{title}</h1>
+        <p>有效期：$!{startTime}至$!{endTime}</p>
+      </div>
+  		<div class="all-brand-notic">
+        $!{description}
+      </div>
+      <div class="all-brand-visited">
+        <h2>$!{vistedNum}位小伙伴踩过啦~</h2>
+      </div>
+    </div>
+    	#if($applyShops != "empty")
+	  <ul class="all-brand-list">
+	  		<li class="all-brand-shop">
+	  			<h2>可使用的商场/门店（<span class="red-color">$!{applyShopsSize}</span>家）</h2><a href="#" class="link-to"></a>
+	  		</li>
+    		#foreach($applyShop in $applyShops)
+    			#if($!applyShop.type=='shop')
+    			<a href="${rc.contextPath}/shopDetail/index.htm?id=$!applyShop.id">
+		  		<li class="all-brand-list-content">
+		          <div class="pic-place">
+		            <img src="$applyShop.logo" width="41" height="41" />
+		          </div>
+		          <h3>$applyShop.name</h3>
+		          <div>
+		          	  #if($applyShop.shopOwn)
+		              	<h4>$applyShop.shopOwn</h4>
+		              #end
+		              #if($applyShop.distance)
+		              	<span class="local">$applyShop.distance</span> 
+		              #end
+		          </div>
+		        </li>
+        	</a>
+    			#else
+    			<a href="${rc.contextPath}/marketDetail/index.htm?mallId=$!applyShop.id">
+		  		<li class="all-brand-list-content">
+		          <div class="pic-place">
+		            <img src="$applyShop.logo" width="41" height="41" />
+		          </div>
+		          <h3>$applyShop.name</h3>
+		          <div>
+		          	  #if($applyShop.shopOwn)
+		              	<h4>$applyShop.shopOwn</h4>
+		              #end
+		              #if($applyShop.distance)
+		              	<span class="local">$applyShop.distance</span> 
+		              #end
+		          </div>
+		        </li>
+        	</a>
+    		#end
+	  	#end
+	  </ul>
+	  #end
+	  #if($otherActivities != "empty")
+    <div class="all-brand-other-content">
+        <h2>该品牌其他优惠</h2>
+      <ul class="clearFix">
+      	#foreach($otherActivity in $otherActivities)
+      		#if($otherActivity.grouponStyle)
+      		<a href="${rc.contextPath}/preferentialPayment/index.htm?grouponId=$otherActivity.id">
+	        <li>
+	          <div class="list-pic">
+	            <img src="$otherActivity.thumbnail">
+	            <span></span>
+	          </div>
+	          <div class="list-center">
+	            <h3>$otherActivity.title</h3>
+	            #if($otherActivity.description)
+	            	<h4>$!otherActivity.description</h4>
+	            #end
+	          </div>
+	          <div class="all-brand-price">
+	         		  ￥
+	            <span class="red-price">$!otherActivity.grouponPrice</span>
+	            <span class="grey-price">￥$!otherActivity.grouponOriginal元</span>
+	          </div>
+	        </li>
+	        </a>
+	        #else
+	        <a href="${rc.contextPath}/privilegeDetails/index.htm?grouponId=$otherActivity.id">
+	        <li>
+	          <div class="yh-wrap" style="margin: 5px 3.125%;">
+	            <img style="width: 38%;" src="$otherActivity.thumbnail" class="left-img"/>
+		            <div class="center-text">
+			              <p class="red-txt">$otherActivity.title</p>
+			              <i>$otherActivity.vistedNum位小伙伴踩过啦</i>
+		            </div>
+	          </div>
+	        </li>
+	        </a>
+	        #end
+        #end
+      </ul>
+    </div>
+     #end
+	</body>
+</html>

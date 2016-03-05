@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.rongyi.easy.rpb.domain.WeixinMchMapper" >
+  <resultMap id="BaseResultMap" type="com.rongyi.easy.rpb.domain.WeixinMch" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="mch_id" property="mchId" jdbcType="VARCHAR" />
+    <result column="cret_path" property="cretPath" jdbcType="VARCHAR" />
+    <result column="public_code" property="publicCode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+    <result column="is_rongyi_pay" property="isRongyiPay" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, app_id, `key`, mch_id, cret_path, public_code, user_id, trade_type,is_rongyi_pay
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from weixin_mch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from weixin_mch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rongyi.easy.rpb.domain.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
+    insert into weixin_mch (app_id, `key`, mch_id, 
+      cret_path, public_code, user_id, 
+      trade_type,is_rongyi_pay)
+    values (#{appId,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR}, 
+      #{cretPath,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{tradeType,jdbcType=VARCHAR}),
+      #{isRongyiPay,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rongyi.easy.rpb.domain.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
+    insert into weixin_mch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      app_id,
+      `key`,
+      mch_id,
+      cret_path,
+      public_code,
+      user_id,
+      trade_type,
+      is_rongyi_pay
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{appId,jdbcType=VARCHAR},
+      #{key,jdbcType=VARCHAR},
+      #{mchId,jdbcType=VARCHAR},
+      #{cretPath,jdbcType=VARCHAR},
+      #{publicCode,jdbcType=VARCHAR},
+      #{userId,jdbcType=VARCHAR},
+      #{tradeType,jdbcType=VARCHAR},
+      #{isRongyiPay,jdbcType=TINYINT}
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rongyi.easy.rpb.domain.WeixinMch" >
+    update weixin_mch
+    <set >
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null" >
+        `key` = #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        mch_id = #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="cretPath != null" >
+        cret_path = #{cretPath,jdbcType=VARCHAR},
+      </if>
+      <if test="publicCode != null" >
+        public_code = #{publicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRongyiPay != null" >
+        is_rongyi_pay = #{isRongyiPay,jdbcType=TINYINT}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rongyi.easy.rpb.domain.WeixinMch" >
+    update weixin_mch
+    set app_id = #{appId,jdbcType=VARCHAR},
+      `key` = #{key,jdbcType=VARCHAR},
+      mch_id = #{mchId,jdbcType=VARCHAR},
+      cret_path = #{cretPath,jdbcType=VARCHAR},
+      public_code = #{publicCode,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      trade_type = #{tradeType,jdbcType=VARCHAR},
+      is_rongyi_pay = #{isRongyiPay,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPublicAndUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from weixin_mch
+    where user_id = #{userId,jdbcType=VARCHAR}
+    <if test="publicCode != null and publicCode != ''">
+       and public_code = #{publicCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByAppIdAndTradeType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from weixin_mch
+    where app_id = #{appId,jdbcType=VARCHAR}
+    <if test="tradeType != null and tradeType != ''">
+      and trade_type like  CONCAT('%',#{tradeType},'%')
+    </if>
+  </select>
+  <select id="selectByMchIdAndUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from weixin_mch
+    where mch_id = #{mchId,jdbcType=VARCHAR}
+    and user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+</mapper>
