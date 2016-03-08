@@ -79,14 +79,16 @@ public class Configure {
     //4）退款查询API
     public static String REFUND_QUERY_API = "https://api.mch.weixin.qq.com/pay/refundquery";
 
-    //5）撤销API
-    public static String REVERSE_API = "https://api.mch.weixin.qq.com/pay/closeorder";
+    //5）关闭API
+    public static String CLOSE_API = "https://api.mch.weixin.qq.com/pay/closeorder";
 
     //6）下载对账单API
     public static String DOWNLOAD_BILL_API = "https://api.mch.weixin.qq.com/pay/downloadbill";
 
     //7) 统计上报API
     public static String REPORT_API = "https://api.mch.weixin.qq.com/payitil/report";
+
+    public static String REVERSE_API="https://api.mch.weixin.qq.com/secapi/pay/reverse";
 
 
     public static String HttpsRequestClassName = "com.shouyingbao.common.pay.weixin.util.HttpsRequest";
@@ -203,12 +205,12 @@ public class Configure {
         REFUND_QUERY_API = refundQueryApi;
     }
 
-    public static String getReverseApi() {
-        return REVERSE_API;
+    public static String getCloseApi() {
+        return CLOSE_API;
     }
 
-    public static void setReverseApi(String reverseApi) {
-        REVERSE_API = reverseApi;
+    public static void setCloseApi(String closeApi) {
+        CLOSE_API = closeApi;
     }
 
     public static String getDownloadBillApi() {
@@ -233,6 +235,23 @@ public class Configure {
 
     public static void setHttpsRequestClassName(String httpsRequestClassName) {
         HttpsRequestClassName = httpsRequestClassName;
+    }
+
+    public String getDeviceInfo() {
+        return deviceInfo;
+    }
+
+    public void setDeviceInfo(String deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
+    public static String getReverseApi() {
+
+        return REVERSE_API;
+    }
+
+    public static void setReverseApi(String reverseApi) {
+        REVERSE_API = reverseApi;
     }
 
     @Override

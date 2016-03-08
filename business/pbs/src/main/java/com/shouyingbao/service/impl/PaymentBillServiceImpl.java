@@ -1,7 +1,6 @@
 package com.shouyingbao.service.impl;
 
 import com.shouyingbao.Exception.WeixinException;
-import com.shouyingbao.common.pay.weixin.model.ScanPayResData;
 import com.shouyingbao.constants.ConstantEnum;
 import com.shouyingbao.core.bean.ResponseData;
 import com.shouyingbao.core.framework.mybatis.service.impl.BaseServiceImpl;
@@ -37,6 +36,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     @Override
     public ResponseData scanPay(Integer shopId,String authCode,Integer totalFee,String deviceInfo,Integer tradeType){
         LOGGER.info("微信扫码支付,shopId={},authCode={},totalFee={},deviceInfo={},tradeType={}",shopId,authCode,totalFee,deviceInfo,tradeType);
+        ResponseData responseData=ResponseData.success();
         try{
             WeixinPayVO weixinPayVO = new WeixinPayVO();
             weixinPayVO.setAuthCode(authCode);
@@ -48,18 +48,16 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
             weixinPayVO.setShopId(shopId);
             weixinPayVO.setWeixinPayType(tradeType);
             weixinPayVO.setOrderNo(idGenUnit.getOrderNo("0"));
-            ScanPayResData scanPayResData = weixinPayUnit.scanPay(weixinPayVO);
-            LOGGER.info("scanPayResData={}",scanPayResData);
+            responseData = weixinPayUnit.scanPay(weixinPayVO);
         }catch (WeixinException e){
             e.printStackTrace();
             LOGGER.error(e.getMessage());
-            return  ResponseData.failure(e.getCode(),e.getMessage());
-
+            responseData = ResponseData.failure(e.getCode(),e.getMessage());
         }catch (Exception e){
             e.printStackTrace();
             LOGGER.error(e.getMessage());
-            return  ResponseData.failure(ConstantEnum.EXCEPTION_WEIXIN_SIGN_FAIL.getCodeStr(),ConstantEnum.EXCEPTION_WEIXIN_SIGN_FAIL.getValueStr());
+            responseData =  ResponseData.failure(ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getCodeStr(),ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getValueStr());
         }
-        return ResponseData.success();
+        return responseData;
     }
 }

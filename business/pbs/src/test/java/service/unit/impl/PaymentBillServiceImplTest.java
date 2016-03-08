@@ -1,15 +1,12 @@
 package service.unit.impl;
 
 import base.BaseTest;
-import com.shouyingbao.common.pay.weixin.model.ScanPayReqData;
-import com.shouyingbao.common.pay.weixin.service.ScanPayService;
-import com.shouyingbao.common.pay.weixin.util.Configure;
+import com.shouyingbao.core.bean.ResponseData;
 import com.shouyingbao.service.PaymentBillService;
 import com.shouyingbao.unit.WeixinConfigUnit;
+import com.shouyingbao.unit.WeixinPayUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
-
-import java.net.URLEncoder;
 
 /**
  * kejun
@@ -22,30 +19,21 @@ public class PaymentBillServiceImplTest extends BaseTest{
 
     @Autowired
     WeixinConfigUnit weixinConfigUnit;
+
+    @Autowired
+    WeixinPayUnit weixinPayUnit;
+
     @Test
     public void weixinPayTest(){
         try{
-            paymentBillService.scanPay(1,"130726723356995009",1,"111",0);
+            ResponseData responseData = paymentBillService.scanPay(1,"130646746181879109",1000000,"111",0);
+            System.err.println("ResponseData="+responseData);
         }catch (Exception e){
             e.printStackTrace();
         }
 
     }
 
-    @Test
-    public void scanPayTest(){
-        try {
-            Configure configure = weixinConfigUnit.initConfigure(1,0);
-           String  xmString = new String("闪购".toString().getBytes("UTF-8"));
-            String body = URLEncoder.encode(xmString, "UTF-8");
-            ScanPayReqData scanPayReqData = new ScanPayReqData("123",body,"", "",
-                    "12312312313",1, "1","","","","",configure);
-            ScanPayService scanPayService = new ScanPayService();
-            String result = scanPayService.request(scanPayReqData, configure);
-            System.err.println("result="+result);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
-    }
+
 }
