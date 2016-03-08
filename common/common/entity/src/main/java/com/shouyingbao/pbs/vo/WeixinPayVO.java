@@ -1,13 +1,11 @@
-package com.shouyingbao.common.pay.weixin.model;
-
-import java.io.Serializable;
+package com.shouyingbao.pbs.vo;
 
 /**
- * Created by kejun on 2016/1/13.
+ * Created by kejun on 2016/03/07.
  */
-public class PaySignData {
+public class WeixinPayVO {
 
-    private String payNo;
+    private String orderNo;
 
     private Integer totalFee;
 
@@ -25,13 +23,19 @@ public class PaySignData {
 
     private Integer weixinPayType;
 
+    private String authCode;
 
-    public String getPayNo() {
-        return payNo;
+    private String deviceInfo;
+
+    private Integer shopId;
+
+
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setPayNo(String payNo) {
-        this.payNo = payNo;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
     public Integer getTotalFee() {
@@ -98,10 +102,35 @@ public class PaySignData {
         this.weixinPayType = weixinPayType;
     }
 
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
+    }
+
+    public String getDeviceInfo() {
+        return deviceInfo;
+    }
+
+    public void setDeviceInfo(String deviceInfo) {
+        this.deviceInfo = deviceInfo;
+    }
+
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
+    }
+
     @Override
     public String toString() {
-        return "PaySignData{" +
-                "payNo='" + payNo + '\'' +
+        return "WeixinPayVO{" +
+                "orderNo='" + orderNo + '\'' +
                 ", totalFee=" + totalFee +
                 ", body='" + body + '\'' +
                 ", orderType=" + orderType +
@@ -110,6 +139,9 @@ public class PaySignData {
                 ", appId='" + appId + '\'' +
                 ", openId='" + openId + '\'' +
                 ", weixinPayType='" + weixinPayType + '\'' +
+                ", authCode='" + authCode + '\'' +
+                ", deviceInfo='" + deviceInfo + '\'' +
+                ", shopId='" + shopId + '\'' +
                 '}';
     }
 }

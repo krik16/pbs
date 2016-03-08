@@ -1,7 +1,9 @@
 package com.shouyingbao.common.pay.weixin.util;
 
+import com.shouyingbao.Exception.WeixinException;
 import com.shouyingbao.constants.ConstantEnum;
 import com.shouyingbao.constants.ConstantUtil;
+import com.shouyingbao.pbs.entity.WeixinMch;
 
 /**
  * User: rizenguo
@@ -11,27 +13,27 @@ import com.shouyingbao.constants.ConstantUtil;
  */
 public class Configure {
 
-//    public void init(WeixinMch weixinMch) {
-//        if (weixinMch != null) {
-//            setKey(weixinMch.getKey());
-//            setAppID(weixinMch.getAppId());
-//            setMchID(weixinMch.getMchId());
-//            setCertLocalPath(weixinMch.getCretPath());
-//            setCertPassword(weixinMch.getMchId());
-//            if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_APP.getCodeStr().equals(weixinMch.getTradeType())) {
-//                setTradeType(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_APP.getValueStr());
-//            } else if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_JSAPI.getCodeStr().equals(weixinMch.getTradeType())) {
-//                setTradeType(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_JSAPI.getValueStr());
-//            } else if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_NATIVE.getCodeStr().equals(weixinMch.getTradeType())) {
-//                setTradeType(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_NATIVE.getValueStr());
-//            }
-//        }
-//    }
+    public void init(WeixinMch weixinMch) {
+        if (weixinMch != null) {
+            setKey(weixinMch.getKey());
+            setAppID(weixinMch.getAppId());
+            setMchID(weixinMch.getMchId());
+            setCertLocalPath(weixinMch.getCretPath());
+            setCertPassword(weixinMch.getMchId());
+            //扫码支付
+            if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getCodeStr().equals(weixinMch.getTradeType())) {
+                setTradeType(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getValueStr());
+            }else{
+               throw new WeixinException("eror","未找到支付方式");
+            }
+        }
+    }
 
     //这个就是自己要保管好的私有Key了（切记只能放在自己的后台代码里，不能放在任何可能被看到源代码的客户端程序中）
     // 每次自己Post数据给API的时候都要用这个key来对所有字段进行签名，生成的签名会放在Sign这个字段，API收到Post数据的时候也会用同样的签名算法对Post过来的数据进行签名和验证
     // 收到API的返回的时候也要用这个key来对返回的数据算下签名，跟API的Sign数据进行比较，如果值不一致，有可能数据被第三方给篡改
     private String key = ConstantUtil.PayWeiXin_V3.KEY;
+
 //	private static String key = "b24aaabb1ea8a155c4572570cd260313";
 
     //微信分配的公众号ID（开通公众号之后可以获取到）
@@ -39,6 +41,9 @@ public class Configure {
 
     //微信支付分配的商户号ID（开通公众号的微信支付功能之后可以获取到）
     private String mchID = ConstantUtil.PayWeiXin_V3.MCH_ID;
+
+    //终端设备号(商户自定义，如门店编号)
+    private String deviceInfo="";
 
     //受理模式下给子商户分配的子商户号
     private String subMchID = "";
@@ -55,7 +60,7 @@ public class Configure {
     //机器IP
     private String ip = "127.0.0.1";
 
-    private String tradeType =ConstantEnum.WEIXIN_PAY_TRADE_TYPE_APP.getValueStr();
+    private String tradeType =ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getValueStr();
 
     //以下是几个API的路径：
 
@@ -84,7 +89,7 @@ public class Configure {
     public static String REPORT_API = "https://api.mch.weixin.qq.com/payitil/report";
 
 
-    public static String HttpsRequestClassName = "HttpsRequest";
+    public static String HttpsRequestClassName = "com.shouyingbao.common.pay.weixin.util.HttpsRequest";
 
     public String getKey() {
         return key;

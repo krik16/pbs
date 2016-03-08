@@ -14,6 +14,22 @@ public interface ConstantUtil {
 		String innernetAddress = propertyConfigurer.getProperty("innernet.address").toString();
 	}
 
+	/**
+	 * Author:  柯军
+	 * Description: V3版本微信常量配置
+	 * datetime:2015年9月1日下午6:29:53
+	 *
+	 **/
+	interface PayWeiXin_V3{
+		String APP_ID = propertyConfigurer.getProperty("WEIXIN.APP_ID").toString();
+		String KEY = propertyConfigurer.getProperty("WEIXIN.KEY").toString();
+		String MCH_ID = propertyConfigurer.getProperty("WEIXIN.MCH_ID").toString();
+		String cretDirectory = propertyConfigurer.getProperty("cret.directory").toString();
+		 String  WEIXIN_NOTIFY_URL = "http://" + NOTIFY_URL.outernetAddress + "/v5/WebPageAlipay/weixin/notify_url.htm";//支付成功异步通知接口
+	}
+
+
+
 
 	interface PayZhiFuBao {
 //		String PARTNER = "2088701977493485"; // 商户签约的支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。
@@ -87,23 +103,5 @@ public interface ConstantUtil {
 		String NOTIFY_URL_ZHIFUBAO_WEB = "http://" + NOTIFY_URL.outernetAddress + "/v5/WebPageAlipay/notify_url.htm";
 		String MERCHANT_URL_WEB = "http://" + NOTIFY_URL.innernetAddress + "/v5/WebPageAlipay/merchant_url.htm";
 	}
-	/**
-	 * Author:  柯军
-	 * Description: V3版本微信常量配置
-	 * datetime:2015年9月1日下午6:29:53
-	 *
-	 **/
-	interface PayWeiXin_V3{
-		
-		  String APP_ID = propertyConfigurer.getProperty("WEIXIN.APP_ID").toString();
-		  String KEY = propertyConfigurer.getProperty("WEIXIN.KEY").toString();
-		  String MCH_ID = propertyConfigurer.getProperty("WEIXIN.MCH_ID").toString();
-		 String cretDirectory = propertyConfigurer.getProperty("cret.directory").toString();
-//		  String PASSWORD = propertyConfigurer.getProperty("WEIXIN.PASSWORD").toString();
 
-		public static String  WEIXIN_NOTIFY_URL = "http://" + NOTIFY_URL.outernetAddress + "/v5/WebPageAlipay/weixin/notify_url.htm";//支付成功异步通知接口
-		
-
-		
-	}
 }

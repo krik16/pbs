@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.shouyingbao.pbs.mapper.WeixinMchMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.WeixinMch" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="mch_id" property="mchId" jdbcType="VARCHAR" />
+    <result column="cret_path" property="cretPath" jdbcType="VARCHAR" />
+    <result column="public_code" property="publicCode" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, app_id, `key`, mch_id, cret_path, public_code, shop_id, trade_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from weixin_mch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from weixin_mch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
+    insert into weixin_mch (app_id, `key`, mch_id, 
+      cret_path, public_code, shop_id, 
+      trade_type)
+    values (#{appId,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR}, 
+      #{cretPath,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
+      #{tradeType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
+    insert into weixin_mch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      app_id,
+      `key`,
+      mch_id,
+      cret_path,
+      public_code,
+      shop_id,
+      trade_type,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{appId,jdbcType=VARCHAR},
+      #{key,jdbcType=VARCHAR},
+      #{mchId,jdbcType=VARCHAR},
+      #{cretPath,jdbcType=VARCHAR},
+      #{publicCode,jdbcType=VARCHAR},
+      #{shopId,jdbcType=VARCHAR},
+      #{tradeType,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch" >
+    update weixin_mch
+    <set >
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null" >
+        `key` = #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        mch_id = #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="cretPath != null" >
+        cret_path = #{cretPath,jdbcType=VARCHAR},
+      </if>
+      <if test="publicCode != null" >
+        public_code = #{publicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.WeixinMch" >
+    update weixin_mch
+    set app_id = #{appId,jdbcType=VARCHAR},
+      `key` = #{key,jdbcType=VARCHAR},
+      mch_id = #{mchId,jdbcType=VARCHAR},
+      cret_path = #{cretPath,jdbcType=VARCHAR},
+      public_code = #{publicCode,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=VARCHAR},
+      trade_type = #{tradeType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByShopId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from weixin_mch
+    where shop_id = #{shopId,jdbcType=INTEGER}
+  </select>
+</mapper>

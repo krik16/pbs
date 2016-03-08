@@ -8,12 +8,7 @@
 
 package com.shouyingbao.constants;
 
-import com.shouyingbao.core.common.util.DateUtil;
-import com.shouyingbao.constants.ConstantUtil.NOTIFY_URL;
-
-
-
-/**	
+/**
  * @Author:  柯军
  * @Description: 常量枚举
  * @datetime:2015年7月2日下午4:58:18
@@ -22,32 +17,6 @@ import com.shouyingbao.constants.ConstantUtil.NOTIFY_URL;
 public enum ConstantEnum {
 
 
-	UNION_MSG_TYPE("msg_type","00"),//报文类型
-	UNION_MSG_TXN_CODE("msg_txn_code","002002"),//交易代码,002002一次验证，002003二次验证
-	UNION_MSG_TXN_CODE_TWO("msg_txn_code","002003"),//交易代码,002002一次验证，002003二次验证
-	UNION_MSG_CRRLTN_ID("msg_crrltn_id",""),//交易流水号，请求、应答关联ID
-	UNION_MSG_FLG("msg_flg","1"),//报文请求应答标志，0：请求；1：应答
-	UNION_MSG_SENDER("msg_sender","173"),//报文发送方，分配的渠道号
-	UNION_MSG_TIME("msg_time",DateUtil.getCurrentDateYYYYMMDD()+DateUtil.getCurrentHMSS()),//报文日期，YYYYMMDDhhmmss
-	UNION_MSG_SYS_SN("msg_sys_sn",""),//平台流水号，按请求原值返回
-	UNION_MSG_VER("msg_ver","0.1"),//报文版本号
-	UNION_MSG_RSP_CODE("msg_rsp_code","0000"),//响应码,默认0000成功
-	UNION_MSG_RSP_DESC("msg_rsp_desc","成功"),//响应码描述
-	UNION_CONSUME_TYPE("consume_type","3"),//消费类型 1：纯验证（销券，打印小票，结束本次交易）2：需支付（银行卡支付、现金支付）3：需支付，仅限银行卡支付
-	UNION_AMOUNT_MODE("amount_mode","1"),//金额模式0:纯验证1:单笔金额2:两笔金额3:固定金额
-	UNION_POS_MONITOR("pos_monitor",""),//显示在POS屏幕上的提示，由活动介绍、折扣、折后应收金额组合而成
-	UNION_EVENT_NO("event_no",""),//SP活动号
-	UNION_PWD_MODE("pwd_mode","0"),//0:不需要密码;1:需要密码;
-	UNION_SIGN("sign",""),//签名域
-	
-	UNION_COUPON_PREFIX("coupon_prefix","3173"),//券码前缀
-	
-	UNION_COUPON_VALIDATE_URL("union_coupon_validate_url","http://" + NOTIFY_URL.outernetAddress + "/v5/union/validateCoupon"),//银联券码验证接口地址
-	UNION_SUCCESS_NOTIFY_URL("union_success_notify_url","http://" + NOTIFY_URL.outernetAddress + "/v5/union/successNotify"),// 银联支付成功通知验证接口
-	UNION_FAILURE_NOTIFY_URL("union_failure_notify_url","http://" + NOTIFY_URL.outernetAddress + "/v5/union/failureNotify"),// 银联支付失败通知验证接口
-	
-	ALI_QUERY_ORDER_ERROR_CODE("TRADE_NOT_EXIST","交易不存在！"),
-	
 	WEIXIN_REFUND_RESULT_SUCCESS("SUCCESS","退款成功!"),
 	WEIXIN_REFUND_RESULT_PROCESSING("PROCESSING","微信退款处理中!"),
 	WEIXIN_REFUND_RESULT_NOTSURE("NOTSURE","退款未确认,需重新发起退款!"),
@@ -57,7 +26,7 @@ public enum ConstantEnum {
 	EXCEPTION_PARAM_NULL("1019101","参数为空"),
 	EXCEPTION_ALI_PAY_SIGN_FAIL("1019102","支付宝支付签名生成失败"),
 	EXCEPTION_ALI_QUERY_ORDER("1019103","订单查询失败"),
-	EXCEPTION_WEIXIN_SIGN_FAIL("1019104","微信支付签名生成失败"),
+	EXCEPTION_WEIXIN_SIGN_FAIL("1019104","微信扫码支付失败"),
 	EXCEPTION_WEIXIN_REFUND_QUERY_ORDER("1019105","微信退款查询失败"),
 	EXCEPTION_WEIXIN_REFUND_FAIL("1019106","微信退款失败"),
 	EXCEPTION_WEIXIN_ORDER_CLOSE("1019107","微信订单关闭失败"),
@@ -74,9 +43,7 @@ public enum ConstantEnum {
 	IS_DELETE_0(0,"正常"),
 	IS_DELETE_1(1,"标记删除"),
 
-	WEIXIN_PAY_TRADE_TYPE_APP(0,"APP"),//app支付
-	WEIXIN_PAY_TRADE_TYPE_JSAPI(1,"JSAPI"),//公众号支付
-	WEIXIN_PAY_TRADE_TYPE_NATIVE(2,"NATIVE"),//原生扫码支付
+	WEIXIN_PAY_TRADE_TYPE_MICROPAY(0,"MICROPAY"),//即扫码支付
 
 	WEIXIN_IS_RONGYI_PAY_0(0,"不是"),
 	WEIXIN_IS_RONGYI_PAY_1(1,"是"),

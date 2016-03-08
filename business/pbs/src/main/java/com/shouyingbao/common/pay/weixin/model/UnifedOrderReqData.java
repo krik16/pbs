@@ -1,14 +1,13 @@
 package com.shouyingbao.common.pay.weixin.model;
 
+import com.shouyingbao.common.pay.weixin.util.Configure;
+import com.shouyingbao.common.pay.weixin.util.MD5;
+import com.shouyingbao.common.pay.weixin.util.Signature;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import com.shouyingbao.common.pay.weixin.util.Configure;
-import com.shouyingbao.common.pay.weixin.util.MD5;
-import com.shouyingbao.constants.ConstantEnum;
-import com.shouyingbao.common.pay.weixin.util.Signature;
 
 
 /**	
@@ -77,17 +76,17 @@ public class UnifedOrderReqData {
         //交易类型
         setTrade_type(configure.getTradeType());
 
-		if(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_APP.getValueStr().equals(configure.getTradeType())) {
-			//交易起始时间
-			setTime_start(timeStart);
+//		if(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_APP.getValueStr().equals(configure.getTradeType())) {
+//			//交易起始时间
+//			setTime_start(timeStart);
+//
+//			//交易失效时间
+//			setTime_expire(timeExpire);
+//		}
 
-			//交易失效时间
-			setTime_expire(timeExpire);
-		}
-
-		if(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_JSAPI.getValueStr().equals(configure.getTradeType())) {
-			setOpenid(openid);
-		}
+//		if(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_JSAPI.getValueStr().equals(configure.getTradeType())) {
+//			setOpenid(openid);
+//		}
 
         //根据API给的签名规则进行签名
         String sign = Signature.getSign(toMap(),configure.getKey());

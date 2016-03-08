@@ -1,5 +1,8 @@
-package com.shouyingbao.service.impl;
+package com.shouyingbao.unit;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -8,11 +11,11 @@ import java.util.*;
  * 注意分布式环境下 需要传入不同的workerId
  * 后续考虑作为单独服务
  *
- * @author liuhao
+ * @author kejun
  * @date 2015/7/22
  * @Description
  */
-public class IdGenService {
+public class IdGenUnit {
     private final long workerId;
     private final static long twepoch = 1361753741828L;
     private long sequence = 0L;
@@ -24,7 +27,23 @@ public class IdGenService {
     public final static long sequenceMask = -1L ^ -1L << sequenceBits;
     private long lastTimestamp = -1L;
 
-    public IdGenService(final long workerId) {
+    public String getOrderNo(String firstValue) {
+        StringBuilder sb = new StringBuilder();
+        if (!StringUtils.isEmpty(firstValue))
+            sb.append(firstValue);
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("MMdd");
+        String mmdd = formatter.format(date);
+        formatter = new SimpleDateFormat("HHmmss");
+        String hhmm = formatter.format(date);
+        sb.append(mmdd);
+        String randomString = nextId(8);
+        sb.append(randomString);
+        sb.append(hhmm);
+        return sb.toString();
+    }
+
+    public IdGenUnit(final long workerId) {
         this.workerId = workerId;
     }
 
@@ -74,8 +93,8 @@ public class IdGenService {
     public static void main(String[] args) throws InterruptedException {
         Map<Object, Object> m1 = new HashMap<Object, Object>();
         Map<Object, Object> m2 = new HashMap<Object, Object>();
-        IdGenService tdi1 = new IdGenService(2);
-        IdGenService tdi2 = new IdGenService(3);
+        IdGenUnit tdi1 = new IdGenUnit(2);
+        IdGenUnit tdi2 = new IdGenUnit(3);
         T1 t1 = new T1(m1, "t1", (long) Math.random() * 10, tdi1);
         T1 t2 = new T1(m2, "t2", (long) Math.random() * 10, tdi2);
         Thread tt1 = new Thread(t1);
@@ -99,9 +118,9 @@ public class IdGenService {
         String name;
         long seed;
         private Map<Object, Object> m1 = new HashMap<Object, Object>();
-        IdGenService worker;
+        IdGenUnit worker;
 
-        public T1(Map<Object, Object> mm1, String name, long seed, IdGenService worker) {
+        public T1(Map<Object, Object> mm1, String name, long seed, IdGenUnit worker) {
             this.m1 = mm1;
             this.name = name;
             this.seed = seed;

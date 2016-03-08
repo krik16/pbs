@@ -1,11 +1,10 @@
 package com.shouyingbao.core.bean;
 
-import java.io.Serializable;
-
 import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+
+import java.io.Serializable;
 
 /*
 使用示例说明：
@@ -36,8 +35,8 @@ public class ResponseData implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Meta SUCCESS = new Meta(0, "success"); //成功
-    private static final Meta FAILURE = new Meta(1, "failure"); //失败
+	private static final Meta SUCCESS = new Meta("0", "success"); //成功
+    private static final Meta FAILURE = new Meta("1", "failure"); //失败
 
     private Meta meta; // errno=0：成功,errno=1:失败
     private Result result;//数据
@@ -92,7 +91,7 @@ public class ResponseData implements java.io.Serializable {
      * @param msg
      * @return ResponseData
      */
-    public static ResponseData failure(int errno, String msg) {
+    public static ResponseData failure(String errno, String msg) {
         return new ResponseData(new Meta(errno, msg), null);
     }
 
@@ -114,7 +113,7 @@ public class ResponseData implements java.io.Serializable {
         return meta;
     }
 
-    public void setMeta(int errno, String msg) {
+    public void setMeta(String errno, String msg) {
         this.meta = new Meta(errno, msg);
     }
 
@@ -161,12 +160,12 @@ public class ResponseData implements java.io.Serializable {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private int errno; //错误码
+		private String errno; //错误码
         private String msg;  //提示信息
 
         private Meta() {}
 
-        private Meta(int errno, String msg) {
+        private Meta(String errno, String msg) {
             this.errno = errno;
             this.msg = msg;
         }
@@ -176,7 +175,7 @@ public class ResponseData implements java.io.Serializable {
         }
 
 
-        public int getErrno() {
+        public String getErrno() {
             return errno;
         }
 
@@ -241,6 +240,6 @@ public class ResponseData implements java.io.Serializable {
         System.out.println(JSONObject.fromObject(ResponseData.success("处理成功：返回单个对象")));
         System.out.println(JSONObject.fromObject(ResponseData.success("处理成功：返回对象集合List<Object>", 1, 10, 200)));
         System.out.println(JSONObject.fromObject(ResponseData.failure()));
-        System.out.println(JSONObject.fromObject(ResponseData.failure(1020001, "业务出错")));
+        System.out.println(JSONObject.fromObject(ResponseData.failure("1020001", "业务出错")));
     }
 }
