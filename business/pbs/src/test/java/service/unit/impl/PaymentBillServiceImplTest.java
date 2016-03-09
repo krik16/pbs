@@ -1,10 +1,10 @@
 package service.unit.impl;
 
 import base.BaseTest;
-import com.shouyingbao.core.bean.ResponseData;
-import com.shouyingbao.service.PaymentBillService;
-import com.shouyingbao.unit.WeixinConfigUnit;
-import com.shouyingbao.unit.WeixinPayUnit;
+import com.shouyingbao.pbs.core.bean.ResponseData;
+import com.shouyingbao.pbs.service.PaymentBillService;
+import com.shouyingbao.pbs.unit.WeixinConfigUnit;
+import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 

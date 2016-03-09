@@ -16,7 +16,7 @@
 	</bean>
 
 
-	<bean id="sqlSessionFactory" class="com.shouyingbao.sql.MutilSessionFactory">
+	<bean id="sqlSessionFactory" class="com.shouyingbao.pbs.sql.MutilSessionFactory">
 		<property name="sqlSessionFactory">
 			<ref bean="sqlSessionFactoryRpb" />
 		</property>
@@ -27,7 +27,7 @@
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
-	<bean id="baseDao" class="com.shouyingbao.core.framework.mybatis.dao.impl.BaseDaoImpl">
+	<bean id="baseDao" class="com.shouyingbao.pbs.core.framework.mybatis.dao.impl.BaseDaoImpl">
 		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
 	</bean>
 

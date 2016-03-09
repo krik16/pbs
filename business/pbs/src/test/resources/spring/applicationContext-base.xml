@@ -8,8 +8,8 @@
 
 
 <bean id="springContextUtil"
-		class="com.shouyingbao.core.util.SpringContextUtil"></bean>
-	<bean id="propertyConfigurer" class="com.shouyingbao.core.common.PropertyConfigurer">
+		class="com.shouyingbao.pbs.core.util.SpringContextUtil"></bean>
+	<bean id="propertyConfigurer" class="com.shouyingbao.pbs.core.common.PropertyConfigurer">
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="locations">
@@ -20,7 +20,7 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="idGenService" class="com.shouyingbao.unit.IdGenUnit">
+	<bean id="idGenService" class="com.shouyingbao.pbs.unit.IdGenUnit">
 		<constructor-arg name="workerId" value="${idgenService.workerId}" type="long"/>
 	</bean>
 	<aop:aspectj-autoproxy/>

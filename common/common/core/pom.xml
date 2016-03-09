@@ -62,7 +62,7 @@
 
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
+			<artifactId>spring-com.shouyingbao.pbs.web</artifactId>
 		</dependency>
 
 		<dependency>
@@ -128,7 +128,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
+            <artifactId>spring-security-com.shouyingbao.pbs.web</artifactId>
             <version>${org.springframework.security.version}</version>
         </dependency>
         <!-- spring security end -->

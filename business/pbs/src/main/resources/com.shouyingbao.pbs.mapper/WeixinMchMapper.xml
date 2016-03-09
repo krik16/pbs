@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="com.shouyingbao.pbs.mapper.WeixinMchMapper" >
-  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.WeixinMch" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.pbs.entity.WeixinMch" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="app_id" property="appId" jdbcType="VARCHAR" />
     <result column="key" property="key" jdbcType="VARCHAR" />
@@ -24,7 +24,7 @@
     delete from weixin_mch
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insert" parameterType="com.shouyingbao.pbs.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
     insert into weixin_mch (app_id, `key`, mch_id, 
       cret_path, public_code, shop_id, 
       trade_type)
@@ -32,7 +32,7 @@
       #{cretPath,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{tradeType,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
     insert into weixin_mch
     <trim prefix="(" suffix=")" suffixOverrides="," >
       app_id,
@@ -53,7 +53,7 @@
       #{tradeType,jdbcType=VARCHAR},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.pbs.entity.WeixinMch" >
     update weixin_mch
     <set >
       <if test="appId != null" >
@@ -80,7 +80,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.WeixinMch" >
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.pbs.entity.WeixinMch" >
     update weixin_mch
     set app_id = #{appId,jdbcType=VARCHAR},
       `key` = #{key,jdbcType=VARCHAR},

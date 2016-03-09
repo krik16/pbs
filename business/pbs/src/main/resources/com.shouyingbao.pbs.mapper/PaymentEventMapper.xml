@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.dao.PaymentEventMapper" >
-  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.PaymentEvent" >
+<mapper namespace="com.shouyingbao.pbs.mapper.PaymentEventMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.pbs.entity.PaymentEvent" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="notify_time" property="notifyTime" jdbcType="TIMESTAMP" />
     <result column="notify_id" property="notifyId" jdbcType="VARCHAR" />
@@ -34,7 +34,7 @@
     delete from payment_event
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insert" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentEvent" useGeneratedKeys="true" keyProperty="id" >
     insert into payment_event (notify_time, notify_id, notify_type, 
       transaction_id, order_no, payment_bill_id, 
       create_at, finish_at, trade_no, 
@@ -48,7 +48,7 @@
       #{buyerEmail,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentEvent" useGeneratedKeys="true" keyProperty="id" >
     insert into payment_event
     <trim prefix="(" suffix=")" suffixOverrides="," >
       notify_time,
@@ -85,7 +85,7 @@
       #{isDelete,jdbcType=INTEGER},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentEvent" >
     update payment_event
     <set >
       <if test="notifyTime != null" >
@@ -136,7 +136,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" >
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentEvent" >
     update payment_event
     set notify_time = #{notifyTime,jdbcType=TIMESTAMP},
       notify_id = #{notifyId,jdbcType=VARCHAR},

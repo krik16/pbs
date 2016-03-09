@@ -1,11 +1,11 @@
 package service.unit;
 
 import base.BaseTest;
-import com.shouyingbao.common.pay.weixin.model.ScanPayReqData;
-import com.shouyingbao.common.pay.weixin.service.ScanPayService;
-import com.shouyingbao.common.pay.weixin.util.Configure;
-import com.shouyingbao.unit.WeixinConfigUnit;
-import com.shouyingbao.unit.WeixinPayUnit;
+import com.shouyingbao.pbs.common.pay.weixin.model.ScanPayReqData;
+import com.shouyingbao.pbs.common.pay.weixin.service.ScanPayService;
+import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
+import com.shouyingbao.pbs.unit.WeixinConfigUnit;
+import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
