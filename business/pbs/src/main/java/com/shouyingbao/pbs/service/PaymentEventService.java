@@ -1,6 +1,6 @@
 package com.shouyingbao.pbs.service;
 
-import com.shouyingbao.pbs.pbs.entity.PaymentEvent;
+import com.shouyingbao.pbs.entity.PaymentEvent;
 
 /**
  * kejun
@@ -8,9 +8,9 @@ import com.shouyingbao.pbs.pbs.entity.PaymentEvent;
  **/
 public interface PaymentEventService {
 
-    void insert(PaymentEvent paymentEvent);
+    void insertEvent(PaymentEvent paymentEvent);
 
     void update(PaymentEvent paymentEvent);
 
-    PaymentEvent init(String orderNo,Integer billId,String tradeNo,String result,Integer payAmount,String buyerId,String buyerEmail,String openId);
+    PaymentEvent insertEvent(String orderNo, Integer billId, String tradeNo, String result, Integer payAmount, String buyerId, String buyerEmail, String openId,String refundNo);
 }

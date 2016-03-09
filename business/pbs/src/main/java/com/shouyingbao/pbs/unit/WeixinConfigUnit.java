@@ -1,7 +1,7 @@
 package com.shouyingbao.pbs.unit;
 
 import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
-import com.shouyingbao.pbs.pbs.entity.WeixinMch;
+import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.WeixinMchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

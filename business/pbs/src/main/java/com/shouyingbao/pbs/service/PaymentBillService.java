@@ -1,7 +1,7 @@
 package com.shouyingbao.pbs.service;
 
 import com.shouyingbao.pbs.core.bean.ResponseData;
-import com.shouyingbao.pbs.pbs.entity.PaymentBill;
+import com.shouyingbao.pbs.entity.PaymentBill;
 
 /**
  *
@@ -21,9 +21,18 @@ public interface PaymentBillService {
      */
     ResponseData scanPay(Integer userId,String authCode,Integer totalFee,String deviceInfo,Integer tradeType);
 
+    /**
+     * 微信扫码退款
+     * @param orderNo 订单号
+     * @param userId 用户id
+     * @return ResponseData responseData
+     */
+    ResponseData scanRefund(String orderNo,Integer userId);
 
     void insert(PaymentBill paymentBill);
 
     void update(PaymentBill paymentBill);
+
+    PaymentBill selectByOrderAndUserIdAndTradeType(String orderNo,Integer userId,byte tradeType);
 
 }

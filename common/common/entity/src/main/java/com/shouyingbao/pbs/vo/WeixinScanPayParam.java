@@ -1,4 +1,4 @@
-package com.shouyingbao.pbs.pbs.vo;
+package com.shouyingbao.pbs.vo;
 
 import java.io.Serializable;
 
@@ -17,6 +17,8 @@ public class WeixinScanPayParam implements Serializable{
     private String deviceInfo;
 
     private Integer tradeType;
+
+    private String orderNo;
 
     public Integer getUserId() {
         return userId;
@@ -56,6 +58,14 @@ public class WeixinScanPayParam implements Serializable{
 
     public void setTradeType(Integer tradeType) {
         this.tradeType = tradeType;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
     @Override

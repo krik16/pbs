@@ -1,7 +1,7 @@
 package service.unit.impl;
 
 import base.BaseTest;
-import com.shouyingbao.pbs.pbs.entity.WeixinMch;
+import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.WeixinMchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;

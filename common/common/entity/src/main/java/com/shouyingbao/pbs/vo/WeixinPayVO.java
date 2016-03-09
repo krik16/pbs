@@ -1,4 +1,4 @@
-package com.shouyingbao.pbs.pbs.vo;
+package com.shouyingbao.pbs.vo;
 
 /**
  * Created by kejun on 2016/03/07.

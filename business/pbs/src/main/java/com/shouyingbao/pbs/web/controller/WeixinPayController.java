@@ -2,8 +2,9 @@ package com.shouyingbao.pbs.web.controller;
 
 import com.shouyingbao.pbs.Exception.ParamNullException;
 import com.shouyingbao.pbs.core.bean.ResponseData;
-import com.shouyingbao.pbs.pbs.vo.WeixinScanPayParam;
+import com.shouyingbao.pbs.entity.PaymentBill;
 import com.shouyingbao.pbs.service.PaymentBillService;
+import com.shouyingbao.pbs.vo.WeixinScanPayParam;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,12 @@ public class WeixinPayController {
     @Autowired
     PaymentBillService paymentBillService;
 
-    @RequestMapping("/sacnPay")
+    /**
+     * 扫码支付
+     * @param weixinScanPayParam 请求参数
+     * @return ResponseData 结果
+     */
+    @RequestMapping("/scanPay")
     @ResponseBody
     public ResponseData scanPay(@RequestBody WeixinScanPayParam weixinScanPayParam){
         ResponseData responseData;
@@ -41,5 +47,18 @@ public class WeixinPayController {
             responseData = ResponseData.failure(e.getCode(), e.getMessage());
         }
         return  responseData;
+    }
+
+    /**
+     * 扫码退款
+     * @param weixinScanPayParam 请求参数
+     * @return
+     */
+    @RequestMapping("/scanRefund")
+    @ResponseBody
+    public ResponseData scanRefund(@RequestBody WeixinScanPayParam weixinScanPayParam){
+        PaymentBill paymentBill = paymentBillService.selectByOrderAndUserId(weixinScanPayParam.getOrderNo(),weixinScanPayParam.getUserId());
+
+        return ResponseData.success();
     }
 }

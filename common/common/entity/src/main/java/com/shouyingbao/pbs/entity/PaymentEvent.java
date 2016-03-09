@@ -1,4 +1,4 @@
-package com.shouyingbao.pbs.pbs.entity;
+package com.shouyingbao.pbs.entity;
 
 import java.io.Serializable;
 import java.util.Date;

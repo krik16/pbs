@@ -2,7 +2,7 @@ package com.shouyingbao.pbs.service.impl;
 
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
-import com.shouyingbao.pbs.pbs.entity.PaymentEvent;
+import com.shouyingbao.pbs.entity.PaymentEvent;
 import com.shouyingbao.pbs.service.PaymentEventService;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class PaymentEventServiceImpl extends BaseServiceImpl implements PaymentE
     private static final String NAMESPACE = "com.shouyingbao.pbs.mapper.PaymentEventMapper";
 
     @Override
-    public void insert(PaymentEvent paymentEvent) {
+    public void insertEvent(PaymentEvent paymentEvent) {
         this.getBaseDao().insertBySql(NAMESPACE+".insertSelective",paymentEvent);
     }
 
@@ -27,7 +27,7 @@ public class PaymentEventServiceImpl extends BaseServiceImpl implements PaymentE
     }
 
     @Override
-    public PaymentEvent init(String orderNo,Integer billId,String tradeNo,String result,Integer payAmount,String buyerId,String buyerEmail,String openId) {
+    public PaymentEvent insertEvent(String orderNo, Integer billId, String tradeNo, String result, Integer payAmount, String buyerId, String buyerEmail, String openId,String refundNo) {
         PaymentEvent paymentEvent = new PaymentEvent();
         paymentEvent.setOrderNo(orderNo);
         paymentEvent.setPaymentBillId(billId);
@@ -39,7 +39,8 @@ public class PaymentEventServiceImpl extends BaseServiceImpl implements PaymentE
         paymentEvent.setBuyerId(buyerId);
         paymentEvent.setBuyerEmail(buyerEmail);
         paymentEvent.setOpenId(openId);
-        insert(paymentEvent);
+        paymentEvent.setTransactionId(refundNo);
+        insertEvent(paymentEvent);
         return paymentEvent;
     }
 }

@@ -1,7 +1,7 @@
 package com.shouyingbao.pbs.service;
 
 
-        import com.shouyingbao.pbs.pbs.entity.WeixinMch;
+        import com.shouyingbao.pbs.entity.WeixinMch;
 
 /**
  * Created by kejun on 2016/1/13.

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="com.shouyingbao.pbs.mapper.PaymentBillMapper" >
-  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.pbs.entity.PaymentBill" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.PaymentBill" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="refund_no" property="refundNo" jdbcType="VARCHAR" />
     <result column="pay_channel" property="payChannel" jdbcType="TINYINT" />
     <result column="mch_id" property="mchId" jdbcType="INTEGER" />
     <result column="pay_type" property="payType" jdbcType="TINYINT" />
@@ -21,7 +22,7 @@
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_no, pay_channel, mch_id, pay_type, pay_amount, `status`, trade_type, create_at, 
+    id, order_no,refund_no, pay_channel, mch_id, pay_type, pay_amount, `status`, trade_type, create_at,
     finish_at, pay_account, pay_name, order_title, shop_id, uesr_id, batch_no, is_delete
   </sql>
 
@@ -35,24 +36,25 @@
     delete from payment_bill
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentBill" useGeneratedKeys="true" keyProperty="id" >
-    insert into payment_bill (order_no, pay_channel, mch_id, 
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.PaymentBill" useGeneratedKeys="true" keyProperty="id" >
+    insert into payment_bill (order_no,refund_no, pay_channel, mch_id,
       pay_type, pay_amount, `status`, 
       trade_type, create_at, finish_at, 
       pay_account, pay_name, order_title, 
       shop_id, uesr_id, batch_no, 
       is_delete)
-    values (#{orderNo,jdbcType=VARCHAR}, #{payChannel,jdbcType=TINYINT}, #{mchId,jdbcType=INTEGER}, 
+    values (#{orderNo,jdbcType=VARCHAR},#{refundNo,jdbcType=VARCHAR}, #{payChannel,jdbcType=TINYINT}, #{mchId,jdbcType=INTEGER},
       #{payType,jdbcType=TINYINT}, #{payAmount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
       #{tradeType,jdbcType=TINYINT}, #{createAt,jdbcType=TIMESTAMP}, #{finishAt,jdbcType=TIMESTAMP}, 
       #{payAccount,jdbcType=VARCHAR}, #{payName,jdbcType=VARCHAR}, #{orderTitle,jdbcType=VARCHAR}, 
       #{shopId,jdbcType=INTEGER}, #{uesrId,jdbcType=INTEGER}, #{batchNo,jdbcType=VARCHAR}, 
       #{isDelete,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentBill" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.PaymentBill" useGeneratedKeys="true" keyProperty="id" >
     insert into payment_bill
     <trim prefix="(" suffix=")" suffixOverrides="," >
       order_no,
+      refund_no,
       pay_channel,
       mch_id,
       pay_type,
@@ -71,6 +73,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{orderNo,jdbcType=VARCHAR},
+      #{refundNo,jdbcType=VARCHAR},
       #{payChannel,jdbcType=TINYINT},
       #{mchId,jdbcType=INTEGER},
       #{payType,jdbcType=TINYINT},
@@ -88,11 +91,14 @@
       #{isDelete,jdbcType=TINYINT},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentBill" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.PaymentBill" >
     update payment_bill
     <set >
       <if test="orderNo != null" >
         order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="refundNo != null" >
+        refund_no = #{refundNo,jdbcType=VARCHAR},
       </if>
       <if test="payChannel != null" >
         pay_channel = #{payChannel,jdbcType=TINYINT},
@@ -142,9 +148,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.pbs.entity.PaymentBill" >
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.PaymentBill" >
     update payment_bill
-    set order_no = #{orderNo,jdbcType=VARCHAR},
+    set
+      order_no = #{orderNo,jdbcType=VARCHAR},
+    refund_no = #{refundNo,jdbcType=VARCHAR},
       pay_channel = #{payChannel,jdbcType=TINYINT},
       mch_id = #{mchId,jdbcType=INTEGER},
       pay_type = #{payType,jdbcType=TINYINT},
@@ -162,4 +170,13 @@
       is_delete = #{isDelete,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByOrderAndUserIdAndTradeType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from payment_bill
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+    and user_id =  #{userId,jdbcType=INTEGER}
+    and trade_type = #{tradeType,jdbcType=TINYINT}
+  </select>
 </mapper>

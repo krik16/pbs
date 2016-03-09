@@ -6,6 +6,7 @@ import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.unit.WeixinConfigUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
 /**
@@ -18,9 +19,11 @@ public class PaymentBillServiceImplTest extends BaseTest{
     PaymentBillService paymentBillService;
 
     @Autowired
+    @Qualifier("weixinConfigUnit")
     WeixinConfigUnit weixinConfigUnit;
 
     @Autowired
+    @Qualifier("weixinPayUnit")
     WeixinPayUnit weixinPayUnit;
 
     @Test

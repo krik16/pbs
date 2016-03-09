@@ -3,7 +3,7 @@ package com.shouyingbao.pbs.common.pay.weixin.util;
 import com.shouyingbao.pbs.Exception.WeixinException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.constants.ConstantUtil;
-import com.shouyingbao.pbs.pbs.entity.WeixinMch;
+import com.shouyingbao.pbs.entity.WeixinMch;
 
 /**
  * User: rizenguo
@@ -15,11 +15,13 @@ public class Configure {
 
     public void init(WeixinMch weixinMch) {
         if (weixinMch != null) {
-            setKey(weixinMch.getKey());
-            setAppID(weixinMch.getAppId());
-            setMchID(weixinMch.getMchId());
-            setCertLocalPath(weixinMch.getCretPath());
-            setCertPassword(weixinMch.getMchId());
+//            setKey(weixinMch.getKey());
+//            setAppID(weixinMch.getAppId());
+//            setMchID(weixinMch.getMchId());
+//            setCertLocalPath(weixinMch.getCretPath());
+//            setCertPassword(weixinMch.getMchId());
+            setSubAppId(weixinMch.getAppId());
+            setSubMchID(weixinMch.getMchId());
             //扫码支付
             if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getCodeStr().equals(weixinMch.getTradeType())) {
                 setTradeType(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getValueStr());
@@ -44,6 +46,9 @@ public class Configure {
 
     //终端设备号(商户自定义，如门店编号)
     private String deviceInfo="";
+
+    //受理模式下给子商户分配的APPID
+    private String subAppId="";
 
     //受理模式下给子商户分配的子商户号
     private String subMchID = "";
@@ -254,12 +259,21 @@ public class Configure {
         REVERSE_API = reverseApi;
     }
 
+    public String getSubAppId() {
+        return subAppId;
+    }
+
+    public void setSubAppId(String subAppId) {
+        this.subAppId = subAppId;
+    }
+
     @Override
     public String toString() {
         return "Configure{" +
                 "key='" + key + '\'' +
                 ", appID='" + appID + '\'' +
                 ", mchID='" + mchID + '\'' +
+                ", subAppId='" + subAppId + '\'' +
                 ", subMchID='" + subMchID + '\'' +
                 ", certLocalPath='" + certLocalPath + '\'' +
                 ", certPassword='" + certPassword + '\'' +

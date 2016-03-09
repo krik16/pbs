@@ -6,7 +6,7 @@
  *
  **/
 
-package com.shouyingbao.pbs.pbs.vo;
+package com.shouyingbao.pbs.vo;
 
 import java.io.Serializable;
 

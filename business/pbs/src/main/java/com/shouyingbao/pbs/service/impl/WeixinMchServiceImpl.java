@@ -2,7 +2,7 @@ package com.shouyingbao.pbs.service.impl;
 
 
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
-import com.shouyingbao.pbs.pbs.entity.WeixinMch;
+import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.WeixinMchService;
 import org.springframework.stereotype.Service;
 
