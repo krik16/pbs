@@ -19,7 +19,7 @@ public interface PaymentBillService {
      * @param tradeType 0:MICROPAY扫码支付支付
      * @return ResponseData responseData
      */
-    ResponseData scanPay(Integer userId,String authCode,Integer totalFee,String deviceInfo,Integer tradeType);
+    ResponseData weixinScanPay(Integer userId, String authCode, Integer totalFee, String deviceInfo, Integer tradeType);
 
     /**
      * 微信扫码退款
@@ -27,12 +27,30 @@ public interface PaymentBillService {
      * @param userId 用户id
      * @return ResponseData responseData
      */
-    ResponseData scanRefund(String orderNo,Integer userId);
+    ResponseData weixinScanRefund(String orderNo, Integer userId);
+
+    /**
+     * 支付宝扫码支付
+     * @param userId 用户id
+     * @param authCode 二维码
+     * @param totalFee 支付金额
+     * @param deviceInfo 设备信息
+     * @return ResponseData responseData
+     */
+    ResponseData aliScanPay(Integer userId, String authCode, Integer totalFee, String deviceInfo);
+
+    /**
+     * 支付宝扫码支付退款
+     * @param orderNo 订单号
+     * @param userId 用户id
+     * @return ResponseData responseData
+     */
+    ResponseData aliScanRefund(String orderNo, Integer userId);
 
     void insert(PaymentBill paymentBill);
 
     void update(PaymentBill paymentBill);
 
-    PaymentBill selectByOrderAndUserIdAndTradeType(String orderNo,Integer userId,byte tradeType);
+    PaymentBill selectByOrderNoAndTradeType(String orderNo,byte tradeType,byte payChannel,byte status);
 
 }

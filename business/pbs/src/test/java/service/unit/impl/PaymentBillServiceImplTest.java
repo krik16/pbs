@@ -29,7 +29,7 @@ public class PaymentBillServiceImplTest extends BaseTest{
     @Test
     public void weixinPayTest(){
         try{
-            ResponseData responseData = paymentBillService.scanPay(1,"130646746181879109",1000000,"111",0);
+            ResponseData responseData = paymentBillService.weixinScanPay(1, "130646746181879109", 1000000, "111", 0);
             System.err.println("ResponseData="+responseData);
         }catch (Exception e){
             e.printStackTrace();

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * kejun
  * 2016/3/8 17:40
  **/
-public class WeixinScanPayParam implements Serializable{
+public class AliScanPayParam implements Serializable{
     private static final long serialVersionUID = 8887895822612218272L;
     private Integer userId;
 
@@ -15,8 +15,6 @@ public class WeixinScanPayParam implements Serializable{
     private Integer totalFee;
 
     private String deviceInfo;
-
-    private Integer tradeType;
 
     private String orderNo;
 
@@ -52,13 +50,6 @@ public class WeixinScanPayParam implements Serializable{
         this.deviceInfo = deviceInfo;
     }
 
-    public Integer getTradeType() {
-        return tradeType;
-    }
-
-    public void setTradeType(Integer tradeType) {
-        this.tradeType = tradeType;
-    }
 
     public String getOrderNo() {
         return orderNo;
@@ -75,7 +66,6 @@ public class WeixinScanPayParam implements Serializable{
                 ", authCode='" + authCode + '\'' +
                 ", totalFee=" + totalFee +
                 ", deviceInfo='" + deviceInfo + '\'' +
-                ", tradeType=" + tradeType +
                 ", orderNo='" + orderNo + '\'' +
                 '}';
     }

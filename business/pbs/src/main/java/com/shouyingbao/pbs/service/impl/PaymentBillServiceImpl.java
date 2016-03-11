@@ -1,5 +1,6 @@
 package com.shouyingbao.pbs.service.impl;
 
+import com.shouyingbao.pbs.Exception.AliPayException;
 import com.shouyingbao.pbs.Exception.WeixinException;
 import com.shouyingbao.pbs.common.pay.weixin.model.RefundQueryResData;
 import com.shouyingbao.pbs.common.pay.weixin.model.ScanQueryResData;
@@ -13,6 +14,7 @@ import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.service.PaymentEventService;
 import com.shouyingbao.pbs.service.WeixinMchService;
+import com.shouyingbao.pbs.unit.AliPayUnit;
 import com.shouyingbao.pbs.unit.IdGenUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
@@ -22,11 +24,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Copyright (C)
+ * Copyright (C)
  * kejun
  * 2016/3/7 16:01
  **/
@@ -41,6 +45,9 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     WeixinPayUnit weixinPayUnit;
 
     @Autowired
+    AliPayUnit aliPayUnit;
+
+    @Autowired
     WeixinMchService weixinMchService;
 
     @Autowired
@@ -50,7 +57,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     PaymentEventService paymentEventService;
 
     @Override
-    public ResponseData scanPay(Integer userId,String authCode,Integer totalFee,String deviceInfo,Integer tradeType){
+    public ResponseData weixinScanPay(Integer userId, String authCode, Integer totalFee, String deviceInfo, Integer tradeType){
         LOGGER.info("微信扫码支付,userId={},authCode={},totalFee={},deviceInfo={},tradeType={}", userId, authCode, totalFee, deviceInfo, tradeType);
         ResponseData responseData;
         try{
@@ -77,7 +84,8 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
                 ScanQueryResData scanQueryResData = weixinPayUnit.scanPayQueryOrder(null,weixinPayVO.getOrderNo(),weixinMch.getId());
               //更新支付状态前再次查询确认
                 if ("SUCCESS".equals(scanQueryResData.getReturn_code()) && "SUCCESS".equals(scanQueryResData.getResult_code()) && "SUCCESS".equals(scanQueryResData.getTrade_state())) {
-                    updateStatusAndInsertEvent(paymentBill, scanQueryResData.getTransaction_id(), scanQueryResData.getTrade_state(), scanQueryResData.getTotal_fee(), "", "", scanQueryResData.getOpenid(),"");
+                    updateStatusAndInsertEvent(paymentBill, scanQueryResData.getTransaction_id(), scanQueryResData.getTrade_state(), scanQueryResData.getTotal_fee(), "", "", scanQueryResData.getOpenid(), "");
+                    responseData =  ResponseData.success(paymentBill);
                 }
 
             }
@@ -94,11 +102,11 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     }
 
     @Override
-    public ResponseData scanRefund( String orderNo,Integer userId) {
+    public ResponseData weixinScanRefund(String orderNo, Integer userId) {
         LOGGER.info("扫码支付退款,orderNo={},userId={}",orderNo,userId);
         ResponseData responseData;
         try {
-            PaymentBill paymentBill = selectByOrderAndUserIdAndTradeType(orderNo, userId, ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte());
+            PaymentBill paymentBill = selectByOrderNoAndTradeType(orderNo,ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte(),ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_STATUS_2.getCodeByte());
             PaymentBill refundPaymentBill = initRefundBill(paymentBill);
             //发起退款
             weixinPayUnit.weixinRefund(paymentBill.getOrderNo(), refundPaymentBill.getPayAmount(), refundPaymentBill.getPayAmount(), refundPaymentBill.getRefundNo(), refundPaymentBill.getMchId());
@@ -107,7 +115,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
             if (Constants.RESULT.SUCCESS.equals(refundQueryResData.getReturn_code()) && Constants.RESULT.SUCCESS.equals(refundQueryResData.getResult_code()) &&(
                     ConstantEnum.WEIXIN_REFUND_RESULT_SUCCESS.getCodeStr().equals(refundQueryResData.getRefund_status_0())
                             || ConstantEnum.WEIXIN_REFUND_RESULT_PROCESSING.getCodeStr().equals(refundQueryResData.getRefund_status_0()))) {// 退款申请成功后查询退款结果
-                responseData =  ResponseData.success();
+                responseData =  ResponseData.success(refundPaymentBill);
                 updateStatusAndInsertEvent(refundPaymentBill,refundQueryResData.getTransaction_id(),refundQueryResData.getRefund_status_0(),Integer.valueOf(refundQueryResData.getRefund_fee_0()),"","","",refundQueryResData.getOut_refund_no_0());
             } else {
                 LOGGER.info("退款失败 refundQueryResData={}", refundQueryResData);
@@ -125,6 +133,30 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     }
 
     @Override
+    public ResponseData aliScanPay(Integer userId, String authCode, Integer totalFee, String deviceInfo) {
+        ResponseData responseData;
+       try{
+           Integer shopId = 1;
+           BigDecimal totalAmount = new BigDecimal(totalFee).divide(new BigDecimal(100),RoundingMode.HALF_DOWN).setScale(0, BigDecimal.ROUND_HALF_DOWN);
+           responseData = aliPayUnit.scanPay(ConstantEnum.ALI_PAY_SUBJECT.getCodeStr(),totalAmount.doubleValue(),authCode,"","",
+                   userId.toString(),shopId.toString(), "5m");
+       }catch (AliPayException e){
+           LOGGER.error(e.getMessage());
+           e.printStackTrace();
+           responseData = ResponseData.failure(ConstantEnum.EXCEPTION_ALI_PAY_SCAN_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_ALI_PAY_SCAN_FAIL.getValueStr());
+
+       }
+        return responseData;
+    }
+
+    @Override
+    public ResponseData aliScanRefund(String orderNo, Integer userId) {
+        PaymentBill paymentBill = selectByOrderNoAndTradeType(orderNo, ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte(),ConstantEnum.PAY_CHANNEL_0.getCodeByte(),ConstantEnum.PAY_STATUS_2.getCodeByte());
+        BigDecimal totalAmount = new BigDecimal(paymentBill.getPayAmount()).divide(new BigDecimal(100), RoundingMode.HALF_DOWN).setScale(0, BigDecimal.ROUND_HALF_DOWN);
+        return aliPayUnit.scanPayRefund(orderNo,totalAmount.doubleValue(),"退款",String.valueOf(paymentBill.getShopId()));
+    }
+
+    @Override
     public void insert(PaymentBill paymentBill) {
         this.getBaseDao().insertBySql(NAMESPACE + ".insertSelective", paymentBill);
     }
@@ -135,12 +167,13 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     }
 
     @Override
-    public PaymentBill selectByOrderAndUserIdAndTradeType(String orderNo, Integer userId,byte tradeType) {
+    public PaymentBill selectByOrderNoAndTradeType(String orderNo,byte tradeType,byte payChannel,byte status) {
         Map<String,Object> map = new HashMap<>();
         map.put("orderNo", orderNo);
-        map.put("userId", userId);
         map.put("tradeType", tradeType);
-        return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectByOrderAndUserIdAndTradeType",map);
+        map.put("payChannel", payChannel);
+        map.put("status", status);
+        return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectByOrderNoAndTradeType",map);
     }
 
     /**

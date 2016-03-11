@@ -578,6 +578,17 @@
 				<version>2.8.2</version>
 			</dependency>
 
+			<dependency>
+				<groupId>alipay</groupId>
+				<artifactId>alipay-sdk</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-configuration</groupId>
+				<artifactId>commons-configuration</artifactId>
+				<version>1.10</version>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>

@@ -1,8 +1,8 @@
 package com.shouyingbao.pbs.web.controller;
 
 import com.shouyingbao.pbs.Exception.ParamNullException;
+import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
-import com.shouyingbao.pbs.entity.PaymentBill;
 import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.vo.WeixinScanPayParam;
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +35,7 @@ public class WeixinPayController {
     @RequestMapping("/scanPay")
     @ResponseBody
     public ResponseData scanPay(@RequestBody WeixinScanPayParam weixinScanPayParam){
+        LOGGER.info("微信扫码支付:weixinScanPayParam={}",weixinScanPayParam);
         ResponseData responseData;
         try {
             if(weixinScanPayParam.getUserId() == null || StringUtils.isBlank(weixinScanPayParam.getAuthCode()) || weixinScanPayParam.getTotalFee() == null){
@@ -42,8 +43,10 @@ public class WeixinPayController {
                 throw new ParamNullException();
             }
             //TODO userID query shopId
-            responseData = paymentBillService.scanPay(1,weixinScanPayParam.getAuthCode(),weixinScanPayParam.getTotalFee(),weixinScanPayParam.getDeviceInfo(),0);
+            responseData = paymentBillService.weixinScanPay(1, weixinScanPayParam.getAuthCode(), weixinScanPayParam.getTotalFee(), weixinScanPayParam.getDeviceInfo(), 0);
         }catch (ParamNullException e){
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
             responseData = ResponseData.failure(e.getCode(), e.getMessage());
         }
         return  responseData;
@@ -57,8 +60,15 @@ public class WeixinPayController {
     @RequestMapping("/scanRefund")
     @ResponseBody
     public ResponseData scanRefund(@RequestBody WeixinScanPayParam weixinScanPayParam){
-        PaymentBill paymentBill = paymentBillService.selectByOrderAndUserId(weixinScanPayParam.getOrderNo(),weixinScanPayParam.getUserId());
+        ResponseData responseData;
+        try {
+            responseData = paymentBillService.weixinScanRefund(weixinScanPayParam.getOrderNo(), weixinScanPayParam.getUserId());
 
-        return ResponseData.success();
+        }catch (Exception e){
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            responseData = ResponseData.failure(ConstantEnum.EXCEPTION_WEIXIN_REFUND_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_WEIXIN_REFUND_FAIL.getValueStr());
+        }
+        return responseData;
     }
 }

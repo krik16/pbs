@@ -1,189 +1,177 @@
 package com.shouyingbao.pbs.unit;
 
-import com.google.common.base.Strings;
-import com.shouyingbao.pbs.Exception.AliPayException;
-import com.shouyingbao.pbs.common.pay.ali.model.AliRefundResultData;
-import com.shouyingbao.pbs.common.pay.ali.util.AlipaySubmit;
-import com.shouyingbao.pbs.constants.ConstantEnum;
-import com.shouyingbao.pbs.constants.ConstantUtil;
-import com.unionpay.acp.sdk.HttpClient;
-import org.apache.commons.lang.StringUtils;
+import com.alipay.api.domain.TradeFundBill;
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.shouyingbao.pbs.common.pay.ali.scan.model.builder.AlipayTradePayContentBuilder;
+import com.shouyingbao.pbs.common.pay.ali.scan.model.builder.AlipayTradeRefundContentBuilder;
+import com.shouyingbao.pbs.common.pay.ali.scan.model.result.AlipayF2FPayResult;
+import com.shouyingbao.pbs.common.pay.ali.scan.model.result.AlipayF2FQueryResult;
+import com.shouyingbao.pbs.common.pay.ali.scan.model.result.AlipayF2FRefundResult;
+import com.shouyingbao.pbs.common.pay.ali.scan.service.AlipayTradeService;
+import com.shouyingbao.pbs.common.pay.ali.scan.service.impl.AlipayTradeServiceImpl;
+import com.shouyingbao.pbs.common.pay.ali.scan.utils.Utils;
+import com.shouyingbao.pbs.core.bean.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 支付宝支付相关
- * Created by kejun on 2015/11/25.
+ * Created by kejun on 2016/3/11.
  */
 @Component
 public class AliPayUnit {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AliPayUnit.class);
 
+    @Autowired
+    IdGenUnit idGenUnit;
 
-    /**
-     * Description:获取支付宝支付签名
-     * @param totalPrice
-     * Author: 柯军
-     **/
+    // 支付宝当面付2.0服务
+    private static AlipayTradeService tradeService;
 
+    static {
+        /** 一定要在创建AlipayTradeService之前调用Configs.init()设置默认参数
+         *  Configs会读取classpath下的alipayrisk10.properties文件配置信息，如果找不到该文件则确认该文件是否在classpath目录
+         */
+//        Configs.init("zfbtest19.properties");
 
+        /** 使用Configs提供的默认参数
+         *  AlipayTradeService可以使用单例或者为静态成员对象，不需要反复new
+         */
+        tradeService = new AlipayTradeServiceImpl.ClientBuilder().build();
 
-
-    /**
-     * @param tradeNo
-     * @param batchNo
-     * @return
-     * @Description: 查询退款状态
-     * @Author: 柯军
-     * @datetime:2015年8月5日上午9:34:52
-     **/
-    public AliRefundResultData queryRefund(String tradeNo, String batchNo) {
-        LOGGER.info("查询支付宝退款状态,queryOrder tradeNo={},batchNo={}", tradeNo, batchNo);
-        int status = 200;
-        try {
-            if (Strings.isNullOrEmpty(tradeNo) && Strings.isNullOrEmpty(batchNo)) {
-                throw new AliPayException(ConstantEnum.EXCEPTION_PARAM_NULL.getCodeStr(), ConstantEnum.EXCEPTION_PARAM_NULL.getValueStr());
-            }
-            String url = CreateRefundUrl(tradeNo, batchNo);
-            HttpClient hc = new HttpClient(url, 30000, 30000);
-            status = hc.send(new HashMap<String, String>(), ConstantUtil.PayZhiFuBao.INPUT_CHARSET);
-            if (status == 200)
-                return xmlStringToAliRefundResultData(hc.getResult());
-        } catch (AliPayException e) {
-            throw e;
-        } catch (Exception e) {
-            LOGGER.error("order query fail. status={},exception={}", status, e.getMessage());
-            throw new AliPayException(ConstantEnum.EXCEPTION_ALI_QUERY_ORDER.getCodeStr(), ConstantEnum.EXCEPTION_ALI_QUERY_ORDER.getValueStr());
-        }
-        return null;
     }
 
     /**
-     * @param xmlString
-     * @return
-     * @Description: xml 结果转换成QueryOrderParamVO对象
-     * @Author: 柯军
-     * @datetime:2015年8月7日上午11:17:59
-     **/
-    private AliRefundResultData xmlStringToAliRefundResultData(String xmlString) {
-        LOGGER.info("支付宝订单查询结果数据：" + xmlString);
-        AliRefundResultData aliRefundResultData = new AliRefundResultData();
-        List<AliRefundResultData.ResultDetail> resultDetailList = new ArrayList<>();
-        String[] resultArray = xmlString.split("&");
-        aliRefundResultData.setIsSuccess(resultArray[0].endsWith("T") ? "T" : "F");
-        if(resultArray.length > 1) {
-            String[] details = resultArray[1].split("#");
-            if(resultArray[0].endsWith("F")){
-                aliRefundResultData.setErrorCode(resultArray[1].substring(11));
-                return aliRefundResultData;
-            }
-            for (String detail : details) {
-                String[] data = detail.split("\\^");
-                AliRefundResultData.ResultDetail resultDetail = aliRefundResultData.new ResultDetail();
-                if(data.length > 3) {
-                    if(resultDetailList.isEmpty()) {
-                        resultDetail.setBatchNo(data[0].substring(15));
-                    }else{
-                        resultDetail.setBatchNo(data[0]);
+     *支付宝扫码支付
+     * @param subject  订单标题，粗略描述用户的支付目的。如“喜士多（浦东店）消费”
+     * @param totalAmount  订单总金额，单位为元，不能超过1亿元
+     * @param authCode  (必填) 付款条码，用户支付宝钱包手机app点击“付款”产生的付款条码
+     * @param sellerId  卖家支付宝账号ID，用于支持一个签约账号下支持打款到不同的收款账号，(打款到sellerId对应的支付宝账号)  如果该字段为空，则默认为与支付宝签约的商户的PID，也就是appid对应的PID
+     * @param body 订单描述，可以对交易或商品进行一个详细地描述，比如填写"购买商品2件共15.00元"
+     * @param operatorId 商户操作员编号，添加此参数可以为商户操作员做销售统计
+     * @param storeId (必填) 商户门店编号，通过门店号和商家后台可以配置精准到门店的折扣信息，详询支付宝技术支持
+     * @param timeExpress 支付超时，线下扫码交易定义为5分钟
+     */
+    public ResponseData scanPay(String subject,Double totalAmount,String authCode,String sellerId,String body,String operatorId,String storeId,String timeExpress) {
+        ResponseData responseData;
+        String orderNo = idGenUnit.getOrderNo("0");
+        // 创建请求builder，设置请求参数
+        AlipayTradePayContentBuilder builder = new AlipayTradePayContentBuilder()
+                .setOutTradeNo(orderNo)
+                .setSubject(subject)
+                .setAuthCode(authCode)
+                .setTotalAmount(totalAmount.toString())
+                .setStoreId(storeId)
+//                .setUndiscountableAmount(undiscountableAmount)
+                .setBody(body)
+                .setOperatorId(operatorId)
+//                .setExtendParams(extendParams)
+                .setSellerId(sellerId)
+//                .setGoodsDetailList(goodsDetailList)
+                .setTimeExpress(timeExpress);
+
+        // 调用tradePay方法获取当面付应答
+        AlipayF2FPayResult result = tradeService.tradePay(builder);
+        switch (result.getTradeStatus()) {
+            case SUCCESS:
+                LOGGER.info("支付宝支付成功");
+                responseData = ResponseData.success();
+                break;
+            case FAILED:
+                LOGGER.error("支付宝支付失败");
+                responseData = ResponseData.failure(result.getResponse().getCode(),result.getResponse().getSubMsg());
+                break;
+
+            case UNKNOWN:
+                LOGGER.error("系统异常，订单状态未知!!!");
+                responseData = ResponseData.failure(result.getResponse().getCode(),result.getResponse().getSubMsg());
+                break;
+
+            default:
+                LOGGER.error("不支持的交易状态，交易返回异常!!!");
+                responseData = ResponseData.failure(result.getResponse().getCode(),result.getResponse().getSubMsg());
+                break;
+        }
+        return responseData;
+    }
+
+//     测试当面付2.0查询订单
+    public void scanPayQuery(String orderNo) {
+        // (必填) 商户订单号，通过此商户订单号查询当面付的交易状态
+
+        AlipayF2FQueryResult result = tradeService.queryTradeResult(orderNo);
+        switch (result.getTradeStatus()) {
+            case SUCCESS:
+                LOGGER.info("查询返回该订单支付成功: )");
+                AlipayTradeQueryResponse response = result.getResponse();
+                LOGGER.info("交易结果查询tradeStatus={}",response.getTradeStatus());
+                if (Utils.isListNotEmpty(response.getFundBillList())) {
+                    for (TradeFundBill bill : response.getFundBillList()) {
+                        LOGGER.info(bill.getFundChannel() + ":" + bill.getAmount());
                     }
-                    resultDetail.setTradeNo(data[1]);
-                    resultDetail.setPrice(data[2]);
-                    resultDetail.setResult(data[3]);
-                    resultDetailList.add(resultDetail);
                 }
-            }
+                break;
+            case TRADE_CLOSED:
+                LOGGER.info("查询返回该订单状态关闭!!!");
+            case FAILED:
+                LOGGER.error("查询返回该订单支付失败或被关闭!!!");
+                break;
+
+            case UNKNOWN:
+                LOGGER.error("系统异常，订单支付状态未知!!!");
+                break;
+            default:
+                LOGGER.error("不支持的交易状态，交易返回异常!!!");
+                break;
         }
-        aliRefundResultData.setResultDetails(resultDetailList);
-        LOGGER.debug("aliRefundResultData={}",aliRefundResultData);
-        return aliRefundResultData;
     }
 
     /**
-     * @param batchNo 付款单号
-     * @param tradeNo    支付宝交易流水号
-     * @return
-     * @Description: 生成订单查询URL字符串
-     * @Author: 柯军
-     * @datetime:2015年8月7日上午11:20:00
-     **/
-    private String CreateRefundUrl(String tradeNo, String batchNo) {
+     *
+     * @param orderNo (必填) 外部订单号，需要退款交易的商户外部订单号
+     * @param refundAmount (必填) 退款金额，该金额必须小于等于订单的支付金额，单位为元
+     * @param refundReason  (必填) 退款原因，可以说明用户退款原因，方便为商家后台提供统计
+     * @param storeId (必填) 商户门店编号，退款情况下可以为商家后台提供退款权限判定和统计等作用，详询支付宝技术支持
+     */
+    public ResponseData scanPayRefund(String orderNo,Double refundAmount,String refundReason,String storeId) {
+        ResponseData responseData;
+        // (可选，需要支持重复退货时必填) 商户退款请求号，相同支付宝交易号下的不同退款请求号对应同一笔交易的不同退款申请，
+        // 对于相同支付宝交易号下多笔相同商户退款请求号的退款交易，支付宝只会进行一次退款
+        String outRequestNo = "";
 
-        Map<String, String> params = new HashMap<>();
-        params.put("service", ConstantUtil.ZhiFuBaoWebPage.QUERY_REFUND_SERVICE);
-        params.put("partner", ConstantUtil.PayZhiFuBao.PARTNER);
-        if (!StringUtils.isEmpty(batchNo))
-            params.put("batch_no", batchNo);
-        if (!StringUtils.isEmpty(tradeNo))
-            params.put("trade_no", tradeNo);
-        params.put("_input_charset", ConstantUtil.PayZhiFuBao.INPUT_CHARSET);
-        String sign = AlipaySubmit.buildRequestMysign(params);
-        String parameter = "";
-        parameter = parameter + ConstantUtil.PCRefundWebPage.ALIPAY_GATEWAY_NEW;
-        List<String> keys = new ArrayList<>(params.keySet());
-        for (int i = 0; i < keys.size(); i++) {
-            String value = params.get(keys.get(i));
-            if (value == null || value.trim().length() == 0) {
-                continue;
-            }
-            try {
-                parameter = parameter + keys.get(i) + "=" + URLEncoder.encode(value, ConstantUtil.PayZhiFuBao.INPUT_CHARSET) + "&";
-            } catch (UnsupportedEncodingException e) {
+        AlipayTradeRefundContentBuilder builder = new AlipayTradeRefundContentBuilder()
+                .setOutTradeNo(orderNo)
+                .setRefundAmount(refundAmount.toString())
+                .setRefundReason(refundReason)
+                .setOutRequestNo(outRequestNo)
+                .setStoreId(storeId);
 
-                e.printStackTrace();
-            }
+        AlipayF2FRefundResult result = tradeService.tradeRefund(builder);
+        switch (result.getTradeStatus()) {
+            case SUCCESS:
+                LOGGER.info("支付宝退款成功: )");
+                responseData = ResponseData.success();
+                break;
+
+            case FAILED:
+                LOGGER.error("支付宝退款失败!!!");
+                responseData = ResponseData.failure(result.getResponse().getCode(),result.getResponse().getSubMsg());
+                break;
+
+            case UNKNOWN:
+                LOGGER.error("系统异常，订单退款状态未知!!!");
+                responseData = ResponseData.failure(result.getResponse().getCode(),result.getResponse().getSubMsg());
+                break;
+
+            default:
+                LOGGER.error("不支持的交易状态，交易返回异常!!!");
+                responseData = ResponseData.failure(result.getResponse().getCode(),result.getResponse().getSubMsg());
+                break;
         }
-        parameter = parameter + "sign=" + sign + "&sign_type=" + ConstantUtil.PayZhiFuBao.SIGNTYPE;
-
-        return parameter;
-
-    }
-
-    /**
-     * @param outTradeNo 付款单号
-     * @param tradeNo    支付宝交易流水号
-     * Description: 生成订单查询URL字符串
-     * Author: 柯军
-     * datetime:2015年8月7日上午11:20:00
-     **/
-    private String CreateUrl(String tradeNo, String outTradeNo) {
-
-        Map<String, String> params = new HashMap<>();
-        params.put("service", ConstantUtil.ZhiFuBaoWebPage.QUERY_SERVICE);
-        params.put("partner", ConstantUtil.PayZhiFuBao.PARTNER);
-        if (!StringUtils.isEmpty(outTradeNo))
-            params.put("out_trade_no", outTradeNo);
-        if (!StringUtils.isEmpty(tradeNo))
-            params.put("trade_no", tradeNo);
-        params.put("_input_charset", ConstantUtil.PayZhiFuBao.INPUT_CHARSET);
-        String sign = AlipaySubmit.buildRequestMysign(params);
-        String parameter = "";
-        parameter = parameter + ConstantUtil.ZhiFuBaoWebPage.ALIPAY_QUERY_ORDER_GATEWAY;
-        List<String> keys = new ArrayList<>(params.keySet());
-        for(String key : keys){
-            String value = params.get(key);
-            if (value == null || value.trim().length() == 0) {
-                continue;
-            }
-            try {
-                parameter = parameter + key + "=" + URLEncoder.encode(value, ConstantUtil.PayZhiFuBao.INPUT_CHARSET) + "&";
-            } catch (UnsupportedEncodingException e) {
-
-                e.printStackTrace();
-            }
-        }
-        parameter = parameter + "sign=" + sign + "&sign_type=" + ConstantUtil.PayZhiFuBao.SIGNTYPE;
-
-        return parameter;
-
+        return responseData;
     }
 
 }
