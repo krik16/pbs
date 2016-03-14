@@ -57,6 +57,9 @@ public enum ConstantEnum {
 	PAY_TRADE_TYPE_0(0,"收款"),
 	PAY_TRADE_TYPE_1(1,"退款"),
 
+	WEIXIN_SCAN_PAY_BODY("test","微信扫码支付商品名称"),
+	ALI_SCAN_PAY_BODY("收款","支付宝扫码支付商品名称"),
+
 
 	ALI_PAY_SUBJECT("subject","收钱"),
 

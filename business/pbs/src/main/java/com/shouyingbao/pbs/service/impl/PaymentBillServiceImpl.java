@@ -1,5 +1,6 @@
 package com.shouyingbao.pbs.service.impl;
 
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.shouyingbao.pbs.Exception.AliPayException;
 import com.shouyingbao.pbs.Exception.WeixinException;
 import com.shouyingbao.pbs.common.pay.weixin.model.RefundQueryResData;
@@ -69,7 +70,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
             weixinPayVO.setDeviceInfo(deviceInfo);
 //            String  bodyUtf8 = new String("扫码收钱".toString().getBytes("UTF-8"));
 //            String body = URLEncoder.encode(bodyUtf8, "UTF-8");
-            weixinPayVO.setBody("test");
+            weixinPayVO.setBody(ConstantEnum.WEIXIN_SCAN_PAY_BODY.getCodeStr());
             weixinPayVO.setShopId(shopId);
             weixinPayVO.setWeixinPayType(tradeType);
             weixinPayVO.setOrderNo(idGenUnit.getOrderNo("0"));
@@ -78,7 +79,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
                 throw new WeixinException(ConstantEnum.EXCEPTION_MCH_NOT_EXIST.getCodeStr(), ConstantEnum.EXCEPTION_MCH_NOT_EXIST.getValueStr());
             }
             //初始化支付账单数据
-            PaymentBill paymentBill = initPayBill(weixinPayVO, weixinMch.getId(), userId, shopId);
+            PaymentBill paymentBill = initWeixinPayBill(weixinPayVO, weixinMch.getId(), userId, shopId);
             responseData = weixinPayUnit.scanPay(weixinPayVO,weixinMch);
             if("0".equals(responseData.getMeta().getErrno())){//扫码支付成功
                 ScanQueryResData scanQueryResData = weixinPayUnit.scanPayQueryOrder(null,weixinPayVO.getOrderNo(),weixinMch.getId());
@@ -107,7 +108,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
         ResponseData responseData;
         try {
             PaymentBill paymentBill = selectByOrderNoAndTradeType(orderNo,ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte(),ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_STATUS_2.getCodeByte());
-            PaymentBill refundPaymentBill = initRefundBill(paymentBill);
+            PaymentBill refundPaymentBill = initRefundBill(paymentBill,ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_TYPE_1.getCodeByte());
             //发起退款
             weixinPayUnit.weixinRefund(paymentBill.getOrderNo(), refundPaymentBill.getPayAmount(), refundPaymentBill.getPayAmount(), refundPaymentBill.getRefundNo(), refundPaymentBill.getMchId());
             //退款结果查询
@@ -137,9 +138,22 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
         ResponseData responseData;
        try{
            Integer shopId = 1;
-           BigDecimal totalAmount = new BigDecimal(totalFee).divide(new BigDecimal(100),RoundingMode.HALF_DOWN).setScale(0, BigDecimal.ROUND_HALF_DOWN);
-           responseData = aliPayUnit.scanPay(ConstantEnum.ALI_PAY_SUBJECT.getCodeStr(),totalAmount.doubleValue(),authCode,"","",
+           BigDecimal totalAmount = new BigDecimal(totalFee).divide(new BigDecimal(100),RoundingMode.HALF_DOWN).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+           WeixinMch weixinMch = weixinMchService.selectByShopId(shopId);
+           //初始化支付账单数据
+           PaymentBill paymentBill = initAliPayBill(idGenUnit.getOrderNo("0"), weixinMch.getId(), ConstantEnum.ALI_SCAN_PAY_BODY.getCodeStr(),totalFee, userId, shopId);
+           responseData = aliPayUnit.scanPay(paymentBill.getOrderTitle(),totalAmount.doubleValue(),authCode,"","",
                    userId.toString(),shopId.toString(), "5m");
+           if("0".equals(responseData.getMeta().getErrno())){//扫码支付成功
+               AlipayTradeQueryResponse response = aliPayUnit.scanPayQuery(paymentBill.getOrderNo());
+               //更新支付状态前再次查询确认
+               if ("SUCCESS".equals(response.getTradeStatus()) || "TRADE_CLOSED".equals(response.getTradeStatus())) {
+                   BigDecimal resultTotalAmount = new BigDecimal(response.getTotalAmount()).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN);
+                   updateStatusAndInsertEvent(paymentBill, response.getTradeNo(), response.getTradeStatus(), resultTotalAmount.intValue(), response.getBuyerUserId(), response.getBuyerLogonId(), response.getOpenId(),"");
+                   responseData =  ResponseData.success(paymentBill);
+               }
+
+           }
        }catch (AliPayException e){
            LOGGER.error(e.getMessage());
            e.printStackTrace();
@@ -151,9 +165,21 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
 
     @Override
     public ResponseData aliScanRefund(String orderNo, Integer userId) {
+        ResponseData responseData;
         PaymentBill paymentBill = selectByOrderNoAndTradeType(orderNo, ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte(),ConstantEnum.PAY_CHANNEL_0.getCodeByte(),ConstantEnum.PAY_STATUS_2.getCodeByte());
+        PaymentBill refundPaymentBill = initRefundBill(paymentBill, ConstantEnum.PAY_CHANNEL_0.getCodeByte(), ConstantEnum.PAY_TYPE_0.getCodeByte());
         BigDecimal totalAmount = new BigDecimal(paymentBill.getPayAmount()).divide(new BigDecimal(100), RoundingMode.HALF_DOWN).setScale(0, BigDecimal.ROUND_HALF_DOWN);
-        return aliPayUnit.scanPayRefund(orderNo,totalAmount.doubleValue(),"退款",String.valueOf(paymentBill.getShopId()));
+        responseData = aliPayUnit.scanPayRefund(orderNo,totalAmount.doubleValue(),"退款",String.valueOf(paymentBill.getShopId()));
+        if("0".equals(responseData.getMeta().getErrno())){//扫码支付成功
+            AlipayTradeQueryResponse response = aliPayUnit.scanPayQuery(paymentBill.getOrderNo());
+            //更新支付状态前再次查询确认
+            if ("SUCCESS".equals(response.getTradeStatus()) || "TRADE_CLOSED".equals(response.getTradeStatus())) {
+                BigDecimal resultTotalAmount = new BigDecimal(response.getTotalAmount()).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN);
+                updateStatusAndInsertEvent(refundPaymentBill, response.getTradeNo(), response.getTradeStatus(), resultTotalAmount.intValue(), response.getBuyerUserId(), response.getBuyerLogonId(), response.getOpenId(),"");
+                responseData =  ResponseData.success(paymentBill);
+            }
+        }
+        return responseData;
     }
 
     @Override
@@ -177,14 +203,14 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     }
 
     /**
-     * 初始化支付账单数据
+     * 初始化微信支付账单数据
      * @param weixinPayVO 支付请求对象
      * @param mchId 商户主键
      * @param userId 用户ID
      * @param shopId 店铺id
      * @return  PaymentBill 初始化对账
      */
-    private PaymentBill initPayBill(WeixinPayVO weixinPayVO, Integer mchId, Integer shopId,Integer userId){
+    private PaymentBill initWeixinPayBill(WeixinPayVO weixinPayVO, Integer mchId, Integer shopId, Integer userId){
         PaymentBill paymentBill = PaymentBill.initBill(weixinPayVO.getOrderNo(), null, mchId, weixinPayVO.getBody(),weixinPayVO.getTotalFee(),shopId,userId,ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_TYPE_1.getCodeByte(),
                 ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte());
         insert(paymentBill);
@@ -192,12 +218,29 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     }
 
     /**
+     * 初始化支付宝支付账单数据
+     * @param orderNo 订单号
+     * @param mchId 商户主键
+     * @param userId 用户ID
+     * @param shopId 店铺id
+     * @return  PaymentBill 初始化对账
+     */
+    private PaymentBill initAliPayBill(String orderNo,Integer mchId, String body,Integer totalFee, Integer shopId, Integer userId){
+        PaymentBill paymentBill = PaymentBill.initBill(orderNo, null, mchId, body,totalFee,shopId,userId,ConstantEnum.PAY_CHANNEL_0.getCodeByte(),ConstantEnum.PAY_TYPE_0.getCodeByte(),
+                ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte());
+        insert(paymentBill);
+        return paymentBill;
+    }
+
+
+
+    /**
      * 初始化支付账单数据
      * @param paymentBill 退款请求对象
      * @return  PaymentBill 初始化对账
      */
-    private PaymentBill initRefundBill(PaymentBill paymentBill){
-        PaymentBill refundPaymentBill = PaymentBill.initBill(paymentBill.getOrderNo(),idGenUnit.getOrderNo("1"), paymentBill.getMchId(), paymentBill.getOrderTitle(),paymentBill.getPayAmount(),paymentBill.getShopId(),paymentBill.getUesrId(),ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_TYPE_1.getCodeByte(),
+    private PaymentBill initRefundBill(PaymentBill paymentBill,byte payChannel,byte payType){
+        PaymentBill refundPaymentBill = PaymentBill.initBill(paymentBill.getOrderNo(),idGenUnit.getOrderNo("1"), paymentBill.getMchId(), paymentBill.getOrderTitle(),paymentBill.getPayAmount(),paymentBill.getShopId(),paymentBill.getUesrId(),payChannel,payType,
                 ConstantEnum.PAY_TRADE_TYPE_1.getCodeByte());
         insert(refundPaymentBill);
         return refundPaymentBill;

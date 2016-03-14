@@ -19,7 +19,7 @@ public class AliPayUnitTest extends BaseTest{
 
     @Test
     public void scanPayTest(){
-        aliPayUnit.scanPay("test",0.01d,"285575972188748890","","body","op_id","store_id","5m");
+        aliPayUnit.scanPay("test",0.01d,"281266448793305408","","body","op_id","store_id","5m");
     }
 
     @Test

@@ -98,16 +98,13 @@ public class AliPayUnit {
         return responseData;
     }
 
-//     测试当面付2.0查询订单
-    public void scanPayQuery(String orderNo) {
-        // (必填) 商户订单号，通过此商户订单号查询当面付的交易状态
-
+    public AlipayTradeQueryResponse scanPayQuery(String orderNo) {
         AlipayF2FQueryResult result = tradeService.queryTradeResult(orderNo);
+        AlipayTradeQueryResponse response=null;
         switch (result.getTradeStatus()) {
             case SUCCESS:
                 LOGGER.info("查询返回该订单支付成功: )");
-                AlipayTradeQueryResponse response = result.getResponse();
-                LOGGER.info("交易结果查询tradeStatus={}",response.getTradeStatus());
+                response = result.getResponse();
                 if (Utils.isListNotEmpty(response.getFundBillList())) {
                     for (TradeFundBill bill : response.getFundBillList()) {
                         LOGGER.info(bill.getFundChannel() + ":" + bill.getAmount());
@@ -116,10 +113,10 @@ public class AliPayUnit {
                 break;
             case TRADE_CLOSED:
                 LOGGER.info("查询返回该订单状态关闭!!!");
-            case FAILED:
-                LOGGER.error("查询返回该订单支付失败或被关闭!!!");
                 break;
-
+            case FAILED:
+                LOGGER.error("查询返回该订单支付失败!!!");
+                break;
             case UNKNOWN:
                 LOGGER.error("系统异常，订单支付状态未知!!!");
                 break;
@@ -127,6 +124,7 @@ public class AliPayUnit {
                 LOGGER.error("不支持的交易状态，交易返回异常!!!");
                 break;
         }
+        return response;
     }
 
     /**

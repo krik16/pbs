@@ -7,7 +7,6 @@ import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
 import com.shouyingbao.pbs.unit.WeixinConfigUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.testng.annotations.Test;
 
 import java.net.URLEncoder;
 
@@ -23,7 +22,7 @@ public class WeixinUnitTest extends BaseTest{
     @Qualifier("weixinConfigUnit")
     WeixinConfigUnit weixinConfigUnit;
 
-    @Test
+//    @Test
     public void scanPayTest(){
         try {
             Configure configure = weixinConfigUnit.initConfigure(null,0);
@@ -40,12 +39,12 @@ public class WeixinUnitTest extends BaseTest{
 
     }
 
-    @Test
+//    @Test
     public void queryOrderTest(){
         weixinPayUnit.scanPayQueryOrder(null, "0030814341376164130", 1);
     }
 
-    @Test
+//    @Test
     public void reverseOrderTest(){
         weixinPayUnit.reverseOrder("0030814341376164130",1);
     }
