@@ -49,4 +49,11 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService{
     public Integer selectListCount(Map<String, Object> map) {
         return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectListCount", map);
     }
+
+    @Override
+    public List<Role> selectByUserId(Integer userId) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectByUserId", map);
+    }
 }

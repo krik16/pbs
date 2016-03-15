@@ -19,4 +19,6 @@ public interface RoleService {
     List<Role> selectListByPage(Map<String,Object> map,Integer currentPage,Integer pageSize);
 
     Integer selectListCount(Map<String,Object> map);
+
+    List<Role> selectByUserId(Integer userId);
 }

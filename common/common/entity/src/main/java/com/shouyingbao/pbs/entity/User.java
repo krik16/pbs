@@ -3,15 +3,13 @@ package com.shouyingbao.pbs.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Employee implements Serializable {
-    private static final long serialVersionUID = -8133596436055195482L;
+public class User implements Serializable {
+    private static final long serialVersionUID = -8143315016693212851L;
     private Integer id;
-
-    private Integer roleId;
 
     private String userPhone;
 
-    private Integer userAccount;
+    private String userAccount;
 
     private String userPwd;
 
@@ -21,9 +19,15 @@ public class Employee implements Serializable {
 
     private String cardId;
 
+    private Integer roleId;
+
+    private byte isEmployee;
+
     private String desc;
 
-    private Integer areaId;
+    private Integer companyId;
+
+    private Integer subCompanyId;
 
     private Date createAt;
 
@@ -43,14 +47,6 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
     public String getUserPhone() {
         return userPhone;
     }
@@ -59,11 +55,11 @@ public class Employee implements Serializable {
         this.userPhone = userPhone;
     }
 
-    public Integer getUserAccount() {
+    public String getUserAccount() {
         return userAccount;
     }
 
-    public void setUserAccount(Integer userAccount) {
+    public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
     }
 
@@ -99,6 +95,22 @@ public class Employee implements Serializable {
         this.cardId = cardId;
     }
 
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public byte getIsEmployee() {
+        return isEmployee;
+    }
+
+    public void setIsEmployee(byte isEmployee) {
+        this.isEmployee = isEmployee;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -107,12 +119,20 @@ public class Employee implements Serializable {
         this.desc = desc;
     }
 
-    public Integer getAreaId() {
-        return areaId;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setAreaId(Integer areaId) {
-        this.areaId = areaId;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getSubCompanyId() {
+        return subCompanyId;
+    }
+
+    public void setSubCompanyId(Integer subCompanyId) {
+        this.subCompanyId = subCompanyId;
     }
 
     public Date getCreateAt() {

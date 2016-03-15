@@ -120,4 +120,11 @@
       <include refid="list_where_clause" />
     </where>
   </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    r.id, r.`name`, r.`desc`, r.create_at, r.create_by, r.update_at, r.update_by, r.is_delete
+    from `role` r left join user_role ur on r.id = ur.role_id
+    where ur.user_id = #{userId}
+
+  </select>
 </mapper>

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.shouyingbao.pbs.mapper.EmployeeMapper" >
-  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.Employee" >
+<mapper namespace="com.shouyingbao.pbs.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="role_id" property="roleId" jdbcType="INTEGER" />
     <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
-    <result column="user_account" property="userAccount" jdbcType="INTEGER" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
     <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_nick_name" property="userNickName" jdbcType="VARCHAR" />
     <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="is_employee" property="isEmployee" jdbcType="TINYINT" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
-    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="sub_company_id" property="subCompanyId" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
@@ -19,47 +20,49 @@
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, role_id, user_phone, user_account, user_pwd, user_name, user_nick_name, card_id, 
-    `desc`, area_id, create_at, create_by, update_at, update_by, is_delete
+    id, user_phone, user_account, user_pwd, user_name, user_nick_name, card_id, is_employee,
+    `desc`, company_id, sub_company_id, create_at, create_by, update_at, update_by, is_delete
   </sql>
   <sql id="list_where_clause">
 
   </sql>
-
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from employee
+    from user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from employee
+    delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.Employee" useGeneratedKeys="true" keyProperty="id" >
-    insert into employee (role_id, user_phone, user_account, 
-      user_pwd, user_name, user_nick_name, 
-      card_id, `desc`, area_id, 
-      create_at, create_by, update_at, 
-      update_by, is_delete)
-    values (#{roleId,jdbcType=INTEGER}, #{userPhone,jdbcType=VARCHAR}, #{userAccount,jdbcType=INTEGER}, 
-      #{userPwd,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userNickName,jdbcType=VARCHAR}, 
-      #{cardId,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT})
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.User" useGeneratedKeys="true" keyProperty="id" >
+    insert into user (user_phone, user_account, user_pwd,
+      user_name, user_nick_name, card_id, 
+      is_employee, `desc`, company_id,
+      sub_company_id, create_at, create_by, 
+      update_at, update_by, is_delete
+      )
+    values (#{userPhone,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{userNickName,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, 
+      #{isEmployee,jdbcType=TINYINT}, #{desc,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER},
+      #{subCompanyId,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.Employee" useGeneratedKeys="true" keyProperty="id" >
-    insert into employee
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.User" useGeneratedKeys="true" keyProperty="id" >
+    insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      role_id,
       user_phone,
       user_account,
       user_pwd,
       user_name,
       user_nick_name,
       card_id,
+      is_employee,
       `desc`,
-      area_id,
+      company_id,
+      sub_company_id,
       create_at,
       create_by,
       update_at,
@@ -67,15 +70,16 @@
       is_delete,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      #{roleId,jdbcType=INTEGER},
       #{userPhone,jdbcType=VARCHAR},
-      #{userAccount,jdbcType=INTEGER},
+      #{userAccount,jdbcType=VARCHAR},
       #{userPwd,jdbcType=VARCHAR},
       #{userName,jdbcType=VARCHAR},
       #{userNickName,jdbcType=VARCHAR},
       #{cardId,jdbcType=VARCHAR},
+      #{isEmployee,jdbcType=TINYINT},
       #{desc,jdbcType=VARCHAR},
-      #{areaId,jdbcType=INTEGER},
+      #{companyId,jdbcType=INTEGER},
+      #{subCompanyId,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP},
@@ -83,17 +87,14 @@
       #{isDelete,jdbcType=TINYINT},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.Employee" >
-    update employee
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.User" >
+    update user
     <set >
-      <if test="roleId != null" >
-        role_id = #{roleId,jdbcType=INTEGER},
-      </if>
       <if test="userPhone != null" >
         user_phone = #{userPhone,jdbcType=VARCHAR},
       </if>
       <if test="userAccount != null" >
-        user_account = #{userAccount,jdbcType=INTEGER},
+        user_account = #{userAccount,jdbcType=VARCHAR},
       </if>
       <if test="userPwd != null" >
         user_pwd = #{userPwd,jdbcType=VARCHAR},
@@ -107,11 +108,17 @@
       <if test="cardId != null" >
         card_id = #{cardId,jdbcType=VARCHAR},
       </if>
+      <if test="isEmployee != null" >
+        is_employee = #{isEmployee,jdbcType=TINYINT},
+      </if>
       <if test="desc != null" >
         `desc` = #{desc,jdbcType=VARCHAR},
       </if>
-      <if test="areaId != null" >
-        area_id = #{areaId,jdbcType=INTEGER},
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="subCompanyId != null" >
+        sub_company_id = #{subCompanyId,jdbcType=INTEGER},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -131,17 +138,18 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.Employee" >
-    update employee
-    set role_id = #{roleId,jdbcType=INTEGER},
-      user_phone = #{userPhone,jdbcType=VARCHAR},
-      user_account = #{userAccount,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.User" >
+    update user
+    set user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_account = #{userAccount,jdbcType=VARCHAR},
       user_pwd = #{userPwd,jdbcType=VARCHAR},
       user_name = #{userName,jdbcType=VARCHAR},
       user_nick_name = #{userNickName,jdbcType=VARCHAR},
       card_id = #{cardId,jdbcType=VARCHAR},
+      is_employee = #{isEmployee,jdbcType=TINYINT},
       `desc` = #{desc,jdbcType=VARCHAR},
-      area_id = #{areaId,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER},
+      sub_company_id = #{subCompanyId,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -149,10 +157,11 @@
       is_delete = #{isDelete,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from employee
+    from user
     <where>
       <include refid="list_where_clause" />
     </where>
@@ -169,9 +178,26 @@
     select
     count(1)
     from
-    employee
+    user
     <where>
       <include refid="list_where_clause" />
     </where>
+  </select>
+
+  <select id="selectByUserAccount" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from
+    user
+    where user_account = #{userAccount}
+  </select>
+
+  <select id="selectByUserAccountAndPwd" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from
+    user
+    where user_account = #{userAccount}
+    and user_pwd = #{userPwd}
   </select>
 </mapper>
