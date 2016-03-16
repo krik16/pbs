@@ -35,7 +35,7 @@ public class PaymentEvent implements Serializable {
 
     private String openId;
 
-    private Integer isDelete;
+    private Byte isDelete;
 
     public Integer getId() {
         return id;
@@ -157,11 +157,11 @@ public class PaymentEvent implements Serializable {
         this.openId = openId;
     }
 
-    public Integer getIsDelete() {
+    public Byte getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(Integer isDelete) {
+    public void setIsDelete(Byte isDelete) {
         this.isDelete = isDelete;
     }
 }

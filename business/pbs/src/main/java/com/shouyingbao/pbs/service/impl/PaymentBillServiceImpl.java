@@ -11,9 +11,11 @@ import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
 import com.shouyingbao.pbs.entity.PaymentBill;
+import com.shouyingbao.pbs.entity.User;
 import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.service.PaymentEventService;
+import com.shouyingbao.pbs.service.UserService;
 import com.shouyingbao.pbs.service.WeixinMchService;
 import com.shouyingbao.pbs.unit.AliPayUnit;
 import com.shouyingbao.pbs.unit.IdGenUnit;
@@ -57,13 +59,18 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     @Autowired
     PaymentEventService paymentEventService;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public ResponseData weixinScanPay(Integer userId, String authCode, Integer totalFee, String deviceInfo, Integer tradeType){
         LOGGER.info("微信扫码支付,userId={},authCode={},totalFee={},deviceInfo={},tradeType={}", userId, authCode, totalFee, deviceInfo, tradeType);
         ResponseData responseData;
         try{
-            // TODO test 根据用户查询到shopid
-            Integer shopId = 1;
+            User user = userService.selectById(userId);
+            if(user == null || ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte().equals(user.getIsEmployee())){
+                throw new WeixinException(ConstantEnum.EXCEPTION_MCH_SHOP_NOT_EXIST.getCodeStr(), ConstantEnum.EXCEPTION_MCH_SHOP_NOT_EXIST.getValueStr());
+            }
             WeixinPayVO weixinPayVO = new WeixinPayVO();
             weixinPayVO.setAuthCode(authCode);
             weixinPayVO.setTotalFee(totalFee);
@@ -71,7 +78,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
 //            String  bodyUtf8 = new String("扫码收钱".toString().getBytes("UTF-8"));
 //            String body = URLEncoder.encode(bodyUtf8, "UTF-8");
             weixinPayVO.setBody(ConstantEnum.WEIXIN_SCAN_PAY_BODY.getCodeStr());
-            weixinPayVO.setShopId(shopId);
+            weixinPayVO.setShopId(user.getShopId());
             weixinPayVO.setWeixinPayType(tradeType);
             weixinPayVO.setOrderNo(idGenUnit.getOrderNo("0"));
             WeixinMch weixinMch = weixinMchService.selectByShopId(weixinPayVO.getShopId());
@@ -79,7 +86,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
                 throw new WeixinException(ConstantEnum.EXCEPTION_MCH_NOT_EXIST.getCodeStr(), ConstantEnum.EXCEPTION_MCH_NOT_EXIST.getValueStr());
             }
             //初始化支付账单数据
-            PaymentBill paymentBill = initWeixinPayBill(weixinPayVO, weixinMch.getId(), userId, shopId);
+            PaymentBill paymentBill = initWeixinPayBill(weixinPayVO, weixinMch.getId(), userId, user.getId());
             responseData = weixinPayUnit.scanPay(weixinPayVO,weixinMch);
             if("0".equals(responseData.getMeta().getErrno())){//扫码支付成功
                 ScanQueryResData scanQueryResData = weixinPayUnit.scanPayQueryOrder(null,weixinPayVO.getOrderNo(),weixinMch.getId());

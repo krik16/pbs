@@ -11,6 +11,7 @@
     <result column="card_id" property="cardId" jdbcType="VARCHAR" />
     <result column="is_employee" property="isEmployee" jdbcType="TINYINT" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="sub_company_id" property="subCompanyId" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -21,7 +22,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, user_phone, user_account, user_pwd, user_name, user_nick_name, card_id, is_employee,
-    `desc`, company_id, sub_company_id, create_at, create_by, update_at, update_by, is_delete
+    `desc`,shop_id, company_id, sub_company_id, create_at, create_by, update_at, update_by, is_delete
   </sql>
   <sql id="list_where_clause">
 
@@ -39,13 +40,13 @@
   <insert id="insert" parameterType="com.shouyingbao.pbs.entity.User" useGeneratedKeys="true" keyProperty="id" >
     insert into user (user_phone, user_account, user_pwd,
       user_name, user_nick_name, card_id, 
-      is_employee, `desc`, company_id,
+      is_employee, `desc`,shop_id, company_id,
       sub_company_id, create_at, create_by, 
       update_at, update_by, is_delete
       )
     values (#{userPhone,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userName,jdbcType=VARCHAR}, #{userNickName,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, 
-      #{isEmployee,jdbcType=TINYINT}, #{desc,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER},
+      #{isEmployee,jdbcType=TINYINT}, #{desc,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER},#{companyId,jdbcType=INTEGER},
       #{subCompanyId,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
       )
@@ -61,6 +62,7 @@
       card_id,
       is_employee,
       `desc`,
+      shop_id,
       company_id,
       sub_company_id,
       create_at,
@@ -78,6 +80,7 @@
       #{cardId,jdbcType=VARCHAR},
       #{isEmployee,jdbcType=TINYINT},
       #{desc,jdbcType=VARCHAR},
+      #{shopId,jdbcType=INTEGER},
       #{companyId,jdbcType=INTEGER},
       #{subCompanyId,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP},
@@ -114,6 +117,9 @@
       <if test="desc != null" >
         `desc` = #{desc,jdbcType=VARCHAR},
       </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
       <if test="companyId != null" >
         company_id = #{companyId,jdbcType=INTEGER},
       </if>
@@ -148,6 +154,7 @@
       card_id = #{cardId,jdbcType=VARCHAR},
       is_employee = #{isEmployee,jdbcType=TINYINT},
       `desc` = #{desc,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=INTEGER},
       company_id = #{companyId,jdbcType=INTEGER},
       sub_company_id = #{subCompanyId,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},

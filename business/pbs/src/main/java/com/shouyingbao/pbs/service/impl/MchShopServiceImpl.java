@@ -35,6 +35,7 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
     @Override
     public MchShop selectById(Integer id) {
         Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
         return this.getBaseDao().selectOneBySql(NAMESPACE+".selectByPrimaryKey",map);
     }
 

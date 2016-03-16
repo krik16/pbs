@@ -20,7 +20,7 @@ public class Configure {
 //            setMchID(weixinMch.getMchId());
 //            setCertLocalPath(weixinMch.getCretPath());
 //            setCertPassword(weixinMch.getMchId());
-            setSubAppId(weixinMch.getAppId());
+//            setSubAppId(weixinMch.getAppId());
             setSubMchID(weixinMch.getMchId());
             //扫码支付
             if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getCodeStr().equals(weixinMch.getTradeType())) {

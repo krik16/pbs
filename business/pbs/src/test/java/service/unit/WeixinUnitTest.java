@@ -6,7 +6,9 @@ import com.shouyingbao.pbs.common.pay.weixin.service.ScanPayService;
 import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
 import com.shouyingbao.pbs.unit.WeixinConfigUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.testng.annotations.Test;
 
 import java.net.URLEncoder;
 
@@ -16,9 +18,11 @@ import java.net.URLEncoder;
  **/
 public class WeixinUnitTest extends BaseTest{
 
+    @Autowired
     @Qualifier("weixinPayUnit")
     WeixinPayUnit weixinPayUnit;
 
+    @Autowired
     @Qualifier("weixinConfigUnit")
     WeixinConfigUnit weixinConfigUnit;
 
@@ -39,9 +43,9 @@ public class WeixinUnitTest extends BaseTest{
 
     }
 
-//    @Test
+    @Test
     public void queryOrderTest(){
-        weixinPayUnit.scanPayQueryOrder(null, "0030814341376164130", 1);
+        weixinPayUnit.scanPayQueryOrder(null, "0031583473408161345", 1);
     }
 
 //    @Test

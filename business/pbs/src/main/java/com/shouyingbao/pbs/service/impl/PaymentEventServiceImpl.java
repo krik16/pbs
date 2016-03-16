@@ -1,5 +1,6 @@
 package com.shouyingbao.pbs.service.impl;
 
+import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
 import com.shouyingbao.pbs.entity.PaymentEvent;
@@ -40,6 +41,7 @@ public class PaymentEventServiceImpl extends BaseServiceImpl implements PaymentE
         paymentEvent.setBuyerEmail(buyerEmail);
         paymentEvent.setOpenId(openId);
         paymentEvent.setTransactionId(refundNo);
+        paymentEvent.setIsDelete(ConstantEnum.IS_DELETE_0.getCodeByte());
         insertEvent(paymentEvent);
         return paymentEvent;
     }

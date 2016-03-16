@@ -35,6 +35,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl implements AuthoritySe
     @Override
     public Role selectById(Integer id) {
         Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
         return this.getBaseDao().selectOneBySql(NAMESPACE+".selectByPrimaryKey",map);
     }
 

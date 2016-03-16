@@ -25,6 +25,8 @@ public class User implements Serializable {
 
     private String desc;
 
+    private Integer shopId;
+
     private Integer companyId;
 
     private Integer subCompanyId;
@@ -173,5 +175,13 @@ public class User implements Serializable {
 
     public void setIsDelete(Byte isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

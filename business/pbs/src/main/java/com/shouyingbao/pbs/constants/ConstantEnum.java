@@ -34,6 +34,7 @@ public enum ConstantEnum {
 	EXCEPTION_MCH_NOT_EXIST("1019109","门店未找到微信商户信息"),
 	EXCEPTION_USER_UN_PAY("1019110","用户取消订单"),
 	ERROR_LOGIN("1019111","用户名不存在或密码错误"),
+	EXCEPTION_MCH_SHOP_NOT_EXIST("1019112","收款用户未找到符合条件的门店账号"),
 
 	ALI_PAY_TIME_EXPIRE_GOODS("60m","商品支付宝支付默认超时时间"),
 	ALI_PAY_TIME_EXPIRE_COUPONS("15m","代金券支付宝支付默认超时时间"),
@@ -61,6 +62,8 @@ public enum ConstantEnum {
 	WEIXIN_SCAN_PAY_BODY("test","微信扫码支付商品名称"),
 	ALI_SCAN_PAY_BODY("收款","支付宝扫码支付商品名称"),
 
+	USER_IS_EMPLOYEE_0(0,"员工"),
+	USER_IS_EMPLOYEE_1(1,"商户"),
 
 	ALI_PAY_SUBJECT("subject","收钱"),
 

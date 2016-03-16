@@ -17,7 +17,7 @@
     <result column="buyer_id" property="buyerId" jdbcType="VARCHAR" />
     <result column="buyer_email" property="buyerEmail" jdbcType="VARCHAR" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
-    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, notify_time, notify_id, notify_type, transaction_id, order_no, payment_bill_id, 
@@ -82,7 +82,7 @@
       #{buyerId,jdbcType=VARCHAR},
       #{buyerEmail,jdbcType=VARCHAR},
       #{openId,jdbcType=VARCHAR},
-      #{isDelete,jdbcType=INTEGER},
+      #{isDelete,jdbcType=TINYINT},
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" >
@@ -131,7 +131,7 @@
         open_id = #{openId,jdbcType=VARCHAR},
       </if>
       <if test="isDelete != null" >
-        is_delete = #{isDelete,jdbcType=INTEGER},
+        is_delete = #{isDelete,jdbcType=TINYINT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -152,7 +152,7 @@
       buyer_id = #{buyerId,jdbcType=VARCHAR},
       buyer_email = #{buyerEmail,jdbcType=VARCHAR},
       open_id = #{openId,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_delete = #{isDelete,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

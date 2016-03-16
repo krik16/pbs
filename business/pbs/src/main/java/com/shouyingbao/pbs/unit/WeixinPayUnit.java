@@ -71,7 +71,7 @@ public class WeixinPayUnit {
                     waitUserPaying(weixinPayVO.getOrderNo(), weixinMch.getId());
                 } else {
                     responseData = ResponseData.failure(scanPayResData.getErr_code(), scanPayResData.getErr_code_des());
-                    reverseOrder(weixinPayVO.getOrderNo(), weixinMch.getId());
+//                    reverseOrder(weixinPayVO.getOrderNo(), weixinMch.getId());
                 }
             }
         } catch (WeixinException e) {

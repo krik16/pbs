@@ -35,6 +35,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     @Override
     public User selectById(Integer id) {
         Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
         return this.getBaseDao().selectOneBySql(NAMESPACE+".selectByPrimaryKey",map);
     }
 

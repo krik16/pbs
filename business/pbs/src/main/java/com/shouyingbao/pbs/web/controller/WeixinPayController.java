@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  **/
 
 @Controller
-@RequestMapping("pay/weixin")
+@RequestMapping("/pay/weixin")
 public class WeixinPayController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WeixinPayController.class);
@@ -42,8 +42,7 @@ public class WeixinPayController {
                 LOGGER.error("参数为空或不合法");
                 throw new ParamNullException();
             }
-            //TODO userID query shopId
-            responseData = paymentBillService.weixinScanPay(1, weixinScanPayParam.getAuthCode(), weixinScanPayParam.getTotalFee(), weixinScanPayParam.getDeviceInfo(), 0);
+            responseData = paymentBillService.weixinScanPay(weixinScanPayParam.getUserId(), weixinScanPayParam.getAuthCode(), weixinScanPayParam.getTotalFee(), weixinScanPayParam.getDeviceInfo(), 0);
         }catch (ParamNullException e){
             LOGGER.error(e.getMessage());
             e.printStackTrace();

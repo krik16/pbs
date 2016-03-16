@@ -41,8 +41,19 @@ public class LoginController{
      * @return
      */
     @RequestMapping(value = "/denied", method = RequestMethod.GET)
-    public String getDeniedPage() {
+    public String test() {
         LOGGER.debug("Received request to show denied page");
+        return "denied";
+
+    }
+    /**
+     * 指定无访问额权限页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String getDeniedPage() {
+        LOGGER.debug("test");
         return "denied";
 
     }

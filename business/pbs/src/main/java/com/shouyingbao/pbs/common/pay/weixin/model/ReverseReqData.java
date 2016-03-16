@@ -1,12 +1,12 @@
 package com.shouyingbao.pbs.common.pay.weixin.model;
 
+import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
+import com.shouyingbao.pbs.common.pay.weixin.util.RandomStringGenerator;
+import com.shouyingbao.pbs.common.pay.weixin.util.Signature;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.shouyingbao.pbs.common.pay.weixin.util.RandomStringGenerator;
-import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
-import com.shouyingbao.pbs.common.pay.weixin.util.Signature;
 
 /**
  * User: rizenguo
@@ -17,6 +17,7 @@ public class ReverseReqData {
     //每个字段具体的意思请查看API文档
     private String appid = "";
     private String mch_id = "";
+    private String sub_mch_id = "";
     private String transaction_id = "";
     private String out_trade_no = "";
     private String nonce_str = "";
@@ -41,6 +42,9 @@ public class ReverseReqData {
 
         //微信支付分配的商户号ID（开通公众号的微信支付功能之后可以获取到）
         setMch_id(configure.getMchID());
+
+        //子商户号
+        setSub_mch_id(configure.getSubMchID());
 
         //transaction_id是微信系统为每一笔支付交易分配的订单号，通过这个订单号可以标识这笔交易，它由支付订单API支付成功时返回的数据里面获取到。
         setTransaction_id(transactionID);
@@ -105,8 +109,14 @@ public class ReverseReqData {
         this.sign = sign;
     }
 
-    
-    
+    public String getSub_mch_id() {
+        return sub_mch_id;
+    }
+
+    public void setSub_mch_id(String sub_mch_id) {
+        this.sub_mch_id = sub_mch_id;
+    }
+
     @Override
 	public String toString() {
 		return "ReverseReqData [appid=" + appid + ", mch_id=" + mch_id + ", transaction_id=" + transaction_id + ", out_trade_no=" + out_trade_no + ", nonce_str=" + nonce_str + ", sign=" + sign + "]";
