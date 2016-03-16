@@ -8,6 +8,10 @@ import java.io.Serializable;
  **/
 public class WeixinScanPayParam implements Serializable{
     private static final long serialVersionUID = 8887895822612218272L;
+
+    //交易明细记录id
+    private Integer id;
+
     private Integer userId;
 
     private String authCode;
@@ -66,6 +70,14 @@ public class WeixinScanPayParam implements Serializable{
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

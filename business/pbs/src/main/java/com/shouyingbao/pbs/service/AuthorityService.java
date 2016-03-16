@@ -23,4 +23,8 @@ public interface AuthorityService {
     Integer selectListCount(Map<String,Object> map);
 
     List< Authority> selectByRoleId(Integer roleId);
+
+    List<Authority> selectByUserId(Integer userId);
+
+    boolean checkAuthority(String authorityValue,Integer userId);
 }

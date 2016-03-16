@@ -54,40 +54,6 @@ public class UserLoginServiceImpl implements UserDetailsService {
         }
       return null;
     }
-  /*  protected static Logger logger = Logger.getLogger("service");
-
-    private UserDao userDAO = new UserDao();
-
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException, DataAccessException {
-
-        UserDetails user = null;
-
-        try {
-
-            // 搜索数据库以匹配用户登录名.
-            // 我们可以通过dao使用JDBC来访问数据库
-            DbUser dbUser = userDAO.getDatabase(username);
-
-            // Populate the Spring User object with details from the dbUser
-            // Here we just pass the username, password, and access level
-            // getAuthorities() will translate the access level to the correct
-            // role type
-
-            user = new User(dbUser.getUsername(), dbUser.getPassword()
-                    .toLowerCase(), true, true, true, true,
-                    getAuthorities(dbUser.getAccess()));
-
-        } catch (Exception e) {
-            logger.error("Error in retrieving user");
-            throw new UsernameNotFoundException("Error in retrieving user");
-        }
-
-        return user;
-    }
-
-    */
-
     /**
      * 获得访问角色权限
      *

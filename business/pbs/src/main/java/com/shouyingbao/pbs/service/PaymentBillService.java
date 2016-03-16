@@ -51,6 +51,8 @@ public interface PaymentBillService {
 
     void update(PaymentBill paymentBill);
 
+    PaymentBill selectById(Integer id);
+
     PaymentBill selectByOrderNoAndTradeType(String orderNo,byte tradeType,byte payChannel,byte status);
 
 }

@@ -115,7 +115,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
         ResponseData responseData;
         try {
             PaymentBill paymentBill = selectByOrderNoAndTradeType(orderNo,ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte(),ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_STATUS_2.getCodeByte());
-            PaymentBill refundPaymentBill = initRefundBill(paymentBill,ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_TYPE_1.getCodeByte());
+            PaymentBill refundPaymentBill = initRefundBill(paymentBill,ConstantEnum.PAY_CHANNEL_1.getCodeByte(),ConstantEnum.PAY_TYPE_1.getCodeByte(),userId);
             //发起退款
             weixinPayUnit.weixinRefund(paymentBill.getOrderNo(), refundPaymentBill.getPayAmount(), refundPaymentBill.getPayAmount(), refundPaymentBill.getRefundNo(), refundPaymentBill.getMchId());
             //退款结果查询
@@ -174,7 +174,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     public ResponseData aliScanRefund(String orderNo, Integer userId) {
         ResponseData responseData;
         PaymentBill paymentBill = selectByOrderNoAndTradeType(orderNo, ConstantEnum.PAY_TRADE_TYPE_0.getCodeByte(),ConstantEnum.PAY_CHANNEL_0.getCodeByte(),ConstantEnum.PAY_STATUS_2.getCodeByte());
-        PaymentBill refundPaymentBill = initRefundBill(paymentBill, ConstantEnum.PAY_CHANNEL_0.getCodeByte(), ConstantEnum.PAY_TYPE_0.getCodeByte());
+        PaymentBill refundPaymentBill = initRefundBill(paymentBill, ConstantEnum.PAY_CHANNEL_0.getCodeByte(), ConstantEnum.PAY_TYPE_0.getCodeByte(),userId);
         BigDecimal totalAmount = new BigDecimal(paymentBill.getPayAmount()).divide(new BigDecimal(100), RoundingMode.HALF_DOWN).setScale(0, BigDecimal.ROUND_HALF_DOWN);
         responseData = aliPayUnit.scanPayRefund(orderNo,totalAmount.doubleValue(),"退款",String.valueOf(paymentBill.getShopId()));
         if("0".equals(responseData.getMeta().getErrno())){//扫码支付成功
@@ -197,6 +197,13 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     @Override
     public void update(PaymentBill paymentBill) {
         this.getBaseDao().updateBySql(NAMESPACE + ".updateByPrimaryKeySelective", paymentBill);
+    }
+
+    @Override
+    public PaymentBill selectById(Integer id) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectByPrimaryKey", map);
     }
 
     @Override
@@ -246,8 +253,8 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
      * @param paymentBill 退款请求对象
      * @return  PaymentBill 初始化对账
      */
-    private PaymentBill initRefundBill(PaymentBill paymentBill,byte payChannel,byte payType){
-        PaymentBill refundPaymentBill = PaymentBill.initBill(paymentBill.getOrderNo(),idGenUnit.getOrderNo("1"), paymentBill.getMchId(), paymentBill.getOrderTitle(),paymentBill.getPayAmount(),paymentBill.getShopId(),paymentBill.getUesrId(),payChannel,payType,
+    private PaymentBill initRefundBill(PaymentBill paymentBill,byte payChannel,byte payType,Integer userId){
+        PaymentBill refundPaymentBill = PaymentBill.initBill(paymentBill.getOrderNo(),idGenUnit.getOrderNo("1"), paymentBill.getMchId(), paymentBill.getOrderTitle(),paymentBill.getPayAmount(),paymentBill.getShopId(),userId,payChannel,payType,
                 ConstantEnum.PAY_TRADE_TYPE_1.getCodeByte());
         insert(refundPaymentBill);
         return refundPaymentBill;

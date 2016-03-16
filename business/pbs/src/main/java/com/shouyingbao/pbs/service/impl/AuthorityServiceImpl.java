@@ -4,10 +4,13 @@ import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
 import com.shouyingbao.pbs.entity.Authority;
 import com.shouyingbao.pbs.entity.Role;
 import com.shouyingbao.pbs.service.AuthorityService;
+import com.shouyingbao.pbs.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,11 @@ public class AuthorityServiceImpl extends BaseServiceImpl implements AuthoritySe
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorityServiceImpl.class);
 
     private static final String NAMESPACE = "com.shouyingbao.pbs.mapper.AuthorityMapper";
+
+    @Autowired
+    RoleService roleService;
+
+
     @Override
     public void insert(Authority authority) {
         this.getBaseDao().insertBySql(NAMESPACE+".insertSelective");
@@ -56,5 +64,28 @@ public class AuthorityServiceImpl extends BaseServiceImpl implements AuthoritySe
         Map<String,Object> map = new HashMap<>();
         map.put("roleId", roleId);
         return this.getBaseDao().selectListBySql(NAMESPACE + ".selectByRoleId", map);
+    }
+
+    @Override
+    public List<Authority> selectByUserId(Integer userId) {
+        List<Authority> authList = new ArrayList<>();
+        List<Role> roleList = roleService.selectByUserId(userId);
+        for (Role role :roleList){
+            authList.addAll(selectByRoleId(role.getId()));
+        }
+        return authList;
+    }
+
+    @Override
+    public boolean checkAuthority(String authorityValue, Integer userId) {
+        boolean result = false;
+        List<Authority> list = selectByUserId(userId);
+        for (Authority authority : list){
+            if(authority.getValue().equals(authorityValue)){
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 }

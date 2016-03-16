@@ -24,4 +24,5 @@ public interface UserService {
     User selectByUserAccount(String userName);
 
     User selectByUserAccountAndPwd(String userName,String userPwd);
+
 }
