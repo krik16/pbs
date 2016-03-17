@@ -34,7 +34,7 @@ public class LoginController{
     /**
      * 指向登录页面
      */
-    @RequestMapping(value = "/manager/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginPage(
             @RequestParam(value = "error", required = false) boolean error,
             ModelMap model,HttpServletRequest request) {
