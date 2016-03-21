@@ -10,13 +10,11 @@ import com.shouyingbao.pbs.constants.Constants;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
+import com.shouyingbao.pbs.entity.MchShop;
 import com.shouyingbao.pbs.entity.PaymentBill;
 import com.shouyingbao.pbs.entity.User;
 import com.shouyingbao.pbs.entity.WeixinMch;
-import com.shouyingbao.pbs.service.PaymentBillService;
-import com.shouyingbao.pbs.service.PaymentEventService;
-import com.shouyingbao.pbs.service.UserService;
-import com.shouyingbao.pbs.service.WeixinMchService;
+import com.shouyingbao.pbs.service.*;
 import com.shouyingbao.pbs.unit.AliPayUnit;
 import com.shouyingbao.pbs.unit.IdGenUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
@@ -62,6 +60,9 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
     @Autowired
     UserService userService;
 
+    @Autowired
+    MchShopService mchShopService;
+
     @Override
     public ResponseData weixinScanPay(Integer userId, String authCode, Integer totalFee, String deviceInfo, Integer tradeType){
         LOGGER.info("微信扫码支付,userId={},authCode={},totalFee={},deviceInfo={},tradeType={}", userId, authCode, totalFee, deviceInfo, tradeType);
@@ -71,13 +72,16 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
             if(user == null || ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte().equals(user.getIsEmployee())){
                 throw new WeixinException(ConstantEnum.EXCEPTION_MCH_SHOP_NOT_EXIST.getCodeStr(), ConstantEnum.EXCEPTION_MCH_SHOP_NOT_EXIST.getValueStr());
             }
+            String body = ConstantEnum.WEIXIN_SCAN_PAY_BODY.getCodeStr();
+            MchShop mchShop = mchShopService.selectById(user.getShopId());
+            if(mchShop != null){
+                body = mchShop.getName();
+            }
             WeixinPayVO weixinPayVO = new WeixinPayVO();
             weixinPayVO.setAuthCode(authCode);
             weixinPayVO.setTotalFee(totalFee);
             weixinPayVO.setDeviceInfo(deviceInfo);
-//            String  bodyUtf8 = new String("扫码收钱".toString().getBytes("UTF-8"));
-//            String body = URLEncoder.encode(bodyUtf8, "UTF-8");
-            weixinPayVO.setBody(ConstantEnum.WEIXIN_SCAN_PAY_BODY.getCodeStr());
+            weixinPayVO.setBody(body);
             weixinPayVO.setShopId(user.getShopId());
             weixinPayVO.setWeixinPayType(tradeType);
             weixinPayVO.setOrderNo(idGenUnit.getOrderNo("0"));

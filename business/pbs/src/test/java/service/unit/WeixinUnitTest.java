@@ -50,6 +50,12 @@ public class WeixinUnitTest extends BaseTest{
 
 //    @Test
     public void reverseOrderTest(){
-        weixinPayUnit.reverseOrder("0030814341376164130",1);
+        weixinPayUnit.reverseOrder("0030814341376164130", 1);
     }
+
+    @Test
+    public void scanFixedPayTest(){
+        weixinPayUnit.scanFixedPay();
+    }
+
 }

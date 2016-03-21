@@ -1,13 +1,12 @@
 package com.shouyingbao.pbs.common.pay.weixin.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.dubbo.common.logger.Logger;
-import com.alibaba.dubbo.common.logger.LoggerFactory;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class TenpayUtil {
@@ -59,7 +58,7 @@ public class TenpayUtil {
 			HttpServletResponse response) {
 		
 		if(null == request || null == response) {
-			return "gbk";
+			return "UTF-8";
 		}
 		
 		String enc = request.getCharacterEncoding();
@@ -68,7 +67,7 @@ public class TenpayUtil {
 		}
 		
 		if(null == enc || "".equals(enc)) {
-			enc = "gbk";
+			enc = "UTF-8";
 		}
 		
 		return enc;

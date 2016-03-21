@@ -10,6 +10,7 @@ import com.shouyingbao.pbs.common.pay.weixin.util.Util;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.constants.Constants;
 import com.shouyingbao.pbs.core.bean.ResponseData;
+import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.WeixinMchService;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
@@ -28,8 +29,6 @@ public class WeixinPayUnit {
     private int retryTimes = 3;
 
     private long retryInterval = 5000;
-
-    private boolean needRecallReverse = false;
 
     @Autowired
     WeixinConfigUnit weixinConfigUnit;
@@ -83,11 +82,34 @@ public class WeixinPayUnit {
         return responseData;
     }
 
+    public void scanFixedPay(){
+        //初始化配置信息
+        WeixinMch weixinMch = weixinMchService.selectByShopId(1);
+        Configure configure = weixinConfigUnit.initConfigure(weixinMch, 0);
+         String time_stamp =  String.valueOf(DateUtil.getCurrDateTime().getTime()).substring(0,10);
+        ScanFixedPayReqData scanFixedPayReqData = new ScanFixedPayReqData("1231231231",time_stamp,configure);
+        StringBuilder sb = new StringBuilder();
+        sb.append("weixin：//wxpay/bizpayurl?sign=");
+        sb.append(scanFixedPayReqData.getSign());
+        sb.append("&appid=");
+        sb.append(scanFixedPayReqData.getAppid());
+        sb.append("&mch_id=");
+        sb.append(scanFixedPayReqData.getMch_id());
+        sb.append("&product_id=");
+        sb.append(scanFixedPayReqData.getProduct_id());
+        sb.append("&time_stamp=");
+        sb.append(scanFixedPayReqData.getTime_stamp());
+        sb.append("&nonce_str=");
+        sb.append(scanFixedPayReqData.getNonce_str());
+        LOGGER.info("context={}",sb.toString());
+        ZxingUtil.getZxing(sb.toString());
+    }
+
 
     /**
      * 扫码支付等待用户支付处理
-     * @param orderNo
-     * @param weixinMchId
+     * @param orderNo 订单号
+     * @param weixinMchId 商户id
      */
     private void waitUserPaying(String orderNo, Integer weixinMchId) {
         boolean result = false;//支付结果
@@ -185,8 +207,8 @@ public class WeixinPayUnit {
     /**
      * 撤销订单
      *
-     * @param orderNo
-     * @param weixinMchId
+     * @param orderNo 订单号
+     * @param weixinMchId 商户号
      */
     public void reverseOrder(String orderNo, Integer weixinMchId) {
 

@@ -127,12 +127,14 @@ public class HttpsRequest implements IServiceRequest {
 
         //将要提交给API的数据对象转换成XML格式数据Post给API
         String postDataXML = xStreamForRequestPostData.toXML(xmlObj);
+//        postDataXML = new String(postDataXML.getBytes("UTF-8"), "ISO8859-1");
         LOGGER.debug("postDataXML="+postDataXML);
 //        System.err.println("post data:"+postDataXML);
         //得指明使用UTF-8编码，否则到API服务器XML的中文不能被成功识别
-//        StringEntity postEntity = new StringEntity(postDataXML, "UTF-8");
-        StringEntity postEntity = new StringEntity(postDataXML,"iso8859-1");
+        StringEntity postEntity = new StringEntity(postDataXML, "UTF-8");
+//        StringEntity postEntity = new StringEntity(postDataXML,"iso8859-1");
         httpPost.addHeader("Content-Type", "text/xml");
+        postEntity.setContentEncoding("utf-8");
         httpPost.setEntity(postEntity);
 
         //设置请求器的配置
