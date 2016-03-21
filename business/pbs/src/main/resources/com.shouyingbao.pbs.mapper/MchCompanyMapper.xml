@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.dao.MchCompanyMapper" >
+<mapper namespace="com.shouyingbao.pbs.mapper.MchCompanyMapper" >
   <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.MchCompany" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -15,7 +15,13 @@
   <sql id="Base_Column_List" >
     id, `name`, `desc`, address, create_at, create_by, update_at, update_by, is_delete
   </sql>
-
+  <sql id="list_where_clause">
+    <if test="name != null and name != ''">
+      and name like
+      concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    and is_delete = 0
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -99,4 +105,29 @@
       is_delete = #{isDelete,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from mch_company
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+    <if test="orderby == null">
+      order by create_at desc
+    </if>
+    <if test="currentPage != null">
+      limit
+      #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectListCount" parameterType="java.util.Map"
+          resultType="java.lang.Integer">
+    select
+    count(1)
+    from
+    mch_company
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+  </select>
 </mapper>

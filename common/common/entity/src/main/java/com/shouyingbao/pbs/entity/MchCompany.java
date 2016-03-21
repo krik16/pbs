@@ -1,11 +1,9 @@
 package com.shouyingbao.pbs.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class MchCompany implements Serializable {
+public class MchCompany extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 5086817767144992315L;
-    private Integer id;
 
     private String name;
 
@@ -13,23 +11,6 @@ public class MchCompany implements Serializable {
 
     private String address;
 
-    private Date createAt;
-
-    private Integer createBy;
-
-    private Date updateAt;
-
-    private Integer updateBy;
-
-    private Byte isDelete;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -55,43 +36,13 @@ public class MchCompany implements Serializable {
         this.address = address;
     }
 
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Byte getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Byte isDelete) {
-        this.isDelete = isDelete;
+    @Override
+    public String toString() {
+        return "MchCompany{" +
+                "name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", address='" + address + '\'' +
+                ", baseEntity='" + super.toString() + '\'' +
+                '}';
     }
 }

@@ -20,7 +20,6 @@
         concat('%',#{name,jdbcType=VARCHAR},'%')
       </if>
     and is_delete = 0
-
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

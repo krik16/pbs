@@ -7,13 +7,24 @@ import com.shouyingbao.pbs.service.AuthorityService;
 import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.vo.WeixinScanPayParam;
 import org.apache.commons.lang.StringUtils;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * kejun
@@ -92,4 +103,46 @@ public class WeixinPayController {
         }
         return responseData;
     }
+
+    /**
+     * @Description: 固定二维码扫码结果通知
+     * @param model
+     * @param request
+     * @param response
+     * @Author: 柯军
+     * @datetime:2015年9月2日下午4:48:21
+     **/
+    @RequestMapping("/scanFixed")
+    public void weixinNotify(Model model, HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.info("scanFixed.....");
+        Map<String, Object> requestMap = parseXml(request);
+       LOGGER.info("requestMap={}",requestMap);
+    }
+
+    /**
+     * @Description: 解析微信异步通知中的xml元素值
+     * @param request
+     * @return
+     * @Author: 柯军
+     * @datetime:2015年8月11日下午3:33:45
+     **/
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> parseXml(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            InputStream inputStream = request.getInputStream();
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(inputStream);
+            Element root = document.getRootElement();
+            List<Element> elementList = root.elements();
+            for (Element e : elementList)
+                map.put(e.getName(), e.getText());
+            inputStream.close();
+        } catch (Exception e) {
+            LOGGER.error("解析微信返回结果xml失败");
+            e.printStackTrace();
+        }
+        return map;
+    }
+
 }

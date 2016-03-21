@@ -7,6 +7,7 @@
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="sub_company_id" property="subCompanyId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
@@ -14,7 +15,7 @@
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, `name`, `desc`, company_id, sub_company_id, create_at, create_by, update_at, 
+    id, `name`, `desc`, company_id, sub_company_id,address, create_at, create_by, update_at,
     update_by, is_delete
   </sql>
   <sql id="list_where_clause">
@@ -32,11 +33,11 @@
   </delete>
   <insert id="insert" parameterType="com.shouyingbao.pbs.entity.MchShop" useGeneratedKeys="true" keyProperty="id" >
     insert into mch_shop (`name`, `desc`, company_id, 
-      sub_company_id, create_at, create_by, 
+      sub_company_id,address, create_at, create_by,
       update_at, update_by, is_delete
       )
     values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, 
-      #{subCompanyId,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+      #{subCompanyId,jdbcType=INTEGER},#{address,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
       )
   </insert>
@@ -47,6 +48,7 @@
       `desc`,
       company_id,
       sub_company_id,
+      address,
       create_at,
       create_by,
       update_at,
@@ -58,6 +60,7 @@
       #{desc,jdbcType=VARCHAR},
       #{companyId,jdbcType=INTEGER},
       #{subCompanyId,jdbcType=INTEGER},
+      #{address,jdbcType=VARCHAR},
       #{createAt,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP},
@@ -79,6 +82,9 @@
       </if>
       <if test="subCompanyId != null" >
         sub_company_id = #{subCompanyId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -104,6 +110,7 @@
       `desc` = #{desc,jdbcType=VARCHAR},
       company_id = #{companyId,jdbcType=INTEGER},
       sub_company_id = #{subCompanyId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_at = #{updateAt,jdbcType=TIMESTAMP},

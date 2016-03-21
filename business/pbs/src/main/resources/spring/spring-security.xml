@@ -20,7 +20,7 @@
               <security:form-login
                       login-page="/auth/login"
                       authentication-failure-url="/auth/login?error=true"
-                      default-target-url="/main/common"/>
+                      default-target-url="/main/index"/>
 
               <security:logout
                       invalidate-session="true"

@@ -1,36 +1,86 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+         pageEncoding="UTF-8"%><html lang="zh-CN">
+<%@ include file="/common/tag.jsp"%>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Insert title here</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>欢迎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="test" />
+    <meta name="renderer" content="webkit">
+    <link href="${ctx}/css/login.css" type="text/css" rel="stylesheet" />
+    <link href="${ctx}/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <%--<script src="${ctx}/js/loader.js" type="text/javascript"></script>--%>
+    <!--[if lte IE 9]>
+    <meta http-equiv="refresh" content="1;url=ie.html" tppabs="http://msp.shouqianba.com/error/ie.html">
+    <script src="xdomain.min.js" tppabs="http://msp.wosaimg.com/js/lib/build/xdomain/0.6.12/xdomain.min.js" slave="http://api.wosai.cn/static/proxy.html"></script>
+    <![endif]-->
 </head>
+
 <body>
 
-<h1>Login</h1>
+<div class="login-form" ng-controller="loginController">
+    <div class="form-wrap" role="main" ng-show="type=='login'">
+        <h1 class="logo">
+            <a href="${ctx}/main/index">
+                <img style="width: 142px;" src="../image/logo.png">
+            </a>
+        </h1>
+        <form action="../j_spring_security_check" method="post">
 
-<div id="login-error">${error}</div>
+            <%--<div class="login-wrap login-loading">--%>
 
-<form action="../j_spring_security_check" method="post">
+                <div class="form-group">
+                    <div class="form-item">
+                        <label for="j_username">
+                            <i class="fa fa-user"></i>
+                            <span>用户名</span>
+                        </label>
+                        <input type="text" autofocus="autofocus" id="j_username" name="j_username" ng-model="username" class="form-control" placeholder="用户名" />
+                    </div>
+                    <div class="form-item">
+                        <label for="j_password">
+                            <i class="fa fa-lock"></i>
+                            <span>密码</span>
+                        </label>
+                        <input type="password" name="j_password" id="j_password" ng-model="password" class="form-control" placeholder="密码" />
+                        <a href="index-2.htm#/username" tppabs="http://msp.shouqianba.com/password/#/username">忘记密码？</a>
+                    </div>
+                   <%-- <div class="form-code" ng-show="needCaptcha">
+                        <input type="text" ng-model="captchaCode" placeholder="验证码"/>
+                        <img class="code" ng-src="{{captchaImg}}" tppabs="http://msp.shouqianba.com/login/{{captchaImg}}">
+                        <a class="refresh" href="javascript:;" ng-click="changeAuthcode()">看不清楚,换一张</a>
+                    </div>--%>
+                </div>
+                <%--<div class="form-tips" style="display:block;">
+                    <div ng-show="usernameError">用户名不能为空</div>
+                    <div ng-show="pwdError">密码不能为空</div>
+                    <div ng-show="captchaCodeError">验证码错误</div>
+                    <div ng-show="loginForm.password.$error.accountError">用户名或密码错误</div>
+                    <div ng-show="loginForm.password.$error.unknownError">服务器从架子上掉了下来，网管正在捡起来，反馈问题请发送邮件至mark@wosai-inc.com</div>
+                </div>--%>
+                <div class="form-btn">
+                    <button type="submit" class="btn btn-primary" id="login-btn" >登录</button>
+                </div>
+            <%--</div>--%>
 
-    <p>
-        <label for="j_username">Username</label> <input id="j_username"
-                                                        name="j_username" type="text"/>
-    </p>
+        </form>
+        <div class="footer" role="contentinfo">
+            <p class="copyright">
+                Copyright &copy; 2013 - 2014 Wosai Inc. All Rights Reserved
+            </p>
+        </div>
+    </div>
+</div>
 
-    <p>
-        <label for="j_password">Password</label> <input id="j_password"
-                                                        name="j_password" type="password"/>
-    </p>
-
-    <input type="submit" value="Login"/>
-
-</form>
-
+<%--<script>
+    $LAB.script(LIBS.jQuery)
+            .wait()
+            .script(LIBS.angular)
+            .script(LIBS.bootstrap)
+//            .script(COMMON.ERRORCODE)
+            .script(LIBS.md5)
+            .wait()
+            .script(IWOSAI.LOGIN)
+</script>--%>
 </body>
-</html>
