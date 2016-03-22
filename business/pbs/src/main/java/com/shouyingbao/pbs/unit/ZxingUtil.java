@@ -4,7 +4,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
-import com.shouyingbao.pbs.zxing.MatrixToImageWriter;
+import com.shouyingbao.pbs.unit.zxing.MatrixToImageWriter;
 
 import java.io.File;
 import java.util.HashMap;

@@ -83,9 +83,9 @@
 <body>
   <div id="tree" class="left">
     <ul class="nav nav-list">
-      <li class="folder expanded"><span class="menu-text">订单管理</span>
+      <li class="folder expanded"><span class="menu-text">公司管理</span>
         <ul>
-          <li><a href="${ctx}/main/common" target="mainFrame">商品母订单</a></li>
+          <li><a href="${ctx}/agent/search" target="mainFrame">区域管理</a></li>
           <li><a href="${ctx}/orderManager/search?module=order" target="mainFrame">商品子订单</a></li>
           <li><a href="${ctx}/couponOrder/search?currpage=1" target="mainFrame">优惠券订单</a></li>
         </ul>

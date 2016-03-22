@@ -84,7 +84,7 @@ public enum ConstantEnum {
 	AUTHORITY_MCH_FINANCE("MCH_FINANCE",""),
 
 
-	LIST_PAGE_SIZE(15,"分页条数");
+	LIST_PAGE_SIZE(2,"分页条数");
 
     private Object code;
 

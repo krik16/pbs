@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%><html lang="zh-CN">
 <%@ include file="/common/tag.jsp"%>
+
 <html>
 <link href="${ctx}/css/style.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
@@ -33,7 +34,7 @@
     </h1>
     <div class="navbar-brand nav-user" role="navigation">
       <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-        <i class="fa fa-user"></i> <span id="username"></span><i class="fa fa-caret-down"></i>
+        <i class="fa fa-user"></i> <span id="username">${sessionScope.user.userAccount}</span><i class="fa fa-caret-down"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li>

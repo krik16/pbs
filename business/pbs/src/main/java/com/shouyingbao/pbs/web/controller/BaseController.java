@@ -53,6 +53,7 @@ public class BaseController {
      * @return
      */
     public Integer getRowCount(Integer pageTotal){
-        return (int) Math.ceil(pageTotal / ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+        double total = Double.valueOf(pageTotal);
+        return (int) Math.ceil(total / ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
     }
 }

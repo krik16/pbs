@@ -44,7 +44,6 @@
                             <span>密码</span>
                         </label>
                         <input type="password" name="j_password" id="j_password" ng-model="password" class="form-control" placeholder="密码" />
-                        <a href="index-2.htm#/username" tppabs="http://msp.shouqianba.com/password/#/username">忘记密码？</a>
                     </div>
                    <%-- <div class="form-code" ng-show="needCaptcha">
                         <input type="text" ng-model="captchaCode" placeholder="验证码"/>
@@ -52,13 +51,6 @@
                         <a class="refresh" href="javascript:;" ng-click="changeAuthcode()">看不清楚,换一张</a>
                     </div>--%>
                 </div>
-                <%--<div class="form-tips" style="display:block;">
-                    <div ng-show="usernameError">用户名不能为空</div>
-                    <div ng-show="pwdError">密码不能为空</div>
-                    <div ng-show="captchaCodeError">验证码错误</div>
-                    <div ng-show="loginForm.password.$error.accountError">用户名或密码错误</div>
-                    <div ng-show="loginForm.password.$error.unknownError">服务器从架子上掉了下来，网管正在捡起来，反馈问题请发送邮件至mark@wosai-inc.com</div>
-                </div>--%>
                 <div class="form-btn">
                     <button type="submit" class="btn btn-primary" id="login-btn" >登录</button>
                 </div>

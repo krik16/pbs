@@ -1,4 +1,4 @@
-package com.shouyingbao.pbs.zxing;
+package com.shouyingbao.pbs.unit.zxing;
 
 import com.google.zxing.LuminanceSource;
 

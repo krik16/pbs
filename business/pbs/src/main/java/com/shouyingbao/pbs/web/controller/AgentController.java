@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -31,14 +32,21 @@ public class AgentController extends BaseController {
     @Autowired
     AgentService agentService;
 
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(ModelMap model) {
+        return "/agent/agent";
+    }
+
     @RequestMapping("/list")
     public String list(ModelMap model, @RequestBody Map<String, Object> map) {
         LOGGER.info("list:map={}", map);
         try {
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
             List<Agent> areaList = agentService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
-            Integer pageTotal = agentService.selectListCount(map);
-            model.addAttribute("rowCount", getRowCount(pageTotal));
+            Integer totalCount = agentService.selectListCount(map);
+            model.addAttribute("rowCount", getRowCount(totalCount));
+            model.addAttribute("totalCount",totalCount);
             model.addAttribute("currpage", currpage);
             model.addAttribute("list", areaList);
         } catch (Exception e) {
