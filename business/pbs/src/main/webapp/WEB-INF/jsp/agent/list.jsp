@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../common/tag.jsp" %>
+
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <thead>
@@ -18,7 +19,20 @@
                         <td>${entity.name}</td>
                         <td>${entity.desc}</td>
                         <td>${entity.areaId}</td>
-                        <td>${entity.areaId}</td>
+                        <td>
+                        <div class="col-sm-3">
+                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/agent/edit?id=${entity.id}">
+                                <i class="fa fa-edit"></i>
+                                <span class="btn-text" >修改</span>
+                            </a>
+                        </div>
+                        <div class="col-sm-3">
+                            <a class="btn btn btn-danger list-add" style="width: 90px;" id="cance-button" onclick="cance(${entity.id})">
+                                <i class="fa fa-times-circle"></i>
+                                <span class="btn-text" >删除</span>
+                            </a>
+                        </div>
+                        </td>
                     </tr>
                 </c:forEach>
             </c:when>

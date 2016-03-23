@@ -14,20 +14,6 @@ html,body {
 	background: #e7e8eb;
 }
 
-a {
-	color: #2d2d2d;
-	text-decoration: none;
-	cursor: pointer;
-}
-
-a:hover {
-	color: #cf0000;
-	text-decoration: none
-}
-
-img,a img {
-	border: 0px;
-}
 
 ul {
 	list-style: none;
@@ -69,7 +55,7 @@ form {
 }
 
 /*公用绿色按钮*/
-a.Button {
+/*a.Button {
 	width: 155px;
 	height: 40px;
 	border-radius: 3px;
@@ -91,7 +77,7 @@ a.Button.checked,a.Button:hover {
 	border: 1px solid #44b549;
 	background: #44b549;
 	color: #fff;
-}
+}*/
 
 /*公用绿色按钮end*/
 .page {
@@ -1699,7 +1685,7 @@ a.page,a.icon-page,a.icon-page-left {
 .display-none {
 	display: none;
 }
-/*提示信息遮罩弹出框 */
+/*/!*提示信息遮罩弹出框 *!/
 .MsgBoxBg,.MsgBoxBgTip {
 	background-color: #d5d6d9;
 	left: 0;
@@ -1717,7 +1703,7 @@ a.page,a.icon-page,a.icon-page-left {
 	height: auto;
 	left: 50%;
 	margin: -200px 0 0 -200px;
-	position: fixed !important; /* 浮动对话框 */
+	position: fixed !important; /!* 浮动对话框 *!/
 	position: absolute;
 	top: 50%;
 	z-index: 100;
@@ -1731,7 +1717,7 @@ a.page,a.icon-page,a.icon-page-left {
 	height: auto;
 	left: 50%;
 	margin: -200px 0 0 -200px;
-	position: fixed !important; /* 浮动对话框 */
+	position: fixed !important; /!* 浮动对话框 *!/
 	position: absolute;
 	top: 50%;
 	z-index: 100;
@@ -1776,7 +1762,7 @@ a.page,a.icon-page,a.icon-page-left {
 	display: inline-block;
 	margin: 20px 10px 0 10px;
 }
-/*提示信息遮罩弹出框 end*/
+/!*提示信息遮罩弹出框 end*!/*/
 
 /*活动管理 start*/
 .spanMl {
@@ -2119,81 +2105,6 @@ body,button,input,select,textarea,code {
 	border-color: #95C8F1;
 	box-shadow: 0 0 4px #95C8F1;
 }
-/* btn */
-.btn {
-	position: relative;
-	cursor: pointer;
-	display: inline-block;
-	vertical-align: middle;
-	font-size: 12px;
-	font-weight: bold;
-	height: 27px;
-	line-height: 27px;
-	min-width: 52px;
-	padding: 0 12px;
-	text-align: center;
-	text-decoration: none;
-	border-radius: 2px;
-	border: 1px solid #ddd;
-	color: #666;
-	background-color: #f5f5f5;
-	background: -webkit-linear-gradient(top, #F5F5F5, #F1F1F1);
-	background: -moz-linear-gradient(top, #F5F5F5, #F1F1F1);
-	background: linear-gradient(top, #F5F5F5, #F1F1F1);
-}
-
-input.btn {
-	height: 29px;
-}
-
-.btn:hover {
-	border-color: #c6c6c6;
-	color: #333;
-	background-color: #f8f8f8;
-	background: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1);
-	background: -moz-linear-gradient(top, #f8f8f8, #f1f1f1);
-	background: linear-gradient(top, #f8f8f8, #f1f1f1);
-	box-shadow: #ddd 0 1px 1px 0;
-}
-
-.btn:active,.btn.btn-active {
-	box-shadow: #ddd 0 1px 2px 0 inset;
-	border-color: #c6c6c6;
-}
-
-.btn:focus {
-	border-color: #4d90fe;
-	outline: none
-}
-
-.btn-primary {
-	border-color: #3079ED;
-	color: #F3F7FC;
-	background-color: #4D90FE;
-	background: -webkit-linear-gradient(top, #4D90FE, #4787ED);
-	background: -moz-linear-gradient(top, #4D90FE, #4787ED);
-	background: linear-gradient(top, #4D90FE, #4787ED);
-}
-
-.btn-primary:hover {
-	border-color: #2F5BB7;
-	color: #fff;
-	background-color: #4D90FE;
-	background: -webkit-linear-gradient(top, #4D90FE, #357AE8);
-	background: -moz-linear-gradient(top, #4D90FE, #357AE8);
-	background: linear-gradient(top, #4D90FE, #357AE8);
-}
-
-.btn-primary:active,.btn-primary.btn-active {
-	box-shadow: #2176D3 0 1px 2px 0 inset;
-	border-color: #3079ED;
-}
-
-.btn-primary:focus {
-	border-color: #4d90fe;
-	outline: none
-}
-/* 代码整理：懒人之家 www.lanrenzhijia.com */
 .theme-buy {
 	margin-top: 10%;
 	text-align: center;
@@ -2475,83 +2386,9 @@ a.btnsearch {
     margin-left: 30px;
 }
 
-.form-group {
-	display: inline-block;
-	height: 30px;
-	margin-bottom: 15px;
-	margin-right: 10px;
-	vertical-align: middle;
-}
 
 label {
 	display: inline-block;
 	max-width: 100%;
 	margin-bottom: 5px;
-}
-
-.form-group .form-control {
-	display: inline-block;
-	padding: 0 10px;
-	width: auto;
-	height: 30px;
-	border-radius: 2px;
-	vertical-align: baseline;
-	background: #fff;
-	font-size: 12px;
-	color: #666;
-	box-shadow: none;
-	border: 1px solid #d9dadc;
-}
-
-.form-group select {
-	min-width: 100px
-}
-
-.form-group input[type=text] {
-	padding-left: 10px;
-	padding-right: 10px
-}
-
-.form-inline .form-group input[type=text][readonly] {
-	cursor: pointer
-}
-
-.form-group .input-group-btn .btn {
-	padding: 4px 8px
-}
-
-.form-inline .form-group .input-group {
-	display: inline-table;
-	margin-right: 10px;
-	vertical-align: middle
-}
-
-.form-inline .form-group .input-group .dropdown-menu {
-	padding: 5px
-}
-
-.form-inline .form-group .input-group .dropdown-menu .btn {
-	border: 0
-}
-
-.form-inline .form-group .cms-btn {
-	border-radius: 3px
-}
-
-.divBtn {
-	margin-bottom: 20px
-}
-
-.btn-class {
-	display: inline-block;
-	float: left;
-	line-height: 30px;
-	width: 70px;
-	height: 30px;
-	background: #949494;
-	color: #fff;
-	text-align: center;
-	border-radius: 3px;
-	padding: 0px;
-	margin-right: 20px;
 }

@@ -7108,6 +7108,7 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 			url: url,
 			data: data,
 			success: callback,
+			contentType: "application/json; charset=UTF-8",
 			dataType: type
 		});
 	};

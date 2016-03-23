@@ -1,5 +1,6 @@
 package com.shouyingbao.pbs.web.controller.filter;
 
+import com.shouyingbao.pbs.Exception.UserNotFoundException;
 import com.shouyingbao.pbs.entity.User;
 import com.shouyingbao.pbs.web.controller.BaseController;
 import org.slf4j.Logger;
@@ -45,8 +46,10 @@ public class LoginFilter extends BaseController implements Filter {
                 getSessionUser(request);
             }
             chain.doFilter(request, response);
-        }catch (Exception e){
+        }catch (UserNotFoundException e){
             req.getRequestDispatcher("/auth/login").forward(request,response);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }

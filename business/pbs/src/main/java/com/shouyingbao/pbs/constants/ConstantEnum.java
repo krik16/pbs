@@ -38,7 +38,7 @@ public enum ConstantEnum {
 	EXCEPTION_REFUND_AUTHORITY("1019113","退款操作权限检查失败"),
 	NO_REFUND_AUTHORITY("1019114","您无操作退款的权限，请联系店长操作"),
 	EXCEPTION_BILL_DETAIL("1019115","交易明细查询失败"),
-	EXCEPTION_INSERT_FAIL("1019116","插入记录失败"),
+	EXCEPTION_INSERT_FAIL("1019116","保存记录失败"),
 	EXCEPTION_USER_NOT_LOGIN("1019117","用户未登录或登录失效，请重新登录"),
 
 	ALI_PAY_TIME_EXPIRE_GOODS("60m","商品支付宝支付默认超时时间"),

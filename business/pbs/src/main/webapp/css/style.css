@@ -7534,3 +7534,86 @@ body.mob-safari .sidebar.sidebar-fixed {
 .detail-toggle, .detail-toggle:focus, .detail-toggle:active {
     text-decoration: none
 }
+
+.list-add {
+    color: #fff!important;
+}
+
+/*提示信息遮罩弹出框 */
+.MsgBoxBg,.MsgBoxBgTip {
+    background-color: #d5d6d9;
+    left: 0;
+    opacity: 0.65;
+    position: absolute;
+    top: 0;
+    z-index: 99;
+    filter: alpha(opacity = 65);
+    -moz-opacity: 0.65;
+    -khtml-opacity: 0.65;
+}
+
+.MsgBox {
+    background-color: #fff;
+    height: auto;
+    left: 50%;
+    margin: -200px 0 0 -200px;
+    position: fixed !important; /* 浮动对话框 */
+    position: absolute;
+    top: 50%;
+    z-index: 100;
+    display: none;
+    padding: 20px 30px;
+    border: 1px solid #c5cace;
+}
+
+.MsgBoxConfirm,.MsgBoxTip {
+    background-color: #fff;
+    height: auto;
+    left: 50%;
+    margin: -200px 0 0 -200px;
+    position: fixed !important; /* 浮动对话框 */
+    position: absolute;
+    top: 50%;
+    z-index: 100;
+    display: none;
+}
+
+.MsgBoxTitle {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    background: #3a3a3a;
+    color: #fff;
+    font-size: 14px;
+}
+
+.MsgBoxMain {
+    padding: 20px 30px;
+    border: 1px solid #c5cace;
+    border-top: none;
+    overflow: auto;
+}
+
+.MsgBoxMain p {
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    color: #3a3a3a;
+    max-width: 350px;
+    padding-bottom: 10px;
+}
+
+.MsgBox p {
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    color: #3a3a3a;
+    max-width: 350px;
+}
+
+.MsgBox a {
+    float: left;
+    display: inline-block;
+    margin: 20px 10px 0 10px;
+}
+/*提示信息遮罩弹出框 end*/

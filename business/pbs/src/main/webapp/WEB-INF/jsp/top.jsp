@@ -29,7 +29,7 @@
       <i class="fa fa-bars"></i>
     </button>
     <h1 class="nav-logo">
-      <img src="../image/logo.png">
+      <%--<img src="../image/logo.png">--%>
       <span style="font-size: 20px; position: relative; top: 11px; height: 30px;">商户管理平台</span>
     </h1>
     <div class="navbar-brand nav-user" role="navigation">

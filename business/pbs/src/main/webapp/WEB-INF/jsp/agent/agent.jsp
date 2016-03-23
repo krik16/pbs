@@ -9,6 +9,7 @@ pageEncoding="UTF-8"%>
         <link href="${ctx}/css/index.css" type="text/css" rel="stylesheet" />
         <script src="${ctx}/js/jquery/jquery.js" type="text/javascript"></script>
         <script src="${ctx}/js/common/util.js" type="text/javascript"></script>
+        <script src="${ctx}/js/common/confirm.js" type="text/javascript"></script>
         <script src="${ctx}/js/jquery/jquery.poshytip.min.js" type="text/javascript"></script>
         <script src="${ctx}/js/bootstrap/bootstrap.min.js"
         type="text/javascript"></script>
@@ -23,6 +24,12 @@ pageEncoding="UTF-8"%>
         <div class="memSuper">
             <div class="memSuper-title">对账管理 >结算明细</div>
             <div class="memSuper-main">
+        <%--        <div class="alert alert-warning">
+                    <a href="#" class="close" data-dismiss="alert">
+                        &times;
+                    </a>
+                    <strong>警告！</strong>您的网络连接有问题。
+                </div>--%>
                 <div class="page-content ng-scope">
                     <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
                     <input id="rowCount" type="hidden" name="rowCount" value="${rowCount}"/>
@@ -44,6 +51,12 @@ pageEncoding="UTF-8"%>
                                         <span class="btn-text" >查询</span>
                                     </a>
                                 </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-primary" style="width: 90px;" href="${ctx}/agent/edit">
+                                        <i class="fa fa-edit"></i>
+                                        <span class="btn-text" >新建</span>
+                                    </a>
+                                </div>
                             </div>
                             <div id="result" style="margin: 0 30px;"></div>
                         </div>
@@ -55,3 +68,4 @@ pageEncoding="UTF-8"%>
         </div>
     </body>
 </html>
+<%@ include file="../common/confirm.jsp"%>
