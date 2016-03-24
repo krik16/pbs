@@ -42,6 +42,8 @@ public class LoginFilter extends BaseController implements Filter {
 
             }else if(request.getServletPath().contains("/image/")){
 
+            }else if(request.getServletPath().contains("/fonts/")){
+
             }else {
                 getSessionUser(request);
             }

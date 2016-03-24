@@ -14,8 +14,7 @@ pageEncoding="UTF-8"%>
         <script src="${ctx}/js/bootstrap/bootstrap.min.js"
         type="text/javascript"></script>
         <script src="${ctx}/js/common/list_common.js" type="text/javascript"></script>
-          <script src="${ctx}/js/agent/agent.js" type="text/javascript"></script>
-
+        <script src="${ctx}/js/agent/agent.js" type="text/javascript"></script>
         <link href="${ctx}/css/style.css" type="text/css" rel="stylesheet" />
         <link href="${ctx}/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
     </head>
@@ -31,8 +30,6 @@ pageEncoding="UTF-8"%>
                     <strong>警告！</strong>您的网络连接有问题。
                 </div>--%>
                 <div class="page-content ng-scope">
-                    <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
-                    <input id="rowCount" type="hidden" name="rowCount" value="${rowCount}"/>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             代理列表

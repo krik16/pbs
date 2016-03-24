@@ -6177,6 +6177,18 @@ span.input-icon {
     padding: 8px 10px
 }
 
+.input-group-onlytext-muted{
+    background: 0 0;
+    border: 0;
+    padding: 8px 10px
+}
+
+.input-group-onlytext-muted span:after {
+    content: ' *';
+    color: #999;
+    font-size: 150%;
+}
+
 .subpanel {
     border-bottom: 1px solid #dfdfdf;
     padding: 0 10px 5px

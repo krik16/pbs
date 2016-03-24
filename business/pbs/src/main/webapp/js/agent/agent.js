@@ -32,6 +32,18 @@ function save(){
 	var areaId = $("#area").val();
 	var desc = $("#desc").val();
 
+	if(!name){
+		Modal.alert({
+			msg: "名称不能为空!"
+		});
+		return;
+	}
+	if(areaId<=0){
+		Modal.alert({
+			msg: "所属区域不能为空!"
+		});
+		return;
+	}
 
 	$.post("../agent/save", {
 			id : id,
@@ -40,7 +52,10 @@ function save(){
 			desc : desc
 	}, function(data) {
 		if(data.meta.errno != 0){
-			alert("操作失败，"+data.meta.msg);
+			Modal.alert({
+				msg: "操作失败,"+data.meta.msg
+			});
+			return;
 		}
 		window.history.go(-1);
 		ajaxCommonSearch(url_,getSearchEntity());

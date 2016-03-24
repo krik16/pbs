@@ -41,7 +41,7 @@ public class AgentController extends BaseController {
 
 
     @RequestMapping(value = "/search")
-    public String search(ModelMap model) {
+    public String search() {
         return "/agent/agent";
     }
 
@@ -90,25 +90,6 @@ public class AgentController extends BaseController {
                 agent.setUpdateBy(getUser().getId());
                 agentService.update(agent);
             }
-            return ResponseData.success();
-        } catch (UserNotFoundException e) {
-            return ResponseData.failure(e.getCode(), e.getMessage());
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-            return ResponseData.failure(ConstantEnum.EXCEPTION_INSERT_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_INSERT_FAIL.getValueStr());
-        }
-
-    }
-
-    @RequestMapping("/update")
-    @ResponseBody
-    public ResponseData update(Agent agent) {
-        LOGGER.info("update:agent={}", agent);
-        try {
-            agent.setUpdateAt(DateUtil.getCurrDateTime());
-            agent.setUpdateBy(getUser().getId());
-            agentService.update(agent);
             return ResponseData.success();
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());

@@ -2,6 +2,8 @@
 <%@ include file="../common/tag.jsp" %>
 
 <div class="table-responsive">
+    <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
+    <input id="rowCount" type="hidden" name="rowCount" value="${rowCount}"/>
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>

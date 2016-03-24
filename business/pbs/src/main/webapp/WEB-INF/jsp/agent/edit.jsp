@@ -36,7 +36,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">名称：</span>
+                                <span class="input-group-addon input-group-onlytext-muted">名称：</span>
                                 <input id="name" type="text" value="${agent.name}" name="name"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="代理名称"/>
@@ -48,7 +48,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">区域：</span>
                                 <select class="form-control" id="area" name="area" required>
-                                    <option>选择所属区域</option>
+                                    <option value="0">选择所属区域</option>
                                     <c:forEach items="${agent.areaList}" var="item">
                                         <option value="${item.id}" <c:if test="${item.id==agent.areaId}">selected="true"</c:if>>${item.name}</option>
                                     </c:forEach>
