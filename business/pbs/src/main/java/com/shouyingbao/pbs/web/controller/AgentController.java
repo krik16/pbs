@@ -50,7 +50,7 @@ public class AgentController extends BaseController {
         LOGGER.info("list:map={}", map);
         try {
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
-            List<Agent> areaList = agentService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+            List<AgentVO> areaList = agentService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = agentService.selectListCount(map);
             model.addAttribute("rowCount", getRowCount(totalCount));
             model.addAttribute("totalCount", totalCount);
@@ -117,7 +117,7 @@ public class AgentController extends BaseController {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
-            return ResponseData.failure(ConstantEnum.EXCEPTION_INSERT_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_INSERT_FAIL.getValueStr());
+            return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
         }
 
     }

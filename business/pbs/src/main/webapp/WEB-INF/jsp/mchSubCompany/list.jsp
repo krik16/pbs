@@ -7,9 +7,10 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
-            <th>代理名称</th>
-            <th>代理描述</th>
-            <th>所属区域</th>
+            <th>分公司名称</th>
+            <th>分公司地址</th>
+            <th>所属公司</th>
+            <th>备注</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -19,11 +20,12 @@
                 <c:forEach var="entity" items="${list}" varStatus="status">
                     <tr>
                         <td>${entity.name}</td>
+                        <td>${entity.address}</td>
+                        <td>${entity.mchCompanyName}</td>
                         <td>${entity.desc}</td>
-                        <td>${entity.areaName}</td>
                         <td>
                         <div class="col-sm-3">
-                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/agent/edit?id=${entity.id}">
+                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/mchSubCompany/edit?id=${entity.id}">
                                 <i class="fa fa-edit"></i>
                                 <span class="btn-text" >修改</span>
                             </a>

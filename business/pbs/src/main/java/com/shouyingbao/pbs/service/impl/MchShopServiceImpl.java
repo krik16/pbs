@@ -3,6 +3,7 @@ package com.shouyingbao.pbs.service.impl;
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
 import com.shouyingbao.pbs.entity.MchShop;
 import com.shouyingbao.pbs.service.MchShopService;
+import com.shouyingbao.pbs.vo.MchShopVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,11 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
     }
 
     @Override
-    public List<MchShop> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
-        map.put("currentPage", (currentPage - 1) * pageSize);
-        map.put("pageSize", pageSize);
+    public List<MchShopVO> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
+        if(currentPage != null && pageSize != null) {
+            map.put("currentPage", (currentPage - 1) * pageSize);
+            map.put("pageSize", pageSize);
+        }
         return this.getBaseDao().selectListBySql(NAMESPACE + ".selectListByPage", map);
     }
 

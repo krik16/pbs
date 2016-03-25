@@ -34,7 +34,7 @@ public class BaseController {
                     .getPrincipal();
         }catch (Exception e){
             LOGGER.error(ConstantEnum.EXCEPTION_USER_NOT_LOGIN.getValueStr());
-            e.printStackTrace();
+//            e.printStackTrace();
             throw new UserNotFoundException(ConstantEnum.EXCEPTION_USER_NOT_LOGIN.getCodeStr(),ConstantEnum.EXCEPTION_USER_NOT_LOGIN.getValueStr());
         }
     }

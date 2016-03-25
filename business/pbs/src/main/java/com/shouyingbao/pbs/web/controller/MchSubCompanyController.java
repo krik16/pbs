@@ -4,10 +4,14 @@ import com.shouyingbao.pbs.Exception.UserNotFoundException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
+import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchSubCompany;
+import com.shouyingbao.pbs.service.MchCompanyService;
 import com.shouyingbao.pbs.service.MchSubCompanyService;
+import com.shouyingbao.pbs.vo.MchSubCompanyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,31 +36,61 @@ public class MchSubCompanyController extends BaseController{
     @Autowired
     MchSubCompanyService mchSubCompanyService;
 
+    @Autowired
+    MchCompanyService mchCompanyService;
+
+    @RequestMapping(value = "/search")
+    public String search() {
+        return "/mchSubCompany/mchSubCompany";
+    }
+
     @RequestMapping("/list")
     public String list(ModelMap model,@RequestBody Map<String,Object> map){
         LOGGER.info("list:map={}", map);
         try {
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
-            List<MchSubCompany> mchSubCompanyList = mchSubCompanyService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
-            Integer pageTotal = mchSubCompanyService.selectListCount(map);
-            model.addAttribute("rowCount", getRowCount(pageTotal));
+            List<MchSubCompanyVO> mchSubCompanyList = mchSubCompanyService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+            Integer totalCount = mchSubCompanyService.selectListCount(map);
+            model.addAttribute("rowCount", getRowCount(totalCount));
+            model.addAttribute("totalCount", totalCount);
             model.addAttribute("currpage", currpage);
             model.addAttribute("list", mchSubCompanyList);
         }catch (Exception e){
             LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
-        return "mchCompany/list";
+        return "mchSubCompany/list";
     }
 
-    @RequestMapping("/insert")
+    @RequestMapping("/edit")
+    public String edit(ModelMap modelMap, Integer id) {
+        LOGGER.info("edit:id={}",id);
+        MchSubCompanyVO mchSubCompanyVO = new MchSubCompanyVO();
+        if (id != null && id > 0) {
+            MchSubCompany mchSubCompany = mchSubCompanyService.selectById(id);
+            BeanUtils.copyProperties(mchSubCompany, mchSubCompanyVO);
+        }
+        List<MchCompany> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+        mchSubCompanyVO.setMchCompanyList(mchCompanyList);
+        modelMap.addAttribute("entity", mchSubCompanyVO);
+        return "mchSubCompany/edit";
+    }
+
+    @RequestMapping("/save")
     @ResponseBody
-    public ResponseData insert(@RequestBody MchSubCompany mchSubCompany){
-        LOGGER.info("insert:mchsubCompany={}",mchSubCompany);
+    public ResponseData save(MchSubCompany mchSubCompany){
+        LOGGER.info("save:mchSubCompany={}", mchSubCompany);
         try {
-            mchSubCompany.setCreateAt(DateUtil.getCurrDateTime());
-            mchSubCompany.setCreateBy(getUser().getId());
-            mchSubCompanyService.insert(mchSubCompany);
+
+            if (mchSubCompany.getId() == null) {
+                mchSubCompany.setCreateAt(DateUtil.getCurrDateTime());
+                mchSubCompany.setCreateBy(getUser().getId());
+                mchSubCompanyService.insert(mchSubCompany);
+            } else {
+                mchSubCompany.setUpdateAt(DateUtil.getCurrDateTime());
+                mchSubCompany.setUpdateBy(getUser().getId());
+                mchSubCompanyService.update(mchSubCompany);
+            }
             return ResponseData.success();
         }catch (UserNotFoundException e){
             return ResponseData.failure(e.getCode(),e.getMessage());
@@ -67,22 +102,42 @@ public class MchSubCompanyController extends BaseController{
 
     }
 
-    @RequestMapping("/update")
+ @RequestMapping("/cance")
     @ResponseBody
-    public ResponseData update(@RequestBody MchSubCompany mchsubCompany){
-        LOGGER.info("update:mchsubCompany={}",mchsubCompany);
+    public ResponseData cance(Integer id) {
+        LOGGER.info("cance:id={}", id);
         try {
-            mchsubCompany.setUpdateAt(DateUtil.getCurrDateTime());
-            mchsubCompany.setUpdateBy(getUser().getId());
-            mchSubCompanyService.update(mchsubCompany);
+            MchSubCompany mchSubCompany = mchSubCompanyService.selectById(id);
+            mchSubCompany.setUpdateAt(DateUtil.getCurrDateTime());
+            mchSubCompany.setUpdateBy(getUser().getId());
+            mchSubCompany.setIsDelete(ConstantEnum.IS_DELETE_1.getCodeByte());
+            mchSubCompanyService.update(mchSubCompany);
             return ResponseData.success();
-        }catch (UserNotFoundException e){
-            return ResponseData.failure(e.getCode(),e.getMessage());
-        }catch (Exception e){
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
-            return ResponseData.failure(ConstantEnum.EXCEPTION_INSERT_FAIL.getCodeStr(),ConstantEnum.EXCEPTION_INSERT_FAIL.getValueStr());
+            return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
         }
 
     }
+
+    @RequestMapping("/getByCompanyId")
+    @ResponseBody
+    public ResponseData getByCompanyId(Integer parentId) {
+        LOGGER.info("getByCompanyId:parentId={}", parentId);
+        try {
+            List<MchSubCompany> mchSubCompanyList = mchSubCompanyService.selectByCompanyId(parentId);
+            return ResponseData.success(mchSubCompanyList);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_OPERATION_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_OPERATION_FAIL.getValueStr());
+        }
+
+    }
+
 }

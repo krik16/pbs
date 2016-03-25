@@ -67,18 +67,7 @@ function ajaxCommonSearch(url_,searchEntity) {
             });
         },
     	error : function(e) {
-    		   _util.cmsTip("加载数据列表失败，请稍后重试");
 		}
-    });
-}
-
-function errorMsg(){
-    $.alert({
-        title: 'Alert!',
-        content: 'Simple alert!',
-        confirm: function(){
-            $.alert('Confirmed!'); // shorthand.
-        }
     });
 }
 

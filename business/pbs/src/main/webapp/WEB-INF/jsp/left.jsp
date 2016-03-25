@@ -2,15 +2,8 @@
          pageEncoding="UTF-8"%><html lang="zh-CN">
 <%@ include file="/common/tag.jsp"%>
 <head>
-  <title>Wosai 智慧的商业</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <meta name="description" content="wosai,喔噻,智慧的商业" />
-  <meta name="renderer" content="webkit">
   <link href="${ctx}/css/style.css" type="text/css" rel="stylesheet" />
   <link href="${ctx}/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
-  <link href="${ctx}/css/fileuploader.css" type="text/css" rel="stylesheet" />
-  <link href="${ctx}/css/ng-tags-input.bootstrap.min.css" type="text/css" rel="stylesheet" />
-  <link href="${ctx}/css/ng-tags-input.min.css" type="text/css" rel="stylesheet" />
   <link href="${ctx}/css/jquery-ui.min.css" type="text/css" rel="stylesheet" />
   <link href="${ctx}/css/summernote.css" type="text/css" rel="stylesheet" />
   <link href="${ctx}/css/ui.fancytree.css" type="text/css" rel="stylesheet" />     <!-- 树状插件css-->
@@ -85,15 +78,16 @@
     <ul class="nav nav-list">
       <li class="folder expanded"><span class="menu-text">公司管理</span>
         <ul>
-          <li><a href="${ctx}/agent/search" target="mainFrame">区域管理</a></li>
-          <li><a href="${ctx}/orderManager/search?module=order" target="mainFrame">商品子订单</a></li>
-          <li><a href="${ctx}/couponOrder/search?currpage=1" target="mainFrame">优惠券订单</a></li>
+          <li><a href="${ctx}/area/search" target="mainFrame">区域管理</a></li>
+          <li><a href="${ctx}/agent/search" target="mainFrame">代理管理</a></li>
+          <li><a href="${ctx}/user/search" target="mainFrame">用户管理</a></li>
         </ul>
       </li>
       <li class="folder expanded">商家服务
         <ul>
-          <li><a href="${ctx}/bs/search?module=merchant" target="mainFrame">提现审核</a></li>
-          <li><a href="${ctx}/sc/search?module=merchant" target="mainFrame">返佣审核</a></li>
+          <li><a href="${ctx}/mchCompany/search" target="mainFrame">公司管理</a></li>
+          <li><a href="${ctx}/mchSubCompany/search" target="mainFrame">分公司管理</a></li>
+          <li><a href="${ctx}/mchShop/search" target="mainFrame">门店管理</a></li>
         </ul>
       </li>
       <sec:authorize ifAnyGranted="TMS_TRADE_VIEW,TMS_DRAW_VIEW" >

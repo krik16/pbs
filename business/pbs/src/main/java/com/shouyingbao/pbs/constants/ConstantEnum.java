@@ -40,6 +40,8 @@ public enum ConstantEnum {
 	EXCEPTION_BILL_DETAIL("1019115","交易明细查询失败"),
 	EXCEPTION_INSERT_FAIL("1019116","保存记录失败"),
 	EXCEPTION_USER_NOT_LOGIN("1019117","用户未登录或登录失效，请重新登录"),
+	EXCEPTION_CANCE_FAIL("1019118","删除记录失败"),
+	EXCEPTION_OPERATION_FAIL("1019119","操作失败"),
 
 	ALI_PAY_TIME_EXPIRE_GOODS("60m","商品支付宝支付默认超时时间"),
 	ALI_PAY_TIME_EXPIRE_COUPONS("15m","代金券支付宝支付默认超时时间"),

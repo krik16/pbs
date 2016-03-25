@@ -13,16 +13,25 @@
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
+
+  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.MchSubCompanyVO" extends="BaseResultMap">
+    <result column="mchCompany_name" property="mchCompanyName" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, `name`, `desc`, address, company_id, create_at, create_by, update_at, update_by, 
     is_delete
   </sql>
+
+  <sql id="Base_Column_VOList" >
+    mch_sub_company.id, mch_sub_company.`name`, mch_sub_company.`desc`, mch_sub_company.address, mch_sub_company.company_id, mch_sub_company.create_at, mch_sub_company.create_by, mch_sub_company.update_at, mch_sub_company.update_by,
+    mch_sub_company.is_delete,mch_company.name AS mchCompanyName
+  </sql>
   <sql id="list_where_clause">
     <if test="name != null and name != ''">
-      and name like
+      and mch_sub_company.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
     </if>
-    and is_delete = 0
+    and mch_sub_company.is_delete = 0
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -116,15 +125,15 @@
       is_delete = #{isDelete,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
     select
-    <include refid="Base_Column_List" />
-    from mch_sub_company
+    <include refid="Base_Column_VOList" />
+    from mch_sub_company left join mch_company on mch_sub_company.company_id = mch_company.id
     <where>
       <include refid="list_where_clause" />
     </where>
     <if test="orderby == null">
-      order by create_at desc
+      order by mch_sub_company.create_at desc
     </if>
     <if test="currentPage != null">
       limit
@@ -140,5 +149,14 @@
     <where>
       <include refid="list_where_clause" />
     </where>
+  </select>
+
+  <select id="selectByCompanyId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from mch_sub_company
+    <if test="companyId > 0">
+      where company_id = #{companyId,jdbcType=INTEGER}
+    </if>
   </select>
 </mapper>

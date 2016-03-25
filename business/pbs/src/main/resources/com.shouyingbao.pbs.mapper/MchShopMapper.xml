@@ -14,12 +14,20 @@
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
+  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.MchShopVO" >
+    <result column="companyName" property="company_name" jdbcType="VARCHAR" />
+    <result column="subCompanyName" property="sub_company_name" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, `name`, `desc`, company_id, sub_company_id,address, create_at, create_by, update_at,
-    update_by, is_delete
+    mch_shop.id, mch_shop.`name`, mch_shop.`desc`, mch_shop.company_id, mch_shop.sub_company_id,mch_shop.address, mch_shop.create_at, mch_shop.create_by, mch_shop.update_at,
+    mch_shop.update_by, mch_shop.is_delete,mch_company.name as company_name,mch_sub_company.name as sub_company_name
   </sql>
   <sql id="list_where_clause">
-
+    <if test="name != null and name != ''">
+      and mch_shop.name like
+      concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    and mch_shop.is_delete = 0
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -118,10 +126,11 @@
       is_delete = #{isDelete,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from mch_shop
+    from 	mch_shop left join mch_company on mch_shop.company_id = mch_company.id
+    left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
     <where>
       <include refid="list_where_clause" />
     </where>

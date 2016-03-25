@@ -7,10 +7,13 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
-            <th>代理名称</th>
-            <th>代理描述</th>
-            <th>所属区域</th>
-            <th>操作</th>
+            <th>账号</th>
+            <th>姓名</th>
+            <th>电话号码</th>
+            <th>是否公司员工</th>
+            <th>所属公司</th>
+            <th>所属分公司</th>
+            <th>所属门店</th>
         </tr>
         </thead>
         <tbody>
@@ -18,12 +21,16 @@
             <c:when test="${not empty list}">
                 <c:forEach var="entity" items="${list}" varStatus="status">
                     <tr>
-                        <td>${entity.name}</td>
-                        <td>${entity.desc}</td>
-                        <td>${entity.areaName}</td>
+                        <td>${entity.userAccount}</td>
+                        <td>${entity.userName}</td>
+                        <td>${entity.userPhone}</td>
+                        <td>${entity.isEmployee}</td>
+                        <td>${entity.mchCompanyName}</td>
+                        <td>${entity.mchSubcompanyName}</td>
+                        <td>${entity.mchShopName}</td>
                         <td>
                         <div class="col-sm-3">
-                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/agent/edit?id=${entity.id}">
+                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/user/edit?id=${entity.id}">
                                 <i class="fa fa-edit"></i>
                                 <span class="btn-text" >修改</span>
                             </a>

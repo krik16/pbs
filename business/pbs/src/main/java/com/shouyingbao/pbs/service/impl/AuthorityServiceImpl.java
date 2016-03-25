@@ -49,8 +49,10 @@ public class AuthorityServiceImpl extends BaseServiceImpl implements AuthoritySe
 
     @Override
     public List<Authority> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
-        map.put("currentPage", (currentPage - 1) * pageSize);
-        map.put("pageSize", pageSize);
+        if(currentPage != null && pageSize != null) {
+            map.put("currentPage", (currentPage - 1) * pageSize);
+            map.put("pageSize", pageSize);
+        }
         return this.getBaseDao().selectListBySql(NAMESPACE + ".selectListByPage", map);
     }
 

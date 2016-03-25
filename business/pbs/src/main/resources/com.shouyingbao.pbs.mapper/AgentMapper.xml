@@ -12,15 +12,23 @@
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
-  <sql id="Base_Column_List" >
+
+  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.AgentVO"  extends="BaseResultMap">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
     id, `name`, `desc`, area_id, create_at, create_by, update_at, update_by, is_delete
+  </sql>
+  <sql id="Base_Column_VOList">
+    agent.id, agent.`name`, agent.`desc`, agent.area_id, agent.create_at, agent.create_by, agent.update_at, agent.update_by, agent.is_delete,area.name as area_name
   </sql>
   <sql id="list_where_clause">
     <if test="name != null and name != ''">
-      and name like
+      and agent.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
     </if>
-    and is_delete = 0
+    and agent.is_delete = 0
 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -107,10 +115,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
     select
-    <include refid="Base_Column_List" />
-    from agent
+    <include refid="Base_Column_VOList" />
+    from agent left join area on area.id = agent.area_id
     <where>
       <include refid="list_where_clause" />
     </where>

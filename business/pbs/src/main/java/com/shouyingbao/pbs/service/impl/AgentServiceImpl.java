@@ -3,6 +3,7 @@ package com.shouyingbao.pbs.service.impl;
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
 import com.shouyingbao.pbs.entity.Agent;
 import com.shouyingbao.pbs.service.AgentService;
+import com.shouyingbao.pbs.vo.AgentVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class AgentServiceImpl extends BaseServiceImpl implements AgentService{
     }
 
     @Override
-    public List<Agent> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
+    public List<AgentVO> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
         map.put("currentPage", (currentPage - 1) * pageSize);
         map.put("pageSize", pageSize);
         return this.getBaseDao().selectListBySql(NAMESPACE + ".selectListByPage", map);
