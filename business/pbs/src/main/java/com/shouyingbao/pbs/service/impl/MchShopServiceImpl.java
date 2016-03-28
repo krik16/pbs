@@ -25,7 +25,7 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
 
     @Override
     public void insert(MchShop mchShop) {
-        this.getBaseDao().insertBySql(NAMESPACE+".insertSelective");
+        this.getBaseDao().insertBySql(NAMESPACE+".insertSelective",mchShop);
     }
 
     @Override
