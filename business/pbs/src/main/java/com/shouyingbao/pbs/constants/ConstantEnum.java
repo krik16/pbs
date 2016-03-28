@@ -85,6 +85,7 @@ public enum ConstantEnum {
 	AUTHORITY_MCH_CASHIER("MCH_CASHIER",""),
 	AUTHORITY_MCH_FINANCE("MCH_FINANCE",""),
 
+	DEFAULT_PASSWORD("123456","默认密码"),
 
 	LIST_PAGE_SIZE(2,"分页条数");
 

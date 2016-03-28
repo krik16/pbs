@@ -10,10 +10,12 @@
             <th>账号</th>
             <th>姓名</th>
             <th>电话号码</th>
-            <th>是否公司员工</th>
+            <th>用户类型</th>
+            <th>角色</th>
             <th>所属公司</th>
             <th>所属分公司</th>
             <th>所属门店</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -24,21 +26,28 @@
                         <td>${entity.userAccount}</td>
                         <td>${entity.userName}</td>
                         <td>${entity.userPhone}</td>
-                        <td>${entity.isEmployee}</td>
-                        <td>${entity.mchCompanyName}</td>
-                        <td>${entity.mchSubcompanyName}</td>
-                        <td>${entity.mchShopName}</td>
+                        <td>${entity.isEmployee==0?'内部员工':'合作商户'}</td>
+                        <td>${entity.roleName}</td>
+                        <td>${entity.companyName}</td>
+                        <td>${entity.subCompanyName}</td>
+                        <td>${entity.shopName}</td>
                         <td>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/user/edit?id=${entity.id}">
                                 <i class="fa fa-edit"></i>
                                 <span class="btn-text" >修改</span>
                             </a>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <a class="btn btn btn-danger list-add" style="width: 90px;" id="cance-button" onclick="cance(${entity.id})">
                                 <i class="fa fa-times-circle"></i>
                                 <span class="btn-text" >删除</span>
+                            </a>
+                        </div>
+                        <div class="col-sm-4">
+                            <a class="btn btn btn-danger list-add" style="width: 90px;" id="reset-button" onclick="reset(${entity.id})">
+                                <i class="fa fa-wrench"></i>
+                                <span class="btn-text" >重置密码</span>
                             </a>
                         </div>
                         </td>

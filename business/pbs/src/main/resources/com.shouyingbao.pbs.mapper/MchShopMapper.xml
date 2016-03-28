@@ -14,11 +14,15 @@
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
-  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.MchShopVO" >
-    <result column="companyName" property="company_name" jdbcType="VARCHAR" />
-    <result column="subCompanyName" property="sub_company_name" jdbcType="VARCHAR" />
+  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.MchShopVO" extends="BaseResultMap">
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="sub_company_name" property="subCompanyName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
+    id, `name`, `desc`, company_id, sub_company_id,address, create_at, create_by, update_at,
+    update_by, is_delete
+  </sql>
+  <sql id="Base_Column_VOList" >
     mch_shop.id, mch_shop.`name`, mch_shop.`desc`, mch_shop.company_id, mch_shop.sub_company_id,mch_shop.address, mch_shop.create_at, mch_shop.create_by, mch_shop.update_at,
     mch_shop.update_by, mch_shop.is_delete,mch_company.name as company_name,mch_sub_company.name as sub_company_name
   </sql>
@@ -128,7 +132,7 @@
   </update>
   <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
     select
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_VOList" />
     from 	mch_shop left join mch_company on mch_shop.company_id = mch_company.id
     left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
     <where>
@@ -152,4 +156,35 @@
       <include refid="list_where_clause" />
     </where>
   </select>
+
+
+  <select id="selectByCompanyId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+    where company_id=#{companyId}
+  </select>
+
+  <select id="selectBySubCompanyId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+   where sub_company_id=#{subCompanyId}
+  </select>
+
+  <select id="selectAllList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+  </select>
+
+
+  <select id="selectOnlySelf" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+    where company_id = 0 and sub_company_id = 0
+  </select>
+
+
 </mapper>

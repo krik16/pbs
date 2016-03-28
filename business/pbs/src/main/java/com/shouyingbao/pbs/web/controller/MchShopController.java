@@ -127,6 +127,40 @@ public class MchShopController extends BaseController{
             e.printStackTrace();
             return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
         }
+    }
+
+    @RequestMapping("/getByCompanyId")
+    @ResponseBody
+    public ResponseData getByCompanyId(Integer parentId) {
+        LOGGER.info("getByCompanyId:parentId={}", parentId);
+        try {
+            List<MchShop> mchShopList = mchShopService.selectByCompanyId(parentId);
+            return ResponseData.success(mchShopList);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_OPERATION_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_OPERATION_FAIL.getValueStr());
+        }
 
     }
+
+    @RequestMapping("/getBySubCompanyId")
+    @ResponseBody
+    public ResponseData getBySubCompanyId(Integer parentId) {
+        LOGGER.info("getBySubCompanyId:parentId={}", parentId);
+        try {
+            List<MchShop> mchShopList = mchShopService.selectBySubCompanyId(parentId);
+            return ResponseData.success(mchShopList);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_OPERATION_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_OPERATION_FAIL.getValueStr());
+        }
+
+    }
+
 }

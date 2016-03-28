@@ -21,4 +21,12 @@ public interface MchShopService {
     List<MchShopVO> selectListByPage(Map<String,Object> map,Integer currentPage,Integer pageSize);
 
     Integer selectListCount(Map<String,Object> map);
+
+    List<MchShop> selectByCompanyId(Integer companyId);
+
+    List<MchShop> selectBySubCompanyId(Integer subCompanyId);
+
+    List<MchShop> selectAllList();
+
+    List<MchShop> selectOnlySelf();
 }

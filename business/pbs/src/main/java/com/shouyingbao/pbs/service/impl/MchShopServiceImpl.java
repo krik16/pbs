@@ -30,7 +30,7 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
 
     @Override
     public void update(MchShop mchShop) {
-        this.getBaseDao().insertBySql(NAMESPACE+".updateByPrimaryKeySelective");
+        this.getBaseDao().insertBySql(NAMESPACE+".updateByPrimaryKeySelective",mchShop);
     }
 
     @Override
@@ -52,5 +52,29 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
     @Override
     public Integer selectListCount(Map<String, Object> map) {
         return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectListCount", map);
+    }
+
+    @Override
+    public List<MchShop> selectByCompanyId(Integer companyId) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("companyId",companyId);
+        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectByCompanyId", map);
+    }
+
+    @Override
+    public List<MchShop> selectBySubCompanyId(Integer subCompanyId) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("subCompanyId",subCompanyId);
+        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectBySubCompanyId",map);
+    }
+
+    @Override
+    public List<MchShop> selectAllList() {
+        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectAllList");
+    }
+
+    @Override
+    public List<MchShop> selectOnlySelf() {
+        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectOnlySelf");
     }
 }

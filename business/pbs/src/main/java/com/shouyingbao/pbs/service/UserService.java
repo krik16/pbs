@@ -1,6 +1,7 @@
 package com.shouyingbao.pbs.service;
 
 import com.shouyingbao.pbs.entity.User;
+import com.shouyingbao.pbs.vo.UserVO;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public interface UserService {
 
     User selectById(Integer id);
 
-    List<User> selectListByPage(Map<String,Object> map,Integer currentPage,Integer pageSize);
+    List<UserVO> selectListByPage(Map<String,Object> map,Integer currentPage,Integer pageSize);
 
     Integer selectListCount(Map<String,Object> map);
 

@@ -11,6 +11,8 @@ public class Role implements Serializable {
 
     private String desc;
 
+    private Byte type;
+
     private Date createAt;
 
     private Integer createBy;
@@ -43,6 +45,14 @@ public class Role implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
     }
 
     public Date getCreateAt() {

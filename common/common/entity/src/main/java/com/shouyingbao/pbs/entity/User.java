@@ -3,7 +3,7 @@ package com.shouyingbao.pbs.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable {
+public class User implements Serializable{
     private static final long serialVersionUID = -8143315016693212851L;
     private Integer id;
 
@@ -18,8 +18,6 @@ public class User implements Serializable {
     private String userNickName;
 
     private String cardId;
-
-    private Integer roleId;
 
     private byte isEmployee;
 
@@ -97,13 +95,6 @@ public class User implements Serializable {
         this.cardId = cardId;
     }
 
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
 
     public byte getIsEmployee() {
         return isEmployee;
@@ -183,5 +174,28 @@ public class User implements Serializable {
 
     public void setShopId(Integer shopId) {
         this.shopId = shopId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userPhone='" + userPhone + '\'' +
+                ", userAccount='" + userAccount + '\'' +
+                ", userPwd='" + userPwd + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userNickName='" + userNickName + '\'' +
+                ", cardId='" + cardId + '\'' +
+                ", isEmployee=" + isEmployee +
+                ", desc='" + desc + '\'' +
+                ", shopId=" + shopId +
+                ", companyId=" + companyId +
+                ", subCompanyId=" + subCompanyId +
+                ", createAt=" + createAt +
+                ", createBy=" + createBy +
+                ", updateAt=" + updateAt +
+                ", updateBy=" + updateBy +
+                ", isDelete=" + isDelete +
+                '}';
     }
 }

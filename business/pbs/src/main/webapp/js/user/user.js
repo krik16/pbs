@@ -31,9 +31,10 @@ function save(){
 	var userName = $("#userName").val();
 	var userPhone = $("#userPhone").val();
 	var isEmployee = $("#isEmployee").val();
-	var mchCompanyId = $("#mchCompanyId").val();
-	var mchSubCompanyId = $("#mchSubCompanyId").val();
-	var mchShopId = $("#mchShopId").val();
+	var roleId = $("#roleId").val();
+	var companyId = $("#companyId").val();
+	var subCompanyId = $("#subCompanyId").val();
+	var shopId = $("#shopId").val();
 
 	if(!userAccount){
 		Modal.alert({
@@ -60,9 +61,10 @@ function save(){
 			userName : userName,
 			userPhone : userPhone,
 			isEmployee : isEmployee,
-			mchCompanyId : mchCompanyId,
-			mchSubCompanyId : mchSubCompanyId,
-			mchShopId : mchShopId,
+			roleId : roleId,
+			companyId : companyId,
+			subCompanyId : subCompanyId,
+			shopId : shopId,
 	}, function(data) {
 		if(data.meta.errno != 0){
 			Modal.alert({
@@ -82,7 +84,7 @@ function cance(id){
 		})
 		.on( function (e) {
 			if(e) {
-				$.post("../user/cance?id=" + id, {}, function (data) {
+				$.post("../user/cance?id=" + id, function (data) {
 					if (data.meta.errno != 0) {
 						Modal.alert({
 							msg: "操作失败,"+data.meta.msg
@@ -94,4 +96,64 @@ function cance(id){
 			}
 		});
 
+}
+function reset(id){
+	Modal.confirm(
+		{
+			msg: "是否确认重置密码？"
+		})
+		.on( function (e) {
+			if(e) {
+				$.post("../user/resetPwd?id=" + id, function (data) {
+					if (data.meta.errno != 0) {
+						Modal.alert({
+							msg: "操作失败,"+data.meta.msg
+						});
+						return;
+					}
+					ajaxCommonSearch(url_, getSearchEntity());
+				}, "json");
+			}
+		});
+
+}
+
+
+function isEmployeeSelect(parentId){
+	var pid = document.getElementById(parentId);
+	if(pid.value >=0){
+		$("#role-select").css("display","inline-block");
+	}else{
+		$("#role-select").css("display","none");
+	}
+
+	if(pid.value > 0){
+		$("#company-select").css("display","inline-block");
+		$("#shop-select").css("display","inline-block");
+	}else{
+		$("#company-select").css("display","none");
+		$("#subCompany-select").css("display","none");
+
+	}
+	selectChange("../user/getRoleByType",parentId,'roleId');
+}
+
+
+function companySelect(url,parentId,eId){
+	var pid = document.getElementById(parentId);
+	if(pid.value > 0){
+		$("#subCompany-select").css("display","inline-block");
+	}else{
+		$("#subCompany-select").css("display","none");
+	}
+	//改变分公司选项
+	selectChange(url,parentId,eId);
+	//改变店铺选项
+	selectChange('../mchShop/getByCompanyId',parentId,'shopId');
+}
+
+
+function subCompanySelect(url,parentId,eId){
+	//var pid = document.getElementById(parentId);
+	selectChange(url,parentId,eId);
 }

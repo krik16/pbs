@@ -2,6 +2,7 @@ package com.shouyingbao.pbs.vo;
 
 import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchShop;
+import com.shouyingbao.pbs.entity.Role;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class MchShopVO extends MchShop{
 
     private String subCompanyName;
 
+    private List<Role> roleList;
+
     public List<MchCompany> getCompanyList() {
         return companyList;
     }
@@ -33,6 +36,14 @@ public class MchShopVO extends MchShop{
 
     public void setSubCompanyVOList(List<MchSubCompanyVO> subCompanyVOList) {
         this.subCompanyVOList = subCompanyVOList;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     public String getCompanyName() {

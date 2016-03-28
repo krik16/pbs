@@ -21,4 +21,6 @@ public interface RoleService {
     Integer selectListCount(Map<String,Object> map);
 
     List<Role> selectByUserId(Integer userId);
+
+    List<Role> selectByType(byte type);
 }

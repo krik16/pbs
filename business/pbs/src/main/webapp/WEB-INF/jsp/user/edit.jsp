@@ -10,6 +10,7 @@
 
     <script src="${ctx}/js/common/confirm.js" type="text/javascript"></script>
     <script src="${ctx}/js/common/list_common.js" type="text/javascript"></script>
+    <script src="${ctx}/js/common/select.js" type="text/javascript"></script>
     <script src="${ctx}/js/user/user.js" type="text/javascript"></script>
 
     <link href="${ctx}/css/style.css" type="text/css" rel="stylesheet"/>
@@ -65,49 +66,66 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">是否公司员工：</span>
-                                <input id="isEmployee" type="text" value="${entity.is_employee}"
-                                       class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
-                                       placeholder="用户是否是公司内部员工"/>
+                                <span class="input-group-addon input-group-onlytext">用户类型：</span>
+                                <select class="form-control" id="isEmployee" onchange="isEmployeeSelect('isEmployee')">
+                                    <option value="-1">用户类型</option>
+                                    <option value="0" <c:if test="${0==entity.isEmployee}">selected="true"</c:if>>内部员工</option>
+                                    <option value="1" <c:if test="${1==entity.isEmployee}">selected="true"</c:if>>合作商户</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row mb15">
+
+                    <div class="form-group row mb15" <c:if test="${entity.id == null}">style="display:none"</c:if>  id="role-select">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext">用户角色：</span>
+                                <select class="form-control" id="roleId">
+                                    <option value="0">选择用户角色</option>
+                                    <c:forEach items="${entity.roleList}" var="item">
+                                        <option value="${item.id}" <c:if test="${item.id==entity.roleId}">selected="true"</c:if>>${item.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb15" <c:if test="${entity.id == null || entity.companyId == 0}">style="display:none"</c:if> id="company-select">
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">所属公司：</span>
-                                <select class="form-control" id="mchCompanyId">
+                                <select class="form-control" id="companyId" onchange="companySelect('../mchSubCompany/getByCompanyId','companyId','subCompanyId')">
                                     <option value="0">选择所属公司</option>
-                                    <c:forEach items="${entity.mchCompanyList}" var="item">
-                                        <option value="${item.id}" <c:if test="${item.id==entity.mchCompanyId}">selected="true"</c:if>>${item.name}</option>
+                                    <c:forEach items="${entity.companyList}" var="item">
+                                        <option value="${item.id}" <c:if test="${item.id==entity.companyId}">selected="true"</c:if>>${item.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group row mb15">
-                        <div class="col-sm-4">
-                            <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">所属子公司：</span>
-                                <select class="form-control" id="mchSubCompanyId">
-                                    <option value="0">选择所属子公司</option>
-                                    <c:forEach items="${entity.mchSubCompanyList}" var="item">
-                                        <option value="${item.id}" <c:if test="${item.id==entity.mchSubCompanyId}">selected="true"</c:if>>${item.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="form-group row mb15"<c:if test="${entity.id == null || entity.subCompanyId == 0}">style="display:none"</c:if> id="subCompany-select">
+                       <div class="col-sm-4">
+                           <div class="input-group">
+                               <span class="input-group-addon input-group-onlytext">分公司：</span>
+                               <select class="form-control" id="subCompanyId" onchange="subCompanySelect('../mchShop/getBySubCompanyId','subCompanyId','shopId')">
+                                   <option value="0">选择所属公分司</option>
+                                   <c:forEach items="${entity.subCompanyVOList}" var="item">
+                                       <option value="${item.id}" <c:if test="${item.id==entity.subCompanyId}">selected="true"</c:if>>${item.name}</option>
+                                   </c:forEach>
+                               </select>
+                           </div>
+                       </div>
+                   </div>
 
-                    <div class="form-group row mb15">
+                    <div class="form-group row mb15" <c:if test="${entity.id == null || entity.shopId == 0}">style="display:none"</c:if> id="shop-select">
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">所属门店：</span>
-                                <select class="form-control" id="mchShopId">
+                                <select class="form-control" id="shopId">
                                     <option value="0">选择所属门店</option>
-                                    <c:forEach items="${entity.mchShopList}" var="item">
-                                        <option value="${item.id}" <c:if test="${item.id==entity.mchShopId}">selected="true"</c:if>>${item.name}</option>
+                                    <c:forEach items="${entity.shopList}" var="item">
+                                        <option value="${item.id}" <c:if test="${item.id==entity.shopId}">selected="true"</c:if>>${item.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
