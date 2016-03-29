@@ -4,11 +4,11 @@ import com.shouyingbao.pbs.Exception.UserNotFoundException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
+import com.shouyingbao.pbs.entity.AliMch;
 import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchShop;
-import com.shouyingbao.pbs.service.MchCompanyService;
-import com.shouyingbao.pbs.service.MchShopService;
-import com.shouyingbao.pbs.service.MchSubCompanyService;
+import com.shouyingbao.pbs.entity.WeixinMch;
+import com.shouyingbao.pbs.service.*;
 import com.shouyingbao.pbs.vo.MchShopVO;
 import com.shouyingbao.pbs.vo.MchSubCompanyVO;
 import org.slf4j.Logger;
@@ -44,6 +44,12 @@ public class MchShopController extends BaseController{
     @Autowired
     MchSubCompanyService mchSubCompanyService;
 
+    @Autowired
+    WeixinMchService weixinMchService;
+
+    @Autowired
+    AliMchService aliMchService;
+
     @RequestMapping(value = "/search")
     public String search() {
         return "/mchShop/mchShop";
@@ -74,6 +80,15 @@ public class MchShopController extends BaseController{
         if (id != null && id > 0) {
             MchShop mchShop = mchShopService.selectById(id);
             BeanUtils.copyProperties(mchShop, mchShopVO);
+            AliMch aliMch = aliMchService.selectByShopId(mchShop.getId());
+            if(aliMch != null){
+                mchShopVO.setAliKey(aliMch.getKey());
+                mchShopVO.setAliPid(aliMch.getPid());
+            }
+            WeixinMch weixinMch = weixinMchService.selectByShopId(mchShop.getId());
+            if(weixinMch != null){
+                mchShopVO.setWeixinMchId(weixinMch.getMchId());
+            }
         }
         List<MchCompany> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
         List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
@@ -85,19 +100,49 @@ public class MchShopController extends BaseController{
 
     @RequestMapping("/save")
     @ResponseBody
-    public ResponseData save(MchShop mchShop){
-        LOGGER.info("save:mchShop={}", mchShop);
+    public ResponseData save(MchShopVO mchShopVO){
+        LOGGER.info("save:mchShop={}", mchShopVO);
         try {
-
-            if (mchShop.getId() == null) {
+            AliMch aliMch;
+            WeixinMch weixinMch;
+            MchShop mchShop = new MchShop();
+            BeanUtils.copyProperties(mchShopVO,mchShop);
+            if (mchShopVO.getId() == null) {
                 mchShop.setCreateAt(DateUtil.getCurrDateTime());
                 mchShop.setCreateBy(getUser().getId());
-                mchShopService.insert(mchShop);
+                aliMch = new AliMch();
+                aliMch.setCreateAt(DateUtil.getCurrDateTime());
+                aliMch.setCreateBy(getUser().getId());
+                weixinMch = new WeixinMch();
+                weixinMch.setCreateAt(DateUtil.getCurrDateTime());
+                weixinMch.setCreateBy(getUser().getId());
             } else {
                 mchShop.setUpdateAt(DateUtil.getCurrDateTime());
                 mchShop.setUpdateBy(getUser().getId());
-                mchShopService.update(mchShop);
+                aliMch = aliMchService.selectByShopId(mchShopVO.getId());
+                if(aliMch != null) {
+                    aliMch.setUpdateAt(DateUtil.getCurrDateTime());
+                    aliMch.setUpdateBy(getUser().getId());
+                }else {
+                    aliMch = new AliMch();
+                    aliMch.setCreateAt(DateUtil.getCurrDateTime());
+                    aliMch.setCreateBy(getUser().getId());
+                }
+                weixinMch = weixinMchService.selectByShopId(mchShopVO.getId());
+                if(weixinMch != null) {
+                    weixinMch.setUpdateAt(DateUtil.getCurrDateTime());
+                    weixinMch.setUpdateBy(getUser().getId());
+                }
+                else {
+                    weixinMch = new WeixinMch();
+                    weixinMch.setCreateAt(DateUtil.getCurrDateTime());
+                    weixinMch.setCreateBy(getUser().getId());
+                }
             }
+            aliMch.setKey(mchShopVO.getAliKey());
+            aliMch.setPid(mchShopVO.getAliPid());
+            weixinMch.setMchId(mchShopVO.getWeixinMchId());
+            mchShopService.save(mchShop,aliMch,weixinMch);
             return ResponseData.success();
         }catch (UserNotFoundException e){
             return ResponseData.failure(e.getCode(),e.getMessage());

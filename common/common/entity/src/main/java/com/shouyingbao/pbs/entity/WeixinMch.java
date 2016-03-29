@@ -2,10 +2,8 @@ package com.shouyingbao.pbs.entity;
 
 import java.io.Serializable;
 
-public class WeixinMch implements Serializable {
+public class WeixinMch extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -4744016445528355890L;
-    private Integer id;
-
     private String appId;
 
     private String key;
@@ -16,18 +14,9 @@ public class WeixinMch implements Serializable {
 
     private String publicCode;
 
-    private String shopId;
+    private Integer shopId;
 
     private String tradeType;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getAppId() {
         return appId;
     }
@@ -68,11 +57,11 @@ public class WeixinMch implements Serializable {
         this.publicCode = publicCode;
     }
 
-    public String getShopId() {
+    public Integer getShopId() {
         return shopId;
     }
 
-    public void setShopId(String shopId) {
+    public void setShopId(Integer shopId) {
         this.shopId = shopId;
     }
 

@@ -7629,3 +7629,10 @@ body.mob-safari .sidebar.sidebar-fixed {
     margin: 20px 10px 0 10px;
 }
 /*提示信息遮罩弹出框 end*/
+
+.asterisk {
+    color: #dd514c;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+}

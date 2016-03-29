@@ -1,101 +1,189 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.shouyingbao.pbs.mapper.WeixinMchMapper" >
-  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.WeixinMch" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="app_id" property="appId" jdbcType="VARCHAR" />
-    <result column="key" property="key" jdbcType="VARCHAR" />
-    <result column="mch_id" property="mchId" jdbcType="VARCHAR" />
-    <result column="cret_path" property="cretPath" jdbcType="VARCHAR" />
-    <result column="public_code" property="publicCode" jdbcType="VARCHAR" />
-    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
-    <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, app_id, `key`, mch_id, cret_path, public_code, shop_id, trade_type
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from weixin_mch
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from weixin_mch
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
-    insert into weixin_mch (app_id, `key`, mch_id, 
-      cret_path, public_code, shop_id, 
-      trade_type)
-    values (#{appId,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR}, 
-      #{cretPath,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
-      #{tradeType,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id" >
-    insert into weixin_mch
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      app_id,
-      `key`,
-      mch_id,
-      cret_path,
-      public_code,
-      shop_id,
-      trade_type,
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      #{appId,jdbcType=VARCHAR},
-      #{key,jdbcType=VARCHAR},
-      #{mchId,jdbcType=VARCHAR},
-      #{cretPath,jdbcType=VARCHAR},
-      #{publicCode,jdbcType=VARCHAR},
-      #{shopId,jdbcType=VARCHAR},
-      #{tradeType,jdbcType=VARCHAR},
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch" >
-    update weixin_mch
-    <set >
-      <if test="appId != null" >
-        app_id = #{appId,jdbcType=VARCHAR},
-      </if>
-      <if test="key != null" >
+<mapper namespace="com.shouyingbao.pbs.mapper.WeixinMchMapper">
+    <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.WeixinMch">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="app_id" property="appId" jdbcType="VARCHAR"/>
+        <result column="key" property="key" jdbcType="VARCHAR"/>
+        <result column="mch_id" property="mchId" jdbcType="VARCHAR"/>
+        <result column="cret_path" property="cretPath" jdbcType="VARCHAR"/>
+        <result column="public_code" property="publicCode" jdbcType="VARCHAR"/>
+        <result column="shop_id" property="shopId" jdbcType="INTEGER"/>
+        <result column="trade_type" property="tradeType" jdbcType="VARCHAR"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="create_by" property="createBy" jdbcType="INTEGER"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="update_by" property="updateBy" jdbcType="INTEGER"/>
+        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, app_id, `key`, mch_id, cret_path, public_code, shop_id, trade_type, create_at,
+        create_by, update_at, update_by, is_delete
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from weixin_mch
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from weixin_mch
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true" keyProperty="id">
+        insert into weixin_mch (app_id, `key`, mch_id,
+        cret_path, public_code, shop_id,
+        trade_type, create_at, create_by,
+        update_at, update_by, is_delete
+        )
+        values (#{appId,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR},
+        #{cretPath,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER},
+        #{tradeType,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+        #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into weixin_mch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appId != null and appId != ''">
+                app_id,
+            </if>
+            <if test="key != null and key != ''">
+                `key`,
+            </if>
+            <if test="mchId != null and mchId != ''">
+                mch_id,
+            </if>
+            <if test="cretPath != null and cretPath != ''">
+                cret_path,
+            </if>
+            <if test="publicCode != null and publicCode != ''">
+                public_code,
+            </if>
+            <if test="shopId != null and shopId != ''">
+                shop_id,
+            </if>
+            <if test="tradeType != null and tradeType != ''">
+                trade_type,
+            </if>
+            <if test="createAt != null and createAt != ''">
+                create_at,
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by,
+            </if>
+            <if test="updateAt != null and updateAt != ''">
+                update_at,
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by,
+            </if>
+            <if test="isDelete != null and isDelete != ''">
+                is_delete,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appId != null and appId != ''">
+                #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="key != null and key != ''">
+                #{key,jdbcType=VARCHAR},
+            </if>
+            <if test="mchId != null and mchId != ''">
+                #{mchId,jdbcType=VARCHAR},
+            </if>
+            <if test="cretPath != null and cretPath != ''">
+                #{cretPath,jdbcType=VARCHAR},
+            </if>
+            <if test="publicCode != null and publicCode != ''">
+                #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shopId != null and shopId != ''">
+                #{shopId,jdbcType=INTEGER},
+            </if>
+            <if test="tradeType != null and tradeType != ''">
+                #{tradeType,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null and createAt != ''">
+                #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateAt != null and updateAt != ''">
+                #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null and isDelete != ''">
+                #{isDelete,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.WeixinMch">
+        update weixin_mch
+        <set>
+            <if test="appId != null ">
+                app_id = #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="key != null">
+                `key` = #{key,jdbcType=VARCHAR},
+            </if>
+            <if test="mchId != null">
+                mch_id = #{mchId,jdbcType=VARCHAR},
+            </if>
+            <if test="cretPath != null">
+                cret_path = #{cretPath,jdbcType=VARCHAR},
+            </if>
+            <if test="publicCode != null">
+                public_code = #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shopId != null">
+                shop_id = #{shopId,jdbcType=INTEGER},
+            </if>
+            <if test="tradeType != null">
+                trade_type = #{tradeType,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=INTEGER},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.WeixinMch">
+        update weixin_mch
+        set app_id = #{appId,jdbcType=VARCHAR},
         `key` = #{key,jdbcType=VARCHAR},
-      </if>
-      <if test="mchId != null" >
         mch_id = #{mchId,jdbcType=VARCHAR},
-      </if>
-      <if test="cretPath != null" >
         cret_path = #{cretPath,jdbcType=VARCHAR},
-      </if>
-      <if test="publicCode != null" >
         public_code = #{publicCode,jdbcType=VARCHAR},
-      </if>
-      <if test="shopId != null" >
-        shop_id = #{shopId,jdbcType=VARCHAR},
-      </if>
-      <if test="tradeType != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
         trade_type = #{tradeType,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.WeixinMch" >
-    update weixin_mch
-    set app_id = #{appId,jdbcType=VARCHAR},
-      `key` = #{key,jdbcType=VARCHAR},
-      mch_id = #{mchId,jdbcType=VARCHAR},
-      cret_path = #{cretPath,jdbcType=VARCHAR},
-      public_code = #{publicCode,jdbcType=VARCHAR},
-      shop_id = #{shopId,jdbcType=VARCHAR},
-      trade_type = #{tradeType,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-
-  <select id="selectByShopId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from weixin_mch
-    where shop_id = #{shopId,jdbcType=INTEGER}
-  </select>
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=INTEGER},
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=INTEGER},
+        is_delete = #{isDelete,jdbcType=TINYINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByShopId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from weixin_mch
+        where shop_id = #{shopId,jdbcType=INTEGER}
+    </select>
 </mapper>

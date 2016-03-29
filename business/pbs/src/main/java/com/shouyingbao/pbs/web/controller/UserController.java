@@ -84,7 +84,9 @@ public class UserController extends BaseController{
             BeanUtils.copyProperties(user, userVO);
             mchShopList = mchShopService.selectAllList();
             UserRole userRole = userRoleService.selectByUserId(userVO.getId());
-            userVO.setRoleId(userRole.getRoleId());
+            if(userRole != null) {
+                userVO.setRoleId(userRole.getRoleId());
+            }
             roleList = roleService.selectByType(user.getIsEmployee());
         } else {
             mchShopList = mchShopService.selectOnlySelf();

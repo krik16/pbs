@@ -1,6 +1,8 @@
 package com.shouyingbao.pbs.service;
 
+import com.shouyingbao.pbs.entity.AliMch;
 import com.shouyingbao.pbs.entity.MchShop;
+import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.vo.MchShopVO;
 
 import java.util.List;
@@ -15,6 +17,8 @@ public interface MchShopService {
     void insert(MchShop mchShop);
 
     void update(MchShop mchShop);
+
+    void save(MchShop mchShop,AliMch aliMch,WeixinMch weixinMch);
 
     MchShop selectById(Integer id);
 

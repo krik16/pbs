@@ -32,6 +32,9 @@ function save(){
 	var companyId = $("#companyId").val();
 	var subCompanyId = $("#subCompanyId").val();
 	var desc = $("#desc").val();
+	var weixinMchId = $("#weixinMchId").val();
+	var aliPid = $("#aliPid").val();
+	var aliKey = $("#aliKey").val();
 
 	if(!name){
 		Modal.alert({
@@ -46,7 +49,10 @@ function save(){
 			address : address,
 			companyId : companyId,
 			subCompanyId : subCompanyId,
-			desc : desc
+			desc : desc,
+			weixinMchId : weixinMchId,
+			aliPid : aliPid,
+			aliKey : aliKey
 	}, function(data) {
 		if(data.meta.errno != 0){
 			Modal.alert({

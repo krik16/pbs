@@ -1,11 +1,16 @@
 package com.shouyingbao.pbs.service.impl;
 
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
+import com.shouyingbao.pbs.entity.AliMch;
 import com.shouyingbao.pbs.entity.MchShop;
+import com.shouyingbao.pbs.entity.WeixinMch;
+import com.shouyingbao.pbs.service.AliMchService;
 import com.shouyingbao.pbs.service.MchShopService;
+import com.shouyingbao.pbs.service.WeixinMchService;
 import com.shouyingbao.pbs.vo.MchShopVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -23,6 +28,12 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
 
     private static final String NAMESPACE = "com.shouyingbao.pbs.mapper.MchShopMapper";
 
+    @Autowired
+    AliMchService aliMchService;
+
+    @Autowired
+    WeixinMchService weixinMchService;
+
     @Override
     public void insert(MchShop mchShop) {
         this.getBaseDao().insertBySql(NAMESPACE+".insertSelective",mchShop);
@@ -31,6 +42,32 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
     @Override
     public void update(MchShop mchShop) {
         this.getBaseDao().insertBySql(NAMESPACE+".updateByPrimaryKeySelective",mchShop);
+    }
+
+    @Override
+    public void save(MchShop mchShop, AliMch aliMch, WeixinMch weixinMch) {
+        if(mchShop.getId() == null){
+            insert(mchShop);
+            aliMch.setShopId(mchShop.getId());
+            aliMchService.insert(aliMch);
+            weixinMch.setShopId(mchShop.getId());
+            weixinMchService.insert(weixinMch);
+
+        }else {
+            update(mchShop);
+            if(aliMch.getId() != null) {
+                aliMchService.update(aliMch);
+            }else{
+                aliMch.setShopId(mchShop.getId());
+                aliMchService.insert(aliMch);
+            }
+            if(weixinMch.getId() != null) {
+                weixinMchService.update(weixinMch);
+            }else{
+                weixinMch.setShopId(mchShop.getId());
+                weixinMchService.insert(weixinMch);
+            }
+        }
     }
 
     @Override

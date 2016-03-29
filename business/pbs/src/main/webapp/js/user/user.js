@@ -54,6 +54,19 @@ function save(){
 		});
 		return;
 	}
+	if(isEmployee<0){
+		Modal.alert({
+			msg: "用户类型不能为空!"
+		});
+		return;
+	}
+	if(roleId<=0){
+		Modal.alert({
+			msg: "用户角色不能为空!"
+		});
+		return;
+	}
+
 
 	$.post("../user/save", {
 			id : id,
@@ -111,6 +124,9 @@ function reset(id){
 						});
 						return;
 					}
+					Modal.alert({
+						msg: "重置密码成功"
+					});
 					ajaxCommonSearch(url_, getSearchEntity());
 				}, "json");
 			}

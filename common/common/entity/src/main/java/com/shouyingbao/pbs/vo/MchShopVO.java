@@ -22,6 +22,12 @@ public class MchShopVO extends MchShop{
 
     private List<Role> roleList;
 
+    private String weixinMchId;
+
+    private String aliPid;
+
+    private String aliKey;
+
     public List<MchCompany> getCompanyList() {
         return companyList;
     }
@@ -60,5 +66,29 @@ public class MchShopVO extends MchShop{
 
     public void setSubCompanyName(String subCompanyName) {
         this.subCompanyName = subCompanyName;
+    }
+
+    public String getWeixinMchId() {
+        return weixinMchId;
+    }
+
+    public void setWeixinMchId(String weixinMchId) {
+        this.weixinMchId = weixinMchId;
+    }
+
+    public String getAliPid() {
+        return aliPid;
+    }
+
+    public void setAliPid(String aliPid) {
+        this.aliPid = aliPid;
+    }
+
+    public String getAliKey() {
+        return aliKey;
+    }
+
+    public void setAliKey(String aliKey) {
+        this.aliKey = aliKey;
     }
 }
