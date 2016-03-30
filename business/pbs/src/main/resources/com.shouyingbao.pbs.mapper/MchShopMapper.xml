@@ -8,6 +8,7 @@
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="sub_company_id" property="subCompanyId" jdbcType="INTEGER" />
     <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
@@ -17,19 +18,26 @@
   <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.MchShopVO" extends="BaseResultMap">
     <result column="company_name" property="companyName" jdbcType="VARCHAR" />
     <result column="sub_company_name" property="subCompanyName" jdbcType="VARCHAR" />
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, `name`, `desc`, company_id, sub_company_id,address, create_at, create_by, update_at,
+    id, `name`, `desc`, company_id, sub_company_id,address,agent_id, create_at, create_by, update_at,
     update_by, is_delete
   </sql>
   <sql id="Base_Column_VOList" >
-    mch_shop.id, mch_shop.`name`, mch_shop.`desc`, mch_shop.company_id, mch_shop.sub_company_id,mch_shop.address, mch_shop.create_at, mch_shop.create_by, mch_shop.update_at,
-    mch_shop.update_by, mch_shop.is_delete,mch_company.name as company_name,mch_sub_company.name as sub_company_name
+    mch_shop.id, mch_shop.`name`, mch_shop.`desc`, mch_shop.company_id, mch_shop.sub_company_id,mch_shop.address,mch_shop.agent_id,mch_shop.create_at, mch_shop.create_by, mch_shop.update_at,
+    mch_shop.update_by, mch_shop.is_delete,mch_company.name as company_name,mch_sub_company.name as sub_company_name,agent.name as agentName
   </sql>
   <sql id="list_where_clause">
     <if test="name != null and name != ''">
       and mch_shop.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="companyId != null and companyId != '' ">
+      mch_shop.company_id = #{companyId}
+    </if>
+    <if test="subCompanyId != null and subCompanyId != '' ">
+      mch_shop.sub_company_id = #{subCompanyId}
     </if>
     and mch_shop.is_delete = 0
   </sql>
@@ -45,11 +53,11 @@
   </delete>
   <insert id="insert" parameterType="com.shouyingbao.pbs.entity.MchShop" useGeneratedKeys="true" keyProperty="id" >
     insert into mch_shop (`name`, `desc`, company_id, 
-      sub_company_id,address, create_at, create_by,
+      sub_company_id,address,agent_id, create_at, create_by,
       update_at, update_by, is_delete
       )
     values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, 
-      #{subCompanyId,jdbcType=INTEGER},#{address,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+      #{subCompanyId,jdbcType=INTEGER},#{address,jdbcType=VARCHAR},#{agent_id,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
       )
   </insert>
@@ -61,6 +69,7 @@
       company_id,
       sub_company_id,
       address,
+      agent_id,
       create_at,
       create_by,
       update_at,
@@ -73,6 +82,7 @@
       #{companyId,jdbcType=INTEGER},
       #{subCompanyId,jdbcType=INTEGER},
       #{address,jdbcType=VARCHAR},
+      #{agent_id,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP},
@@ -97,6 +107,9 @@
       </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=INTEGER},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -123,6 +136,7 @@
       company_id = #{companyId,jdbcType=INTEGER},
       sub_company_id = #{subCompanyId,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
+      agent_id = #{agentId,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -135,6 +149,7 @@
     <include refid="Base_Column_VOList" />
     from 	mch_shop left join mch_company on mch_shop.company_id = mch_company.id
     left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+    left join agent on mch_shop.agent_id = agent.id
     <where>
       <include refid="list_where_clause" />
     </where>
@@ -176,6 +191,9 @@
     select
     <include refid="Base_Column_List" />
     from 	mch_shop
+    <where>
+      <include refid="list_where_clause" />
+    </where>
   </select>
 
 

@@ -11,6 +11,8 @@ public class MchCompany extends BaseEntity implements Serializable {
 
     private String address;
 
+    private Integer agentId;
+
 
     public String getName() {
         return name;
@@ -36,10 +38,19 @@ public class MchCompany extends BaseEntity implements Serializable {
         this.address = address;
     }
 
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
     @Override
     public String toString() {
         return "MchCompany{" +
                 "name='" + name + '\'' +
+                "agentId='" + agentId + '\'' +
                 ", desc='" + desc + '\'' +
                 ", address='" + address + '\'' +
                 ", baseEntity='" + super.toString() + '\'' +

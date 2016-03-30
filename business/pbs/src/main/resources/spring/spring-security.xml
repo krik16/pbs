@@ -25,8 +25,7 @@
               <security:logout
                       invalidate-session="true"
                       logout-success-url="/auth/login"
-                      logout-url="/auth/logout"/>
-
+                      logout-url="/j_spring_security_logout"/>
        </security:http>
 
        <!-- 指定一个自定义的authentication-manager :customUserDetailsService -->

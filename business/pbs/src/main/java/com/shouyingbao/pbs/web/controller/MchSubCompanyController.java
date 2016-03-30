@@ -4,10 +4,10 @@ import com.shouyingbao.pbs.Exception.UserNotFoundException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
-import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchSubCompany;
 import com.shouyingbao.pbs.service.MchCompanyService;
 import com.shouyingbao.pbs.service.MchSubCompanyService;
+import com.shouyingbao.pbs.vo.MchCompanyVO;
 import com.shouyingbao.pbs.vo.MchSubCompanyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +70,7 @@ public class MchSubCompanyController extends BaseController{
             MchSubCompany mchSubCompany = mchSubCompanyService.selectById(id);
             BeanUtils.copyProperties(mchSubCompany, mchSubCompanyVO);
         }
-        List<MchCompany> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
         mchSubCompanyVO.setMchCompanyList(mchCompanyList);
         modelMap.addAttribute("entity", mchSubCompanyVO);
         return "mchSubCompany/edit";
@@ -128,6 +128,9 @@ public class MchSubCompanyController extends BaseController{
     public ResponseData getByCompanyId(Integer parentId) {
         LOGGER.info("getByCompanyId:parentId={}", parentId);
         try {
+            if(parentId == 0){
+                return ResponseData.success();
+            }
             List<MchSubCompany> mchSubCompanyList = mchSubCompanyService.selectByCompanyId(parentId);
             return ResponseData.success(mchSubCompanyList);
         } catch (UserNotFoundException e) {

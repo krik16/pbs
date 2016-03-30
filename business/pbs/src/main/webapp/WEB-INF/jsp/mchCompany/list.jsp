@@ -9,6 +9,7 @@
         <tr>
             <th>公司名称</th>
             <th>公司地址</th>
+            <th>分销代理</th>
             <th>备注</th>
             <th>操作</th>
         </tr>
@@ -20,6 +21,7 @@
                     <tr>
                         <td>${entity.name}</td>
                         <td>${entity.address}</td>
+                        <td>${entity.agentName}</td>
                         <td>${entity.desc}</td>
                         <td>
                         <div class="col-sm-3">

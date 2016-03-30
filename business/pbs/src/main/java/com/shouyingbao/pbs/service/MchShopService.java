@@ -30,7 +30,7 @@ public interface MchShopService {
 
     List<MchShop> selectBySubCompanyId(Integer subCompanyId);
 
-    List<MchShop> selectAllList();
+    List<MchShop> selectAllList(Map<String, Object> map);
 
     List<MchShop> selectOnlySelf();
 }

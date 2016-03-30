@@ -1,6 +1,5 @@
 package com.shouyingbao.pbs.vo;
 
-import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchShop;
 import com.shouyingbao.pbs.entity.Role;
 
@@ -12,13 +11,17 @@ import java.util.List;
  **/
 public class MchShopVO extends MchShop{
 
-    private List<MchCompany> companyList;
+    private List<MchCompanyVO> companyList;
 
     private List<MchSubCompanyVO> subCompanyVOList;
+
+    private List<AgentVO> agentVOList;
 
     private String companyName;
 
     private String subCompanyName;
+
+    private String agentName;
 
     private List<Role> roleList;
 
@@ -28,11 +31,11 @@ public class MchShopVO extends MchShop{
 
     private String aliKey;
 
-    public List<MchCompany> getCompanyList() {
+    public List<MchCompanyVO> getCompanyList() {
         return companyList;
     }
 
-    public void setCompanyList(List<MchCompany> companyList) {
+    public void setCompanyList(List<MchCompanyVO> companyList) {
         this.companyList = companyList;
     }
 
@@ -68,6 +71,14 @@ public class MchShopVO extends MchShop{
         this.subCompanyName = subCompanyName;
     }
 
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
+
     public String getWeixinMchId() {
         return weixinMchId;
     }
@@ -90,5 +101,13 @@ public class MchShopVO extends MchShop{
 
     public void setAliKey(String aliKey) {
         this.aliKey = aliKey;
+    }
+
+    public List<AgentVO> getAgentVOList() {
+        return agentVOList;
+    }
+
+    public void setAgentVOList(List<AgentVO> agentVOList) {
+        this.agentVOList = agentVOList;
     }
 }

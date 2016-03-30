@@ -6,21 +6,29 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
+  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.MchCompanyVO" >
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, `name`, `desc`, address, create_at, create_by, update_at, update_by, is_delete
+    id, `name`, `desc`, address,agent_id, create_at, create_by, update_at, update_by, is_delete
+  </sql>
+  <sql id="Base_Column_VOList" >
+    mch_company.id, mch_company.`name`, mch_company.`desc`, mch_company.address,mch_company.agent_id, mch_company.create_at,
+    mch_company.create_by, mch_company.update_at, mch_company.update_by, mch_company.is_delete,agent.name as agentName
   </sql>
   <sql id="list_where_clause">
     <if test="name != null and name != ''">
-      and name like
+      and mch_company.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
     </if>
-    and is_delete = 0
+    and mch_company.is_delete = 0
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -33,11 +41,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.shouyingbao.pbs.entity.MchCompany" useGeneratedKeys="true" keyProperty="id" >
-    insert into mch_company (`name`, `desc`, address, 
+    insert into mch_company (`name`, `desc`, address, agent_id,
       create_at, create_by, update_at, 
       update_by, is_delete)
-    values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+    values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},  #{agentId,jdbcType=INTEGER},
+    #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP},
       #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.MchCompany" useGeneratedKeys="true" keyProperty="id" >
@@ -46,6 +54,7 @@
       `name`,
       `desc`,
       address,
+      agent_id,
       create_at,
       create_by,
       update_at,
@@ -56,6 +65,7 @@
       #{name,jdbcType=VARCHAR},
       #{desc,jdbcType=VARCHAR},
       #{address,jdbcType=VARCHAR},
+      #{agentId,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP},
@@ -74,6 +84,9 @@
       </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=INTEGER},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -98,6 +111,7 @@
     set `name` = #{name,jdbcType=VARCHAR},
       `desc` = #{desc,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
+    agent_id = #{agentId,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -105,10 +119,11 @@
       is_delete = #{isDelete,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
     select
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_VOList" />
     from mch_company
+    left join agent on mch_company.agent_id = agent.id
     <where>
       <include refid="list_where_clause" />
     </where>

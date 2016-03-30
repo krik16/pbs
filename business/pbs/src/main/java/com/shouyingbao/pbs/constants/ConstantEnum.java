@@ -87,7 +87,7 @@ public enum ConstantEnum {
 
 	DEFAULT_PASSWORD("123456","默认密码"),
 
-	LIST_PAGE_SIZE(2,"分页条数");
+	LIST_PAGE_SIZE(10,"分页条数");
 
     private Object code;
 

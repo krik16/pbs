@@ -28,6 +28,9 @@
       and agent.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
     </if>
+    <if test="areaId != null and areaId != ''">
+      and agent.area_id = #{areaId}
+    </if>
     and agent.is_delete = 0
 
   </sql>

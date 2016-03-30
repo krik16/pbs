@@ -31,6 +31,7 @@ function save(){
 	var address = $("#address").val();
 	var companyId = $("#companyId").val();
 	var subCompanyId = $("#subCompanyId").val();
+	var agentId = $("#agentId").val();
 	var desc = $("#desc").val();
 	var weixinMchId = $("#weixinMchId").val();
 	var aliPid = $("#aliPid").val();
@@ -49,6 +50,7 @@ function save(){
 			address : address,
 			companyId : companyId,
 			subCompanyId : subCompanyId,
+			agentId : agentId,
 			desc : desc,
 			weixinMchId : weixinMchId,
 			aliPid : aliPid,
@@ -85,12 +87,30 @@ function cance(id){
 		});
 }
 
-function subCompanySelect(url,parentId,eId){
+function companySelect(url,parentId,eId){
 	var pid = document.getElementById(parentId);
 	if(pid.value > 0){
 	$("#subCompany-select").css("display","inline-block");
+    $("#agent-select").css("display","none");
+	$("#agentId").val(0);
 	}else{
 		$("#subCompany-select").css("display","none");
+		$("#agent-select").css("display","inline-block");
+		selectChange("../agent/getAll",parentId,"agentId");
 	}
 	selectChange(url,parentId,eId);
+}
+
+function agentSelect(url,parentId,eId){
+	var pid = document.getElementById(parentId);
+	if(pid.value > 0){
+		$("#company-select").css("display","none");
+		$("#companyId").val(0);
+		$("#subCompany-select").css("display","none");
+		$("#subCompanyId").val(0);
+	}else{
+		$("#company-select").css("display","inline-block");
+		selectChange("../mchCompany/getAll",parentId,"companyId");
+	}
+	//selectChange(url,parentId,eId);
 }

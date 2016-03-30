@@ -1,9 +1,6 @@
 package com.shouyingbao.pbs.vo;
 
-import com.shouyingbao.pbs.entity.MchCompany;
-import com.shouyingbao.pbs.entity.MchShop;
-import com.shouyingbao.pbs.entity.Role;
-import com.shouyingbao.pbs.entity.User;
+import com.shouyingbao.pbs.entity.*;
 
 import java.util.List;
 
@@ -17,19 +14,27 @@ public class UserVO extends User{
 
     private String subCompanyName;
 
+    private String areaName;
+
+    private String agentName;
+
     private String shopName;
 
     private String roleName;
 
     private Integer roleId;
 
-    private List<MchCompany> companyList;
+    private List<MchCompanyVO> companyList;
 
     private List<MchSubCompanyVO> subCompanyVOList;
 
     private List<MchShop> shopList;
 
     private List<Role> roleList;
+
+    private List<Area> areaList;
+
+    private List<AgentVO> agentList;
 
 
     public String getCompanyName() {
@@ -72,11 +77,11 @@ public class UserVO extends User{
         this.roleName = roleName;
     }
 
-    public List<MchCompany> getCompanyList() {
+    public List<MchCompanyVO> getCompanyList() {
         return companyList;
     }
 
-    public void setCompanyList(List<MchCompany> companyList) {
+    public void setCompanyList(List<MchCompanyVO> companyList) {
         this.companyList = companyList;
     }
 
@@ -104,12 +109,47 @@ public class UserVO extends User{
         this.shopList = shopList;
     }
 
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
+
+    public List<AgentVO> getAgentList() {
+        return agentList;
+    }
+
+    public void setAgentList(List<AgentVO> agentList) {
+        this.agentList = agentList;
+    }
+
+    public List<Area> getAreaList() {
+        return areaList;
+    }
+
+    public void setAreaList(List<Area> areaList) {
+        this.areaList = areaList;
+    }
+
     @Override
     public String toString() {
         return "UserVO{" +
                 "companyName='" + companyName + '\'' +
                 ", subCompanyName='" + subCompanyName + '\'' +
                 ", shopName='" + shopName + '\'' +
+                ", areaName='" + shopName + '\'' +
+                ", agentName='" + agentName + '\'' +
                 ", roleName='" + roleName + '\'' +
                 ", roleId=" + roleId +
                 ", companyList=" + companyList +

@@ -1,11 +1,9 @@
 package com.shouyingbao.pbs.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class User implements Serializable{
+public class User extends BaseEntity implements Serializable{
     private static final long serialVersionUID = -8143315016693212851L;
-    private Integer id;
 
     private String userPhone;
 
@@ -19,7 +17,7 @@ public class User implements Serializable{
 
     private String cardId;
 
-    private byte isEmployee;
+    private Byte isEmployee;
 
     private String desc;
 
@@ -29,23 +27,9 @@ public class User implements Serializable{
 
     private Integer subCompanyId;
 
-    private Date createAt;
+    private Integer areaId;
 
-    private Integer createBy;
-
-    private Date updateAt;
-
-    private Integer updateBy;
-
-    private Byte isDelete;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Integer agentId;
 
     public String getUserPhone() {
         return userPhone;
@@ -96,11 +80,11 @@ public class User implements Serializable{
     }
 
 
-    public byte getIsEmployee() {
+    public Byte getIsEmployee() {
         return isEmployee;
     }
 
-    public void setIsEmployee(byte isEmployee) {
+    public void setIsEmployee(Byte isEmployee) {
         this.isEmployee = isEmployee;
     }
 
@@ -128,46 +112,6 @@ public class User implements Serializable{
         this.subCompanyId = subCompanyId;
     }
 
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Byte getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Byte isDelete) {
-        this.isDelete = isDelete;
-    }
-
     public Integer getShopId() {
         return shopId;
     }
@@ -176,11 +120,27 @@ public class User implements Serializable{
         this.shopId = shopId;
     }
 
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
+    }
+
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", userPhone='" + userPhone + '\'' +
+                "userPhone='" + userPhone + '\'' +
                 ", userAccount='" + userAccount + '\'' +
                 ", userPwd='" + userPwd + '\'' +
                 ", userName='" + userName + '\'' +
@@ -191,11 +151,9 @@ public class User implements Serializable{
                 ", shopId=" + shopId +
                 ", companyId=" + companyId +
                 ", subCompanyId=" + subCompanyId +
-                ", createAt=" + createAt +
-                ", createBy=" + createBy +
-                ", updateAt=" + updateAt +
-                ", updateBy=" + updateBy +
-                ", isDelete=" + isDelete +
+                ", areaId=" + areaId +
+                ", agentId=" + agentId +
+                ", BaseEntity=" + super.toString() +
                 '}';
     }
 }

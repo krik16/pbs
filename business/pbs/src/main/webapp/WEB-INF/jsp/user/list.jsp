@@ -15,6 +15,8 @@
             <th>所属公司</th>
             <th>所属分公司</th>
             <th>所属门店</th>
+            <th>所属区域</th>
+            <th>所属分销代理</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -31,6 +33,8 @@
                         <td>${entity.companyName}</td>
                         <td>${entity.subCompanyName}</td>
                         <td>${entity.shopName}</td>
+                        <td>${entity.areaName}</td>
+                        <td>${entity.agentName}</td>
                         <td>
                         <div class="col-sm-3">
                             <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/user/edit?id=${entity.id}">

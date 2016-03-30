@@ -6,6 +6,8 @@ import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.entity.*;
 import com.shouyingbao.pbs.service.*;
+import com.shouyingbao.pbs.vo.AgentVO;
+import com.shouyingbao.pbs.vo.MchCompanyVO;
 import com.shouyingbao.pbs.vo.MchSubCompanyVO;
 import com.shouyingbao.pbs.vo.UserVO;
 import org.slf4j.Logger;
@@ -48,6 +50,12 @@ public class UserController extends BaseController{
     @Autowired
     UserRoleService userRoleService;
 
+    @Autowired
+    AreaService areaService;
+
+    @Autowired
+    AgentService agentService;
+
     private  Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 
     @RequestMapping(value = "/search")
@@ -82,7 +90,8 @@ public class UserController extends BaseController{
         if (id != null && id > 0) {
             User user = userService.selectById(id);
             BeanUtils.copyProperties(user, userVO);
-            mchShopList = mchShopService.selectAllList();
+            Map<String,Object> shopMap = new HashMap<>();
+            mchShopList = mchShopService.selectAllList(shopMap);
             UserRole userRole = userRoleService.selectByUserId(userVO.getId());
             if(userRole != null) {
                 userVO.setRoleId(userRole.getRoleId());
@@ -92,13 +101,20 @@ public class UserController extends BaseController{
             mchShopList = mchShopService.selectOnlySelf();
             roleList = roleService.selectListByPage(new HashMap<String, Object>(), null, null);
         }
-        List<MchCompany> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
-        List<MchSubCompanyVO> mchSubCompanyList = mchSubCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
-
+        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+        Map<String,Object> subCompanyMap = new HashMap<>();
+        subCompanyMap.put("companyId",userVO.getCompanyId());
+        List<MchSubCompanyVO> mchSubCompanyList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
+        List<Area> areaList = areaService.selectListByPage(new HashMap<String, Object>(),null,null);
+        Map<String,Object> agentMap = new HashMap<>();
+        agentMap.put("areaId", userVO.getAreaId());
+        List<AgentVO> agentList = agentService.selectListByPage(agentMap,null,null);
         userVO.setCompanyList(mchCompanyList);
         userVO.setSubCompanyVOList(mchSubCompanyList);
         userVO.setShopList(mchShopList);
         userVO.setRoleList(roleList);
+        userVO.setAreaList(areaList);
+        userVO.setAgentList(agentList);
         modelMap.addAttribute("entity", userVO);
         return "user/edit";
     }
@@ -108,21 +124,22 @@ public class UserController extends BaseController{
     public ResponseData save(UserVO userVO){
         LOGGER.info("save:user={}", userVO);
         try {
-
-            if (userVO.getId() == null) {
-                userVO.setCreateAt(DateUtil.getCurrDateTime());
-                userVO.setCreateBy(getUser().getId());
-                userVO.setUserPwd(md5PasswordEncoder.encodePassword(ConstantEnum.DEFAULT_PASSWORD.getCodeStr(),null));
-                userService.insert(userVO);
+            User user = new User();
+            BeanUtils.copyProperties(userVO,user);
+            if (user.getId() == null) {
+                user.setCreateAt(DateUtil.getCurrDateTime());
+                user.setCreateBy(getUser().getId());
+                user.setUserPwd(md5PasswordEncoder.encodePassword(ConstantEnum.DEFAULT_PASSWORD.getCodeStr(),null));
+                userService.insert(user);
                 UserRole userRole = new UserRole();
-                userRole.setUserId(userVO.getId());
+                userRole.setUserId(user.getId());
                 userRole.setRoleId(userVO.getRoleId());
                 userRoleService.insert(userRole);
             } else {
-                userVO.setUpdateAt(DateUtil.getCurrDateTime());
-                userVO.setUpdateBy(getUser().getId());
-                userService.update(userVO);
-                UserRole userRole = userRoleService.selectByUserId(userVO.getId());
+                user.setUpdateAt(DateUtil.getCurrDateTime());
+                user.setUpdateBy(getUser().getId());
+                userService.update(user);
+                UserRole userRole = userRoleService.selectByUserId(user.getId());
                 userRole.setRoleId(userVO.getRoleId());
                 userRoleService.update(userRole);
             }

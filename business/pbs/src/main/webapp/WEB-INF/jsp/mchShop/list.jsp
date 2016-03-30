@@ -11,6 +11,7 @@
             <th>门店地址</th>
             <th>所属公司</th>
             <th>所属分公司</th>
+            <th>所属分销代理</th>
             <th>备注</th>
             <th>操作</th>
         </tr>
@@ -24,6 +25,7 @@
                         <td>${entity.address}</td>
                         <td>${entity.companyName}</td>
                         <td>${entity.subCompanyName}</td>
+                        <td>${entity.agentName}</td>
                         <td>${entity.desc}</td>
                         <td>
                         <div class="col-sm-4">

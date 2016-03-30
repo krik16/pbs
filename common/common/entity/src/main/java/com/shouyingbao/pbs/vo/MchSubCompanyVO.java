@@ -1,6 +1,5 @@
 package com.shouyingbao.pbs.vo;
 
-import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchSubCompany;
 
 import java.util.List;
@@ -11,15 +10,15 @@ import java.util.List;
  **/
 public class MchSubCompanyVO extends MchSubCompany{
 
-    private List<MchCompany> mchCompanyList;
+    private List<MchCompanyVO> mchCompanyList;
 
     private String mchCompanyName;
 
-    public List<MchCompany> getMchCompanyList() {
+    public List<MchCompanyVO> getMchCompanyList() {
         return mchCompanyList;
     }
 
-    public void setMchCompanyList(List<MchCompany> mchCompanyList) {
+    public void setMchCompanyList(List<MchCompanyVO> mchCompanyList) {
         this.mchCompanyList = mchCompanyList;
     }
 

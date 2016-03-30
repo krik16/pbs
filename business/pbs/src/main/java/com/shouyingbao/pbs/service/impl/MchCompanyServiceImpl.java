@@ -3,6 +3,7 @@ package com.shouyingbao.pbs.service.impl;
 import com.shouyingbao.pbs.core.framework.mybatis.service.impl.BaseServiceImpl;
 import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.service.MchCompanyService;
+import com.shouyingbao.pbs.vo.MchCompanyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class MchCompanyServiceImpl extends BaseServiceImpl implements MchCompany
     }
 
     @Override
-    public List<MchCompany> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
+    public List<MchCompanyVO> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
         if(currentPage != null && pageSize != null) {
             map.put("currentPage", (currentPage - 1) * pageSize);
             map.put("pageSize", pageSize);

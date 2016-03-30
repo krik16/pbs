@@ -29,6 +29,7 @@ function save(){
 	var id = $("#id").val();
 	var name = $("#name").val();
 	var address = $("#address").val();
+	var agentId = $("#agentId").val();
 	var desc = $("#desc").val();
 
 	if(!name){
@@ -42,6 +43,7 @@ function save(){
 			id : id,
 			name : name,
 			address : address,
+			agentId : agentId,
 			desc : desc
 	}, function(data) {
 		if(data.meta.errno != 0){

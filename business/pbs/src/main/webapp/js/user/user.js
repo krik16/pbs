@@ -35,6 +35,8 @@ function save(){
 	var companyId = $("#companyId").val();
 	var subCompanyId = $("#subCompanyId").val();
 	var shopId = $("#shopId").val();
+	var areaId = $("#areaId").val();
+	var agentId = $("#agentId").val();
 
 	if(!userAccount){
 		Modal.alert({
@@ -78,6 +80,8 @@ function save(){
 			companyId : companyId,
 			subCompanyId : subCompanyId,
 			shopId : shopId,
+			areaId : areaId,
+			agentId : agentId,
 	}, function(data) {
 		if(data.meta.errno != 0){
 			Modal.alert({
@@ -144,23 +148,84 @@ function isEmployeeSelect(parentId){
 	}
 
 	if(pid.value > 0){
-		$("#company-select").css("display","inline-block");
-		$("#shop-select").css("display","inline-block");
+		//$("#company-select").css("display","inline-block");
+		//$("#shop-select").css("display","inline-block");
 	}else{
+		$("#area-select").css("display","none");
+		$("#areaId").val(0);
+		$("#agent-select").css("display","none");
+		$("#agentId").val(0);
+
 		$("#company-select").css("display","none");
+		$("#companyId").val(0);
 		$("#subCompany-select").css("display","none");
+		$("#subCompanyId").val(0);
+		$("#shop-select").css("display","none");
+		$("#shopId").val(0);
 
 	}
 	selectChange("../user/getRoleByType",parentId,'roleId');
 }
 
+function roleSelect(parentId){
+	var pid = document.getElementById(parentId);
+	$("#area-select").css("display","none");
+	$("#areaId").val(0);
+	$("#agent-select").css("display","none");
+	$("#agentId").val(0);
+
+	$("#company-select").css("display","none");
+	$("#companyId").val(0);
+	$("#subCompany-select").css("display","none");
+	$("#subCompanyId").val(0);
+	$("#shop-select").css("display","none");
+	$("#shopId").val(0);
+
+	if(pid.value > 1 && pid.value < 4){
+		if(pid.value >= 2){//区域
+			$("#area-select").css("display","inline-block");
+			selectChange("../area/getAll",parentId,"areaId");
+		}
+		if(pid.value >= 3){//代理
+			$("#agent-select").css("display","inline-block");
+			selectChange("../agent/getByAreaId","areaId","agentId");
+		}
+	}else if(pid.value >= 4){
+		if(pid.value >= 4 || pid.value == 8) {//商户总公司
+			$("#company-select").css("display","inline-block");
+			selectChange("../mchCompany/getAll","areaId","agentId");
+		}
+		if(pid.value >= 5 && pid.value < 8) {//分分公司
+			$("#subCompany-select").css("display","inline-block");
+			selectChange('../mchSubCompany/getByCompanyId','companyId','subCompanyId');
+		}
+		if(pid.value == 6 || pid.value == 7){//门店
+			$("#shop-select").css("display","inline-block");
+			selectChange('../mchShop/getBySubCompanyId','subCompanyId','shopId');
+		}
+	}
+}
+
+
+function areaSelect(url,parentId,eId){
+	//var pid = document.getElementById(parentId);
+	//if(pid.value > 0){
+	//	$("#agent-select").css("display","inline-block");
+	//}else{
+	//	$("#agent-select").css("display","none");
+	//	$("#agent-select").value=0;
+	//}
+	selectChange(url,parentId,eId);
+}
 
 function companySelect(url,parentId,eId){
 	var pid = document.getElementById(parentId);
-	if(pid.value > 0){
+	var roleId = $("#roleId").val();
+	if(pid.value > 0 && roleId > 4 && roleId < 8){
 		$("#subCompany-select").css("display","inline-block");
 	}else{
 		$("#subCompany-select").css("display","none");
+		$("#subCompany-select").value=0;
 	}
 	//改变分公司选项
 	selectChange(url,parentId,eId);

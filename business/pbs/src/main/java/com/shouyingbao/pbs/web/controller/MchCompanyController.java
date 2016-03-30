@@ -4,8 +4,12 @@ import com.shouyingbao.pbs.Exception.UserNotFoundException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
+import com.shouyingbao.pbs.entity.Agent;
 import com.shouyingbao.pbs.entity.MchCompany;
+import com.shouyingbao.pbs.service.AgentService;
 import com.shouyingbao.pbs.service.MchCompanyService;
+import com.shouyingbao.pbs.vo.AgentVO;
+import com.shouyingbao.pbs.vo.MchCompanyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +37,8 @@ public class MchCompanyController extends BaseController{
     @Autowired
     MchCompanyService mchCompanyService;
 
+    @Autowired
+    AgentService agentService;
 
     @RequestMapping(value = "/search")
     public String search() {
@@ -42,7 +50,7 @@ public class MchCompanyController extends BaseController{
         LOGGER.info("list:map={}", map);
         try {
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
-            List<MchCompany> mchCompanyList = mchCompanyService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+            List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = mchCompanyService.selectListCount(map);
             model.addAttribute("rowCount", getRowCount(totalCount));
             model.addAttribute("totalCount", totalCount);
@@ -62,14 +70,16 @@ public class MchCompanyController extends BaseController{
         if (id != null && id > 0) {
             mchCompany = mchCompanyService.selectById(id);
         }
+        List<AgentVO> agentList = agentService.selectListByPage(new HashMap<String, Object>(),null,null);
         modelMap.addAttribute("entity", mchCompany);
+        modelMap.addAttribute("agentList", agentList);
         return "mchCompany/edit";
     }
 
     @RequestMapping("/save")
     @ResponseBody
     public ResponseData save( MchCompany mchCompany){
-        LOGGER.info("insert:mchCompany={}",mchCompany);
+        LOGGER.info("save:mchCompany={}", mchCompany);
         try {
             if (mchCompany.getId() == null) {
                 mchCompany.setCreateAt(DateUtil.getCurrDateTime());
@@ -110,6 +120,42 @@ public class MchCompanyController extends BaseController{
             e.printStackTrace();
             return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
         }
+    }
 
+
+    @RequestMapping("/getAll")
+    @ResponseBody
+    public ResponseData getAll() {
+        LOGGER.info("getAll");
+        try {
+            List<MchCompanyVO> list = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+            return ResponseData.success(list);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
+        }
+    }
+    @RequestMapping("/getAgentById")
+    @ResponseBody
+    public ResponseData getAgentById(Integer parentId) {
+        LOGGER.info("getAgentById:parentId={}",parentId);
+        try {
+            List<Agent> agentList = new ArrayList<>();
+            MchCompany mchCompany = mchCompanyService.selectById(parentId);
+            if(mchCompany != null){
+                Agent agent = agentService.selectById(mchCompany.getAgentId());
+                agentList.add(agent);
+            }
+            return ResponseData.success(agentList);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
+        }
     }
 }

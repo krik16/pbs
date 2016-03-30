@@ -14,6 +14,8 @@
         <result column="shop_id" property="shopId" jdbcType="INTEGER"/>
         <result column="company_id" property="companyId" jdbcType="INTEGER"/>
         <result column="sub_company_id" property="subCompanyId" jdbcType="INTEGER"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="agent_id" property="agentId" jdbcType="INTEGER"/>
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
         <result column="create_by" property="createBy" jdbcType="INTEGER"/>
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
@@ -29,15 +31,15 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, user_phone, user_account, user_pwd, user_name, user_nick_name, card_id, is_employee,
-        `desc`,shop_id, company_id, sub_company_id, create_at, create_by, update_at, update_by, is_delete
+        `desc`,shop_id, company_id, sub_company_id,area_id,agent_id, create_at, create_by, update_at, update_by, is_delete
     </sql>
 
     <sql id="Base_Column_VOList">
         user.id, user.user_phone, user.user_account,user.user_name, user.user_nick_name, user.card_id, user.is_employee,
-        user.`desc`,user.shop_id, user.company_id, user.sub_company_id, user.create_at, user.create_by, user.update_at,
+        user.`desc`,user.shop_id, user.company_id, user.sub_company_id,user.area_id,user.agent_id, user.create_at, user.create_by, user.update_at,
         user.update_by, user.is_delete,
         mch_company.name as company_name,mch_sub_company.name as sub_company_name,mch_shop.name as shop_name,role.name
-        as role_name
+        as role_name,area.name as areaName,agent.name as agentName
     </sql>
 
     <sql id="list_where_clause">
@@ -61,14 +63,14 @@
         insert into user (user_phone, user_account, user_pwd,
         user_name, user_nick_name, card_id,
         is_employee, `desc`,shop_id, company_id,
-        sub_company_id, create_at, create_by,
+        sub_company_id,area_id,agent_id, create_at, create_by,
         update_at, update_by, is_delete
         )
         values (#{userPhone,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
         #{userName,jdbcType=VARCHAR}, #{userNickName,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR},
         #{isEmployee,jdbcType=TINYINT}, #{desc,jdbcType=VARCHAR},
         #{shopId,jdbcType=INTEGER},#{companyId,jdbcType=INTEGER},
-        #{subCompanyId,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+        #{subCompanyId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{agentId,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
         #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
         )
     </insert>
@@ -108,6 +110,12 @@
             </if>
             <if test="subCompanyId != null and subCompanyId != ''">
             sub_company_id,
+            </if>
+            <if test="areaId != null and areaId != ''">
+                area_id,
+            </if>
+            <if test="agentId != null and agentId != ''">
+                agent_id,
             </if>
             <if test="createAt != null and createAt != ''">
             create_at,
@@ -160,6 +168,12 @@
             <if test="subCompanyId != null and subCompanyId != ''">
                 #{subCompanyId,jdbcType=INTEGER},
             </if>
+            <if test="areaId != null and areaId != ''">
+                #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="agentId != null and agentId != ''">
+                #{agentId,jdbcType=INTEGER},
+            </if>
             <if test="createAt != null and createAt != ''">
                 #{createAt,jdbcType=TIMESTAMP},
             </if>
@@ -198,20 +212,26 @@
             <if test="cardId != null and cardId != ''">
                 card_id = #{cardId,jdbcType=VARCHAR},
             </if>
-            <if test="isEmployee != null and isEmployee != ''">
+            <if test="isEmployee != null">
                 is_employee = #{isEmployee,jdbcType=TINYINT},
             </if>
             <if test="desc != null and desc != ''">
                 `desc` = #{desc,jdbcType=VARCHAR},
             </if>
-            <if test="shopId != null and shopId != ''">
+            <if test="shopId != null and shopId >= 0">
                 shop_id = #{shopId,jdbcType=INTEGER},
             </if>
-            <if test="companyId != null and companyId != ''">
+            <if test="companyId != null and companyId >= 0">
                 company_id = #{companyId,jdbcType=INTEGER},
             </if>
-            <if test="subCompanyId != null and subCompanyId != ''">
+            <if test="subCompanyId != null and subCompanyId >= 0">
                 sub_company_id = #{subCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="areaId != null and areaId >= 0">
+                area_id = #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="agentId != null and agentId >= 0">
+                agent_id = #{agentId,jdbcType=INTEGER},
             </if>
             <if test="createAt != null and createAt != ''">
                 create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -258,6 +278,12 @@
         <if test="subCompanyId != null and subCompanyId != ''">
             sub_company_id = #{subCompanyId,jdbcType=INTEGER},
         </if>
+        <if test="areaId != null and areaId != ''">
+            area_id = #{areaId,jdbcType=INTEGER},
+        </if>
+        <if test="agentId != null and agentId != ''">
+            agent_id = #{agentId,jdbcType=INTEGER},
+        </if>
         <if test="createAt != null and createAt != ''">
             create_at = #{createAt,jdbcType=TIMESTAMP},
         </if>
@@ -281,6 +307,8 @@
         <include refid="Base_Column_VOList"/>
         from user left join mch_company on user.company_id = mch_company.id
         left join mch_sub_company on user.sub_company_id = mch_sub_company.id
+        left join area on user.area_id = area.id
+        left join agent on user.agent_id = agent.id
         left join mch_shop on user.shop_id = mch_shop.id
         left join user_role on user_role.user_id = user.id
         left join role on role.id = user_role.role_id

@@ -49,7 +49,8 @@ public class LoginFilter extends BaseController implements Filter {
             }
             chain.doFilter(request, response);
         }catch (UserNotFoundException e){
-            req.getRequestDispatcher("/auth/login").forward(request,response);
+            response.sendRedirect(request.getContextPath()+"/auth/login");
+//            req.getRequestDispatcher("/auth/login").forward(request,response);
         }catch (Exception e){
             e.printStackTrace();
         }

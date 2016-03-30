@@ -106,8 +106,8 @@ public class MchShopServiceImpl extends BaseServiceImpl implements MchShopServic
     }
 
     @Override
-    public List<MchShop> selectAllList() {
-        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectAllList");
+    public List<MchShop> selectAllList(Map<String, Object> map) {
+        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectAllList",map);
     }
 
     @Override

@@ -116,4 +116,21 @@ public class AreaController extends BaseController{
         }
 
     }
+
+    @RequestMapping("/getAll")
+    @ResponseBody
+    public ResponseData getAll() {
+        LOGGER.info("getAll");
+        try {
+            List<Area> areaList = areaService.selectListByPage(new HashMap<String,Object>(),null,null);
+            return ResponseData.success(areaList);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
+        }
+
+    }
 }

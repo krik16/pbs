@@ -5,10 +5,11 @@ import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.entity.AliMch;
-import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchShop;
 import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.*;
+import com.shouyingbao.pbs.vo.AgentVO;
+import com.shouyingbao.pbs.vo.MchCompanyVO;
 import com.shouyingbao.pbs.vo.MchShopVO;
 import com.shouyingbao.pbs.vo.MchSubCompanyVO;
 import org.slf4j.Logger;
@@ -50,6 +51,9 @@ public class MchShopController extends BaseController{
     @Autowired
     AliMchService aliMchService;
 
+    @Autowired
+    AgentService agentService;
+
     @RequestMapping(value = "/search")
     public String search() {
         return "/mchShop/mchShop";
@@ -77,6 +81,7 @@ public class MchShopController extends BaseController{
     public String edit(ModelMap modelMap, Integer id) {
         LOGGER.info("edit:id={}",id);
         MchShopVO mchShopVO = new MchShopVO();
+        Map<String,Object> subCompanyMap = new HashMap<>();
         if (id != null && id > 0) {
             MchShop mchShop = mchShopService.selectById(id);
             BeanUtils.copyProperties(mchShop, mchShopVO);
@@ -89,11 +94,16 @@ public class MchShopController extends BaseController{
             if(weixinMch != null){
                 mchShopVO.setWeixinMchId(weixinMch.getMchId());
             }
+            subCompanyMap.put("companyId",mchShop.getCompanyId());
         }
-        List<MchCompany> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
-        List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+
+        List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
+
+        List<AgentVO> agentVOList = agentService.selectListByPage(new HashMap<String, Object>(),null,null);
         mchShopVO.setCompanyList(mchCompanyList);
         mchShopVO.setSubCompanyVOList(mchSubCompanyVOList);
+        mchShopVO.setAgentVOList(agentVOList);
         modelMap.addAttribute("entity", mchShopVO);
         return "mchShop/edit";
     }

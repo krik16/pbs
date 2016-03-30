@@ -119,6 +119,43 @@ public class AgentController extends BaseController {
             e.printStackTrace();
             return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
         }
+    }
+
+    @RequestMapping("/getAll")
+    @ResponseBody
+    public ResponseData getAll() {
+        LOGGER.info("getAll");
+        try {
+            List<AgentVO> list = agentService.selectListByPage(new HashMap<String, Object>(), null, null);
+            return ResponseData.success(list);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
+        }
+    }
+
+    @RequestMapping("/getByAreaId")
+    @ResponseBody
+    public ResponseData getByAreaId(Integer parentId) {
+        LOGGER.info("getByAreaId:parentId={}", parentId);
+        try {
+            if(parentId==0){
+                return  ResponseData.success();
+            }
+            Map<String,Object> map = new HashMap<>();
+            map.put("areaId",parentId);
+            List<AgentVO> agentList = agentService.selectListByPage(map,null,null);
+            return ResponseData.success(agentList);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_OPERATION_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_OPERATION_FAIL.getValueStr());
+        }
 
     }
 }
