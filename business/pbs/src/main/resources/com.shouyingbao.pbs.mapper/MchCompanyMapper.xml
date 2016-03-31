@@ -28,6 +28,15 @@
       and mch_company.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
     </if>
+    <if test="agentId != null and agentId > 0" >
+      and mch_company.agent_id = #{agentId}
+    </if>
+    <if test="areaId != null and areaId > 0" >
+      and agent.area_id = #{areaId}
+    </if>
+    <if test="id != null and id > 0" >
+      and mch_company.id = #{id}
+    </if>
     and mch_company.is_delete = 0
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -141,6 +150,7 @@
     count(1)
     from
     mch_company
+    left join agent on mch_company.agent_id = agent.id
     <where>
       <include refid="list_where_clause" />
     </where>

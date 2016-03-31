@@ -49,6 +49,15 @@ public class AgentController extends BaseController {
     public String list(ModelMap model, @RequestBody Map<String, Object> map) {
         LOGGER.info("list:map={}", map);
         try {
+            //数据权限
+            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                LOGGER.info("permission is admin");
+            }else  if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){
+                map.put("areaId",getUser().getAreaId());
+            }else {
+                LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+                return "agent/list";
+            }
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
             List<AgentVO> areaList = agentService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = agentService.selectListCount(map);
@@ -70,7 +79,17 @@ public class AgentController extends BaseController {
             Agent agent = agentService.selectById(id);
             BeanUtils.copyProperties(agent, agentVO);
         }
-        List<Area> areaList = areaService.selectListByPage(new HashMap<String, Object>(), null, null);
+        Map<String,Object> areaMap = new HashMap<>();
+        //数据权限
+        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            LOGGER.info("permission is admin");
+        }else  if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){
+            areaMap.put("id",getUser().getAreaId());
+        }else {
+            LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+            return "agent/edit";
+        }
+        List<Area> areaList = areaService.selectListByPage(areaMap, null, null);
         agentVO.setAreaList(areaList);
         modelMap.addAttribute("agent", agentVO);
         return "agent/edit";

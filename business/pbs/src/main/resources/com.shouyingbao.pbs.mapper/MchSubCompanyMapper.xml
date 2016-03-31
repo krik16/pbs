@@ -34,6 +34,12 @@
     <if test="companyId != null and companyId != ''">
       and mch_sub_company.company_id = #{companyId}
     </if>
+    <if test="agentId != null and agentId > 0" >
+      and mch_company.agent_id = #{agentId}
+    </if>
+    <if test="areaId != null and areaId > 0" >
+      and agent.area_id = #{areaId}
+    </if>
     and mch_sub_company.is_delete = 0
   </sql>
 
@@ -131,7 +137,11 @@
   <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_VOList" />
-    from mch_sub_company left join mch_company on mch_sub_company.company_id = mch_company.id
+    from mch_sub_company
+    left join mch_company on mch_sub_company.company_id = mch_company.id
+    <if test="areaId != null and areaId > 0" >
+      left join agent on mch_company.agent_id = agent.id
+    </if>
     <where>
       <include refid="list_where_clause" />
     </where>
@@ -149,6 +159,10 @@
     count(1)
     from
     mch_sub_company
+    left join mch_company on mch_sub_company.company_id = mch_company.id
+    <if test="areaId != null and areaId > 0" >
+      left join agent on mch_company.agent_id = agent.id
+    </if>
     <where>
       <include refid="list_where_clause" />
     </where>

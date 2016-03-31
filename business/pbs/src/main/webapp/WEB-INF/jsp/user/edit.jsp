@@ -55,7 +55,9 @@
                                 <span class="input-group-addon input-group-onlytext">用户类型：</span>
                                 <select class="form-control" id="isEmployee" onchange="isEmployeeSelect('isEmployee')">
                                     <option value="-1">用户类型</option>
-                                    <option value="0" <c:if test="${0==entity.isEmployee}">selected="true"</c:if>>内部员工</option>
+                                    <c:if test="${entity.isEmployee != 1}">
+                                        <option value="0" <c:if test="${0==entity.isEmployee}">selected="true"</c:if>>内部员工</option>
+                                    </c:if>
                                     <option value="1" <c:if test="${1==entity.isEmployee}">selected="true"</c:if>>合作商户</option>
                                 </select>
                             </div>

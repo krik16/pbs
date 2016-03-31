@@ -26,18 +26,34 @@
   </sql>
   <sql id="Base_Column_VOList" >
     mch_shop.id, mch_shop.`name`, mch_shop.`desc`, mch_shop.company_id, mch_shop.sub_company_id,mch_shop.address,mch_shop.agent_id,mch_shop.create_at, mch_shop.create_by, mch_shop.update_at,
-    mch_shop.update_by, mch_shop.is_delete,mch_company.name as company_name,mch_sub_company.name as sub_company_name,agent.name as agentName
+    mch_shop.update_by, mch_shop.is_delete,mch_company.name as company_name,mch_sub_company.name as sub_company_name,
+    CASE WHEN agent.name IS NOT NULL
+    THEN
+    agent.name
+    ELSE
+    agent2.name
+    END
+    AS agentName
   </sql>
   <sql id="list_where_clause">
     <if test="name != null and name != ''">
       and mch_shop.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
     </if>
+    <if test="agentId != null and agentId > 0" >
+      and (mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
+    </if>
+    <if test="areaId != null and areaId > 0" >
+      and (agent.area_id = #{areaId} or agent2.area_id = #{areaId})
+    </if>
     <if test="companyId != null and companyId != '' ">
-      mch_shop.company_id = #{companyId}
+     and mch_shop.company_id = #{companyId}
     </if>
     <if test="subCompanyId != null and subCompanyId != '' ">
-      mch_shop.sub_company_id = #{subCompanyId}
+      and mch_shop.sub_company_id = #{subCompanyId}
+    </if>
+    <if test="id != null and id >= 0">
+     and mch_shop.id = #{id}
     </if>
     and mch_shop.is_delete = 0
   </sql>
@@ -147,14 +163,16 @@
   <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_VOList" />
-    from 	mch_shop left join mch_company on mch_shop.company_id = mch_company.id
+    from 	mch_shop
+    left join mch_company on mch_shop.company_id = mch_company.id
     left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
-    left join agent on mch_shop.agent_id = agent.id
+    left join agent on mch_company.agent_id = agent.id
+    left join agent as agent2 on mch_shop.agent_id = agent2.id
     <where>
       <include refid="list_where_clause" />
     </where>
     <if test="orderby == null">
-      order by create_at desc
+      order by mch_shop.create_at desc
     </if>
     <if test="currentPage != null">
       limit
@@ -167,6 +185,12 @@
     count(1)
     from
     mch_shop
+    left join mch_company on mch_shop.company_id = mch_company.id
+    left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+    left join agent on mch_shop.agent_id = agent.id
+    <if test="areaId != null and areaId > 0">
+      left join agent as agent2 on mch_shop.agent_id = agent2.id
+    </if>
     <where>
       <include refid="list_where_clause" />
     </where>

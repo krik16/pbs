@@ -30,7 +30,7 @@ import java.util.Map;
  **/
 @Controller
 @RequestMapping("/mchCompany")
-public class MchCompanyController extends BaseController{
+public class MchCompanyController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MchCompanyController.class);
 
@@ -46,9 +46,20 @@ public class MchCompanyController extends BaseController{
     }
 
     @RequestMapping("/list")
-    public String list(ModelMap model,@RequestBody Map<String,Object> map){
+    public String list(ModelMap model, @RequestBody Map<String, Object> map) {
         LOGGER.info("list:map={}", map);
         try {
+            //数据权限
+            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                LOGGER.info("permission is admin");
+            }else  if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+                map.put("areaId", getUser().getAreaId());
+            } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+                map.put("agentId", getUser().getAgentId());
+            } else {
+                LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+                return "mchCompany/list";
+            }
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
             List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = mchCompanyService.selectListCount(map);
@@ -56,7 +67,7 @@ public class MchCompanyController extends BaseController{
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("currpage", currpage);
             model.addAttribute("list", mchCompanyList);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
@@ -66,11 +77,23 @@ public class MchCompanyController extends BaseController{
 
     @RequestMapping("/edit")
     public String edit(ModelMap modelMap, Integer id) {
-        MchCompany mchCompany= null;
+        MchCompany mchCompany = null;
+        Map<String,Object> agentMap = new HashMap<>();
+        //数据权限
+        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            LOGGER.info("permission is admin");
+        }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+            agentMap.put("areaId", getUser().getAreaId());
+        } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+            agentMap.put("id", getUser().getAgentId());
+        } else {
+            LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+            return "mchCompany/edit";
+        }
         if (id != null && id > 0) {
             mchCompany = mchCompanyService.selectById(id);
         }
-        List<AgentVO> agentList = agentService.selectListByPage(new HashMap<String, Object>(),null,null);
+        List<AgentVO> agentList = agentService.selectListByPage(agentMap, null, null);
         modelMap.addAttribute("entity", mchCompany);
         modelMap.addAttribute("agentList", agentList);
         return "mchCompany/edit";
@@ -78,7 +101,7 @@ public class MchCompanyController extends BaseController{
 
     @RequestMapping("/save")
     @ResponseBody
-    public ResponseData save( MchCompany mchCompany){
+    public ResponseData save(MchCompany mchCompany) {
         LOGGER.info("save:mchCompany={}", mchCompany);
         try {
             if (mchCompany.getId() == null) {
@@ -91,12 +114,12 @@ public class MchCompanyController extends BaseController{
                 mchCompanyService.update(mchCompany);
             }
             return ResponseData.success();
-        }catch (UserNotFoundException e){
-            return ResponseData.failure(e.getCode(),e.getMessage());
-        }catch (Exception e){
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
-            return ResponseData.failure(ConstantEnum.EXCEPTION_INSERT_FAIL.getCodeStr(),ConstantEnum.EXCEPTION_INSERT_FAIL.getValueStr());
+            return ResponseData.failure(ConstantEnum.EXCEPTION_INSERT_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_INSERT_FAIL.getValueStr());
         }
 
     }
@@ -138,14 +161,15 @@ public class MchCompanyController extends BaseController{
             return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
         }
     }
+
     @RequestMapping("/getAgentById")
     @ResponseBody
     public ResponseData getAgentById(Integer parentId) {
-        LOGGER.info("getAgentById:parentId={}",parentId);
+        LOGGER.info("getAgentById:parentId={}", parentId);
         try {
             List<Agent> agentList = new ArrayList<>();
             MchCompany mchCompany = mchCompanyService.selectById(parentId);
-            if(mchCompany != null){
+            if (mchCompany != null) {
                 Agent agent = agentService.selectById(mchCompany.getAgentId());
                 agentList.add(agent);
             }

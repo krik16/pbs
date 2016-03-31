@@ -19,6 +19,7 @@
                 <div class="panel-body">
                     <div class="panel-body" style="float:left;width: 45%">
                         <input id="id" type="hidden" name="id" value="${entity.id}"/>
+                        <input id="authority" type="hidden" name="authority" value="${authority}"/>
 
                         <div class="form-group row mb15">
                             <div class="col-sm-8">
@@ -69,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row mb15" id="agent-select">
+                        <div class="form-group row mb15" id="agent-select" <c:if test="${entity.agentId <= 0}">style="display:none"</c:if> >
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">分销代理：</span>

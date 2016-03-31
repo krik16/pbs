@@ -5,6 +5,7 @@ import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.entity.AliMch;
+import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.MchShop;
 import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.*;
@@ -63,6 +64,25 @@ public class MchShopController extends BaseController{
     public String list(ModelMap model,@RequestBody Map<String,Object> map){
         LOGGER.info("list:map={}", map);
         try {
+            //数据权限
+            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+              LOGGER.info("permission is admin");
+            } else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+                map.put("areaId", getUser().getAreaId());
+            } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+                map.put("agentId", getUser().getAgentId());
+            } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority()) || ConstantEnum.AUTHORITY_MCH_FINANCE.getCodeStr().equals(getAuthority())) {
+                map.put("companyId", getUser().getCompanyId());
+            }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
+                map.put("subCompanyId", getUser().getSubCompanyId());
+            }else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+                map.put("id", getUser().getShopId());
+            }else if (ConstantEnum.AUTHORITY_MCH_CASHIER.getCodeStr().equals(getAuthority())) {
+                map.put("id", getUser().getShopId());
+            }   else {
+                LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+                return "mchShop/list";
+            }
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
             List<MchShopVO> shopVOList = mchShopService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = mchShopService.selectListCount(map);
@@ -80,8 +100,42 @@ public class MchShopController extends BaseController{
     @RequestMapping("/edit")
     public String edit(ModelMap modelMap, Integer id) {
         LOGGER.info("edit:id={}",id);
+        Map<String,Object> companyMap = new HashMap<>();
+        Map<String,Object> agentMap = new HashMap<>();
         MchShopVO mchShopVO = new MchShopVO();
         Map<String,Object> subCompanyMap = new HashMap<>();
+        //数据权限
+        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            LOGGER.info("permission is admin");
+        }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+            agentMap.put("areaId", getUser().getAreaId());
+            companyMap.put("areaId", getUser().getAreaId());
+            subCompanyMap.put("areaId", getUser().getAreaId());
+        } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+            agentMap.put("id", getUser().getAgentId());
+            companyMap.put("agentId", getUser().getAgentId());
+            subCompanyMap.put("agentId", getUser().getAgentId());
+        } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority()) || ConstantEnum.AUTHORITY_MCH_FINANCE.getCodeStr().equals(getAuthority())) {
+            MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
+            if(mchCompany != null) {
+                agentMap.put("id", mchCompany.getAgentId());
+            }
+            companyMap.put("id", getUser().getCompanyId());
+            subCompanyMap.put("companyId", getUser().getCompanyId());
+        }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
+            MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
+            if(mchCompany != null) {
+                agentMap.put("id", mchCompany.getAgentId());
+            }
+            companyMap.put("id", getUser().getCompanyId());
+            subCompanyMap.put("id", getUser().getSubCompanyId());
+        }  else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+            companyMap.put("id", getUser().getCompanyId());
+            subCompanyMap.put("companyId", getUser().getCompanyId());
+        } else {
+            LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+            return "mchShop/edit";
+        }
         if (id != null && id > 0) {
             MchShop mchShop = mchShopService.selectById(id);
             BeanUtils.copyProperties(mchShop, mchShopVO);
@@ -96,15 +150,16 @@ public class MchShopController extends BaseController{
             }
             subCompanyMap.put("companyId",mchShop.getCompanyId());
         }
-        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(companyMap, null, null);
 
         List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
 
-        List<AgentVO> agentVOList = agentService.selectListByPage(new HashMap<String, Object>(),null,null);
+        List<AgentVO> agentVOList = agentService.selectListByPage(agentMap,null,null);
         mchShopVO.setCompanyList(mchCompanyList);
         mchShopVO.setSubCompanyVOList(mchSubCompanyVOList);
         mchShopVO.setAgentVOList(agentVOList);
         modelMap.addAttribute("entity", mchShopVO);
+        modelMap.addAttribute("authority",getAuthority());
         return "mchShop/edit";
     }
 

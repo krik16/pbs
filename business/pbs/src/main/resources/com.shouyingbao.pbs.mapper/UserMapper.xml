@@ -47,6 +47,24 @@
             and user.user_account like
             concat('%',#{userAccount,jdbcType=VARCHAR},'%')
         </if>
+        <if test="areaId != null and areaId > 0">
+            (user.area_id = #{areaId} or company_agent.area_id = #{areaId} or shop_agent.area_id = #{areaId})
+        </if>
+        <if test="agentId != null and agentId > 0">
+            (user.agent_id = #{agentId} or mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
+        </if>
+        <if test="companyId != null and companyId > 0">
+            user.company_id = #{companyId}
+        </if>
+        <if test="subCompanyId != null and subCompanyId > 0">
+            user.sub_company_id = #{subCompanyId}
+        </if>
+        <if test="shopId != null and shopId > 0">
+            user.shop_id = #{shopId}
+        </if>
+        <if test="id != null and id > 0">
+            user.id = #{id}
+        </if>
         and user.is_delete = 0
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -305,12 +323,15 @@
     <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_VOList"/>
-        from user left join mch_company on user.company_id = mch_company.id
-        left join mch_sub_company on user.sub_company_id = mch_sub_company.id
-        left join area on user.area_id = area.id
-        left join agent on user.agent_id = agent.id
-        left join mch_shop on user.shop_id = mch_shop.id
-        left join user_role on user_role.user_id = user.id
+        from user
+        left join mch_company on user .company_id = mch_company.id
+        left join mch_sub_company on user .sub_company_id = mch_sub_company.id
+        left join area on user .area_id = area.id
+        left join agent on user .agent_id = agent.id
+        left join agent as company_agent on mch_company.agent_id = company_agent.id
+        left join mch_shop on user .shop_id = mch_shop.id
+        left join agent as shop_agent on mch_shop.agent_id = shop_agent.id
+        left join user_role on user_role.user_id = user .id
         left join role on role.id = user_role.role_id
         <where>
             <include refid="list_where_clause"/>
@@ -329,6 +350,15 @@
         count(1)
         from
         user
+        left join mch_company on user .company_id = mch_company.id
+        left join mch_sub_company on user .sub_company_id = mch_sub_company.id
+        left join area on user .area_id = area.id
+        left join agent on user .agent_id = agent.id
+        left join agent as company_agent on mch_company.agent_id = company_agent.id
+        left join mch_shop on user .shop_id = mch_shop.id
+        left join agent as shop_agent on mch_shop.agent_id = shop_agent.id
+        left join user_role on user_role.user_id = user .id
+        left join role on role.id = user_role.role_id
         <where>
             <include refid="list_where_clause"/>
         </where>

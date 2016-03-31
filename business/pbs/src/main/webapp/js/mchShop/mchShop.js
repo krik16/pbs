@@ -95,8 +95,11 @@ function companySelect(url,parentId,eId){
 	$("#agentId").val(0);
 	}else{
 		$("#subCompany-select").css("display","none");
-		$("#agent-select").css("display","inline-block");
-		selectChange("../agent/getAll",parentId,"agentId");
+		var authority = $('#authority').val();
+		if(authority != 'MCH_COMPANY' && authority != 'MCH_SUB_COMPANY'){
+			$("#agent-select").css("display","inline-block");
+			selectChange("../agent/getAll",parentId,"agentId");
+		}
 	}
 	selectChange(url,parentId,eId);
 }

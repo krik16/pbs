@@ -31,6 +31,9 @@
     <if test="areaId != null and areaId != ''">
       and agent.area_id = #{areaId}
     </if>
+    <if test="id != null and id != ''">
+      and agent.id = #{id}
+    </if>
     and agent.is_delete = 0
 
   </sql>

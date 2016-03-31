@@ -87,9 +87,6 @@
                     <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT">
                         <li><a href="${ctx}/agent/search" target="mainFrame">代理管理</a></li>
                     </sec:authorize>
-                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
-                        <li><a href="${ctx}/user/search" target="mainFrame">用户管理</a></li>
-                    </sec:authorize>
                 </ul>
             </li>
         </sec:authorize>
@@ -105,6 +102,9 @@
                 </sec:authorize>
                 <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_FINANCE">
                 <li><a href="${ctx}/mchShop/search" target="mainFrame">门店管理</a></li>
+                </sec:authorize>
+                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_FINANCE">
+                    <li><a href="${ctx}/user/search" target="mainFrame">用户管理</a></li>
                 </sec:authorize>
             </ul>
             </sec:authorize>
