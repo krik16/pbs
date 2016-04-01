@@ -5,7 +5,6 @@
     <script src="${ctx}/js/area/area.js" type="text/javascript"></script>
 </head>
 <div class="memSuper">
-    <div class="memSuper-title">公司管理 >区域管理 >编辑</div>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
@@ -21,7 +20,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">名称：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>名称：</span>
                                 <input id="name" type="text" value="${entity.name}" name="name"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="区域名称"/>

@@ -56,15 +56,22 @@ function save(){
 		});
 		return;
 	}
-	if(isEmployee<0){
-		Modal.alert({
-			msg: "用户类型不能为空!"
-		});
-		return;
-	}
 	if(roleId<=0){
 		Modal.alert({
 			msg: "用户角色不能为空!"
+		});
+		return;
+	}
+
+	if(roleId == 2 && areaId <= 0){
+		Modal.alert({
+			msg: "区域不能为空!"
+		});
+		return;
+	}
+	if(roleId == 3 && agentId <= 0){
+		Modal.alert({
+			msg: "代理不能为空!"
 		});
 		return;
 	}

@@ -2,13 +2,10 @@
 <%@ include file="../common/tag.jsp" %>
 <%@ include file="../common/include.jsp"%>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>订单详情</title>
     <link href="${ctx}/css/index.css" type="text/css" rel="stylesheet"/>
     <script src="${ctx}/js/agent/agent.js" type="text/javascript"></script>
 </head>
 <div class="memSuper">
-    <div class="memSuper-title">对账管理 >结算明细</div>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
@@ -24,7 +21,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">名称：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>名称：</span>
                                 <input id="name" type="text" value="${agent.name}" name="name"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="代理名称"/>
@@ -34,7 +31,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">区域：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>区域：</span>
                                 <select class="form-control" id="area" name="area" required>
                                     <option value="0">选择所属区域</option>
                                     <c:forEach items="${agent.areaList}" var="item">

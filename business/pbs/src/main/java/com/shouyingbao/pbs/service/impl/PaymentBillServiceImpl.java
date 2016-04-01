@@ -18,6 +18,7 @@ import com.shouyingbao.pbs.service.*;
 import com.shouyingbao.pbs.unit.AliPayUnit;
 import com.shouyingbao.pbs.unit.IdGenUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
+import com.shouyingbao.pbs.vo.PaymentBillVO;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,6 +64,20 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
 
     @Autowired
     MchShopService mchShopService;
+
+    @Override
+    public List<PaymentBillVO> selectListByPage(Map<String, Object> map, Integer currentPage, Integer pageSize) {
+        if(currentPage != null && pageSize != null) {
+            map.put("currentPage", (currentPage - 1) * pageSize);
+            map.put("pageSize", pageSize);
+        }
+        return this.getBaseDao().selectListBySql(NAMESPACE + ".selectListByPage", map);
+    }
+
+    @Override
+    public Integer selectListCount(Map<String, Object> map) {
+        return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectListCount", map);
+    }
 
     @Override
     public ResponseData weixinScanPay(Integer userId, String authCode, Integer totalFee, String deviceInfo, Integer tradeType){

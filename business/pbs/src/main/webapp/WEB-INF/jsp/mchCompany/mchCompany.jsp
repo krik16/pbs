@@ -8,7 +8,6 @@ pageEncoding="UTF-8"%>
     </head>
     <body>
         <div class="memSuper">
-            <div class="memSuper-title">商户管理管理 >公司管理</div>
             <div class="memSuper-main">
                 <div class="page-content ng-scope">
                     <div class="panel panel-default">

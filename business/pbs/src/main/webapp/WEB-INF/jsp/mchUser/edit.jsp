@@ -6,7 +6,6 @@
     <script src="${ctx}/js/mchUser/mchUser.js" type="text/javascript"></script>
 </head>
 <div class="memSuper">
-    <div class="memSuper-title">商户服务 >用户管理 >编辑</div>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
@@ -22,7 +21,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">账号：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>账号：</span>
                                 <input id="userAccount" type="text" value="${entity.userAccount}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="用户登录账号"/>
@@ -32,7 +31,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">姓名：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>姓名：</span>
                                 <input id="userName" type="text" value="${entity.userName}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="用户姓名"/>
@@ -42,7 +41,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">电话号码：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>电话号码：</span>
                                 <input id="userPhone" type="text" value="${entity.userPhone}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="用户电话号码"/>
@@ -53,7 +52,7 @@
                     <div class="form-group row mb15" id="role-select">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">用户角色：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>用户角色：</span>
                                 <select class="form-control" id="roleId" onchange="roleSelect('roleId')">
                                     <option value="0">选择用户角色</option>
                                     <c:forEach items="${entity.roleList}" var="item">
@@ -68,7 +67,7 @@
                     <div class="form-group row mb15" <c:if test="${entity.id == null || entity.companyId == 0}">style="display:none"</c:if> id="company-select">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">所属公司：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>所属公司：</span>
                                 <select class="form-control" id="companyId" onchange="companySelect('../mchSubCompany/getByCompanyId','companyId','subCompanyId')">
                                     <option value="0">选择所属公司</option>
                                     <c:forEach items="${entity.companyList}" var="item">

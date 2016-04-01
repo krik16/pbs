@@ -5,7 +5,6 @@
     <script src="${ctx}/js/mchCompany/mchCompany.js" type="text/javascript"></script>
 </head>
 <div class="memSuper">
-    <div class="memSuper-title">商户管理 >公司管理 >编辑</div>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
@@ -21,10 +20,11 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">名称：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>名称：</span>
                                 <input id="name" type="text" value="${entity.name}" name="name"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="公司名称"/>
+
                             </div>
                         </div>
                     </div>
@@ -33,15 +33,16 @@
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext-muted">地址：</span>
                                 <input id="address" type="text" value="${entity.address}" name="name"
-                                       class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
+                                       class="form-control dropdown-toggle ng-pristine ng-valid"  required="required"
                                        placeholder="公司地址"/>
+
                             </div>
                         </div>
                     </div>
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">分销代理：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>分销代理：</span>
                                 <select class="form-control" id="agentId">
                                     <option value="0">选择所属分销代理</option>
                                     <c:forEach items="${agentList}" var="item">

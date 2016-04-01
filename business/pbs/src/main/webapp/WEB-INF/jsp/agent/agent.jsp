@@ -5,21 +5,12 @@ pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>订单详情</title>
         <script src="${ctx}/js/agent/agent.js" type="text/javascript"></script>
     </head>
 
     <body>
         <div class="memSuper">
-            <div class="memSuper-title">对账管理 >结算明细</div>
             <div class="memSuper-main">
-        <%--        <div class="alert alert-warning">
-                    <a href="#" class="close" data-dismiss="alert">
-                        &times;
-                    </a>
-                    <strong>警告！</strong>您的网络连接有问题。
-                </div>--%>
                 <div class="page-content ng-scope">
                     <div class="panel panel-default">
                         <div class="panel-heading">

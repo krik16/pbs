@@ -35,8 +35,6 @@ function save(){
 	var companyId = $("#companyId").val();
 	var subCompanyId = $("#subCompanyId").val();
 	var shopId = $("#shopId").val();
-	var areaId = $("#areaId").val();
-	var agentId = $("#agentId").val();
 
 	if(!userAccount){
 		Modal.alert({
@@ -68,6 +66,12 @@ function save(){
 		});
 		return;
 	}
+	if(companyId<=0){
+		Modal.alert({
+			msg: "用户所属公司不能为空!"
+		});
+		return;
+	}
 
 
 	$.post("../mchUser/save", {
@@ -79,9 +83,7 @@ function save(){
 			roleId : roleId,
 			companyId : companyId,
 			subCompanyId : subCompanyId,
-			shopId : shopId,
-			areaId : areaId,
-			agentId : agentId,
+			shopId : shopId
 	}, function(data) {
 		if(data.meta.errno != 0){
 			Modal.alert({

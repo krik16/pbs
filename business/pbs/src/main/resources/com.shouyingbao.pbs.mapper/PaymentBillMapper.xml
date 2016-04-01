@@ -1,189 +1,296 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.shouyingbao.pbs.mapper.PaymentBillMapper" >
-  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.PaymentBill" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
-    <result column="refund_no" property="refundNo" jdbcType="VARCHAR" />
-    <result column="pay_channel" property="payChannel" jdbcType="TINYINT" />
-    <result column="mch_id" property="mchId" jdbcType="INTEGER" />
-    <result column="pay_type" property="payType" jdbcType="TINYINT" />
-    <result column="pay_amount" property="payAmount" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="TINYINT" />
-    <result column="trade_type" property="tradeType" jdbcType="TINYINT" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="finish_at" property="finishAt" jdbcType="TIMESTAMP" />
-    <result column="pay_account" property="payAccount" jdbcType="VARCHAR" />
-    <result column="pay_name" property="payName" jdbcType="VARCHAR" />
-    <result column="order_title" property="orderTitle" jdbcType="VARCHAR" />
-    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
-    <result column="uesr_id" property="uesrId" jdbcType="INTEGER" />
-    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
-    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, order_no,refund_no, pay_channel, mch_id, pay_type, pay_amount, `status`, trade_type, create_at,
-    finish_at, pay_account, pay_name, order_title, shop_id, uesr_id, batch_no, is_delete
-  </sql>
+<mapper namespace="com.shouyingbao.pbs.mapper.PaymentBillMapper">
+    <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.PaymentBill">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="refund_no" property="refundNo" jdbcType="VARCHAR"/>
+        <result column="pay_channel" property="payChannel" jdbcType="TINYINT"/>
+        <result column="mch_id" property="mchId" jdbcType="INTEGER"/>
+        <result column="pay_type" property="payType" jdbcType="TINYINT"/>
+        <result column="pay_amount" property="payAmount" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="trade_type" property="tradeType" jdbcType="TINYINT"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="finish_at" property="finishAt" jdbcType="TIMESTAMP"/>
+        <result column="pay_account" property="payAccount" jdbcType="VARCHAR"/>
+        <result column="pay_name" property="payName" jdbcType="VARCHAR"/>
+        <result column="order_title" property="orderTitle" jdbcType="VARCHAR"/>
+        <result column="shop_id" property="shopId" jdbcType="INTEGER"/>
+        <result column="uesr_id" property="uesrId" jdbcType="INTEGER"/>
+        <result column="batch_no" property="batchNo" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+    <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.PaymentBillVO" extends="BaseResultMap">
+        <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
+        <result column="shop_name" property="shopName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, order_no,refund_no, pay_channel, mch_id, pay_type, pay_amount, `status`, trade_type, create_at,
+        finish_at, pay_account, pay_name, order_title, shop_id, uesr_id, batch_no, is_delete
+    </sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from payment_bill
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from payment_bill
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.PaymentBill" useGeneratedKeys="true" keyProperty="id" >
-    insert into payment_bill (order_no,refund_no, pay_channel, mch_id,
-      pay_type, pay_amount, `status`, 
-      trade_type, create_at, finish_at, 
-      pay_account, pay_name, order_title, 
-      shop_id, uesr_id, batch_no, 
-      is_delete)
-    values (#{orderNo,jdbcType=VARCHAR},#{refundNo,jdbcType=VARCHAR}, #{payChannel,jdbcType=TINYINT}, #{mchId,jdbcType=INTEGER},
-      #{payType,jdbcType=TINYINT}, #{payAmount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
-      #{tradeType,jdbcType=TINYINT}, #{createAt,jdbcType=TIMESTAMP}, #{finishAt,jdbcType=TIMESTAMP}, 
-      #{payAccount,jdbcType=VARCHAR}, #{payName,jdbcType=VARCHAR}, #{orderTitle,jdbcType=VARCHAR}, 
-      #{shopId,jdbcType=INTEGER}, #{uesrId,jdbcType=INTEGER}, #{batchNo,jdbcType=VARCHAR}, 
-      #{isDelete,jdbcType=TINYINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.PaymentBill" useGeneratedKeys="true" keyProperty="id" >
-    insert into payment_bill
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      order_no,
-      refund_no,
-      pay_channel,
-      mch_id,
-      pay_type,
-      pay_amount,
-      `status`,
-      trade_type,
-      create_at,
-      finish_at,
-      pay_account,
-      pay_name,
-      order_title,
-      shop_id,
-      uesr_id,
-      batch_no,
-      is_delete,
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      #{orderNo,jdbcType=VARCHAR},
-      #{refundNo,jdbcType=VARCHAR},
-      #{payChannel,jdbcType=TINYINT},
-      #{mchId,jdbcType=INTEGER},
-      #{payType,jdbcType=TINYINT},
-      #{payAmount,jdbcType=INTEGER},
-      #{status,jdbcType=TINYINT},
-      #{tradeType,jdbcType=TINYINT},
-      #{createAt,jdbcType=TIMESTAMP},
-      #{finishAt,jdbcType=TIMESTAMP},
-      #{payAccount,jdbcType=VARCHAR},
-      #{payName,jdbcType=VARCHAR},
-      #{orderTitle,jdbcType=VARCHAR},
-      #{shopId,jdbcType=INTEGER},
-      #{uesrId,jdbcType=INTEGER},
-      #{batchNo,jdbcType=VARCHAR},
-      #{isDelete,jdbcType=TINYINT},
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.PaymentBill" >
-    update payment_bill
-    <set >
-      <if test="orderNo != null" >
+    <sql id="Base_Column_VOList">
+        pb.id, pb.order_no,pb.refund_no, pb.pay_channel, pb.mch_id, pb.pay_type, pb.pay_amount, pb.`status`, pb.trade_type, pb.create_at,
+        pb.finish_at, pb.pay_account, pb.pay_name, pb.shop_id, pb.uesr_id, pe.trade_no,mch_shop.name as shop_name
+    </sql>
+
+    <sql id="list_where_clause">
+        pb.is_delete = 0
+        <if test="orderNo != null and orderNo != ''">
+            and pb.order_no = #{orderNo}
+        </if>
+        <if test="payChannel != null and payChannel >= 0">
+            and pb.pay_channel = #{payChannel}
+        </if>
+        <if test="payType != null and payType >= 0">
+           and pb.pay_type = #{payType}
+        </if>
+        <if test="status != null and status >= 0">
+           and pb.status = #{status}
+        </if>
+        <if test="tradeType != null and tradeType >= 0">
+            and pb.trade_type = #{tradeType}
+        </if>
+        <if test="tradeStartTime != null and tradeStartTime != ''">
+            AND pb.create_at >= #{tradeStartTime}
+        </if>
+        <if test="tradeEndTime != null and tradeEndTime != ''">
+            AND #{tradeEndTime} >= pb.create_at
+        </if>
+        <if test="shopName != null and shopName != ''">
+            AND mch_shop.name like
+            concat('%',#{shopName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="tradeNo != null and tradeNo != ''">
+            and pe.trade_no = #{tradeNo}
+        </if>
+        <if test="areaId  != null and areaId > 0">
+            and (agent.area_id = #{areaId}  or agent_shop.area_id = #{areaId})
+        </if>
+        <if test="agentId != null and agentId > 0">
+            and (mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
+        </if>
+        <if test="agentId  != null and agentId > 0">
+            and (mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
+        </if>
+        <if test="companyId  != null and companyId > 0">
+            and mch_shop.company_id = #{companyId}
+        </if>
+        <if test="subCompanyId  != null and subCompanyId > 0">
+            and mch_shop.sub_company_id = #{subCompanyId}
+        </if>
+        <if test="shopId != null and shopId > 0">
+            and
+            mch_shop.id = #{shopId}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from payment_bill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from payment_bill
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.shouyingbao.pbs.entity.PaymentBill" useGeneratedKeys="true" keyProperty="id">
+        insert into payment_bill (order_no,refund_no, pay_channel, mch_id,
+        pay_type, pay_amount, `status`,
+        trade_type, create_at, finish_at,
+        pay_account, pay_name, order_title,
+        shop_id, uesr_id, batch_no,
+        is_delete)
+        values (#{orderNo,jdbcType=VARCHAR},#{refundNo,jdbcType=VARCHAR}, #{payChannel,jdbcType=TINYINT},
+        #{mchId,jdbcType=INTEGER},
+        #{payType,jdbcType=TINYINT}, #{payAmount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT},
+        #{tradeType,jdbcType=TINYINT}, #{createAt,jdbcType=TIMESTAMP}, #{finishAt,jdbcType=TIMESTAMP},
+        #{payAccount,jdbcType=VARCHAR}, #{payName,jdbcType=VARCHAR}, #{orderTitle,jdbcType=VARCHAR},
+        #{shopId,jdbcType=INTEGER}, #{uesrId,jdbcType=INTEGER}, #{batchNo,jdbcType=VARCHAR},
+        #{isDelete,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.PaymentBill" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into payment_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            order_no,
+            refund_no,
+            pay_channel,
+            mch_id,
+            pay_type,
+            pay_amount,
+            `status`,
+            trade_type,
+            create_at,
+            finish_at,
+            pay_account,
+            pay_name,
+            order_title,
+            shop_id,
+            uesr_id,
+            batch_no,
+            is_delete,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{orderNo,jdbcType=VARCHAR},
+            #{refundNo,jdbcType=VARCHAR},
+            #{payChannel,jdbcType=TINYINT},
+            #{mchId,jdbcType=INTEGER},
+            #{payType,jdbcType=TINYINT},
+            #{payAmount,jdbcType=INTEGER},
+            #{status,jdbcType=TINYINT},
+            #{tradeType,jdbcType=TINYINT},
+            #{createAt,jdbcType=TIMESTAMP},
+            #{finishAt,jdbcType=TIMESTAMP},
+            #{payAccount,jdbcType=VARCHAR},
+            #{payName,jdbcType=VARCHAR},
+            #{orderTitle,jdbcType=VARCHAR},
+            #{shopId,jdbcType=INTEGER},
+            #{uesrId,jdbcType=INTEGER},
+            #{batchNo,jdbcType=VARCHAR},
+            #{isDelete,jdbcType=TINYINT},
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.PaymentBill">
+        update payment_bill
+        <set>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="refundNo != null">
+                refund_no = #{refundNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payChannel != null">
+                pay_channel = #{payChannel,jdbcType=TINYINT},
+            </if>
+            <if test="mchId != null">
+                mch_id = #{mchId,jdbcType=INTEGER},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType,jdbcType=TINYINT},
+            </if>
+            <if test="payAmount != null">
+                pay_amount = #{payAmount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="tradeType != null">
+                trade_type = #{tradeType,jdbcType=TINYINT},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="finishAt != null">
+                finish_at = #{finishAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payAccount != null">
+                pay_account = #{payAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="payName != null">
+                pay_name = #{payName,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTitle != null">
+                order_title = #{orderTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="shopId != null">
+                shop_id = #{shopId,jdbcType=INTEGER},
+            </if>
+            <if test="uesrId != null">
+                uesr_id = #{uesrId,jdbcType=INTEGER},
+            </if>
+            <if test="batchNo != null">
+                batch_no = #{batchNo,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.PaymentBill">
+        update payment_bill
+        set
         order_no = #{orderNo,jdbcType=VARCHAR},
-      </if>
-      <if test="refundNo != null" >
         refund_no = #{refundNo,jdbcType=VARCHAR},
-      </if>
-      <if test="payChannel != null" >
         pay_channel = #{payChannel,jdbcType=TINYINT},
-      </if>
-      <if test="mchId != null" >
         mch_id = #{mchId,jdbcType=INTEGER},
-      </if>
-      <if test="payType != null" >
         pay_type = #{payType,jdbcType=TINYINT},
-      </if>
-      <if test="payAmount != null" >
         pay_amount = #{payAmount,jdbcType=INTEGER},
-      </if>
-      <if test="status != null" >
         `status` = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="tradeType != null" >
         trade_type = #{tradeType,jdbcType=TINYINT},
-      </if>
-      <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="finishAt != null" >
         finish_at = #{finishAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="payAccount != null" >
         pay_account = #{payAccount,jdbcType=VARCHAR},
-      </if>
-      <if test="payName != null" >
         pay_name = #{payName,jdbcType=VARCHAR},
-      </if>
-      <if test="orderTitle != null" >
         order_title = #{orderTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=INTEGER},
-      </if>
-      <if test="uesrId != null" >
         uesr_id = #{uesrId,jdbcType=INTEGER},
-      </if>
-      <if test="batchNo != null" >
         batch_no = #{batchNo,jdbcType=VARCHAR},
-      </if>
-      <if test="isDelete != null" >
-        is_delete = #{isDelete,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.PaymentBill" >
-    update payment_bill
-    set
-      order_no = #{orderNo,jdbcType=VARCHAR},
-    refund_no = #{refundNo,jdbcType=VARCHAR},
-      pay_channel = #{payChannel,jdbcType=TINYINT},
-      mch_id = #{mchId,jdbcType=INTEGER},
-      pay_type = #{payType,jdbcType=TINYINT},
-      pay_amount = #{payAmount,jdbcType=INTEGER},
-      `status` = #{status,jdbcType=TINYINT},
-      trade_type = #{tradeType,jdbcType=TINYINT},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      finish_at = #{finishAt,jdbcType=TIMESTAMP},
-      pay_account = #{payAccount,jdbcType=VARCHAR},
-      pay_name = #{payName,jdbcType=VARCHAR},
-      order_title = #{orderTitle,jdbcType=VARCHAR},
-      shop_id = #{shopId,jdbcType=INTEGER},
-      uesr_id = #{uesrId,jdbcType=INTEGER},
-      batch_no = #{batchNo,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=TINYINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        is_delete = #{isDelete,jdbcType=TINYINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <select id="selectByOrderNoAndTradeType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from payment_bill
-    where order_no = #{orderNo,jdbcType=VARCHAR}
-    <if test="tradeType != null and tradeType != ''">
-    and trade_type = #{tradeType,jdbcType=TINYINT}
-    </if>
-    <if test="payChannel != null and payChannel != ''">
-     and pay_channel = #{payChannel,jdbcType=TINYINT}
-    </if>
-    <if test="status != null and status != ''">
-    and status = #{status,jdbcType=TINYINT}
-    </if>
-  </select>
+    <select id="selectByOrderNoAndTradeType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from payment_bill
+        where order_no = #{orderNo,jdbcType=VARCHAR}
+        <if test="tradeType != null and tradeType != ''">
+            and trade_type = #{tradeType,jdbcType=TINYINT}
+        </if>
+        <if test="payChannel != null and payChannel != ''">
+            and pay_channel = #{payChannel,jdbcType=TINYINT}
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status,jdbcType=TINYINT}
+        </if>
+    </select>
+
+    <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_VOList"/>
+        from payment_bill as pb
+        left join payment_event pe on pb.id = pe.payment_bill_id
+        left join mch_shop on pb.shop_id = mch_shop.id
+        <if test="areaId > 0 or agentId > 0">
+            left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+            left join mch_company on mch_sub_company.company_id = mch_company.id
+            <if test="areaId > 0">
+                left join agent on mch_company.agent_id = agent.id
+                left join agent as agent_shop on agent_shop.id = mch_shop.agent_id
+            </if>
+        </if>
+        <where>
+            <include refid="list_where_clause"/>
+        </where>
+        <if test="orderby == null">
+            order by pb.create_at desc
+        </if>
+        <if test="currentPage != null">
+            limit
+            #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="selectListCount" parameterType="java.util.Map"
+            resultType="java.lang.Integer">
+        select
+        count(1)
+        from
+        payment_bill pb
+        left join payment_event pe on pb.id = pe.payment_bill_id
+        left join mch_shop on pb.shop_id = mch_shop.id
+        <if test="areaId > 0 or agentId > 0">
+            left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+            left join mch_company on mch_sub_company.company_id = mch_company.id
+            <if test="areaId > 0">
+                left join agent on mch_company.agent_id = agent.id
+                left join agent as agent_shop on agent_shop.id = mch_shop.agent_id
+            </if>
+        </if>
+        <where>
+            <include refid="list_where_clause"/>
+        </where>
+    </select>
 </mapper>

@@ -6,7 +6,6 @@
     <script src="${ctx}/js/user/user.js" type="text/javascript"></script>
 </head>
 <div class="memSuper">
-    <div class="memSuper-title">公司管理 >用户管理 >编辑</div>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
@@ -22,7 +21,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">账号：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>账号：</span>
                                 <input id="userAccount" type="text" value="${entity.userAccount}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="用户登录账号"/>
@@ -32,7 +31,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">姓名：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>姓名：</span>
                                 <input id="userName" type="text" value="${entity.userName}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="用户姓名"/>
@@ -42,17 +41,17 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">电话号码：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>电话号码：</span>
                                 <input id="userPhone" type="text" value="${entity.userPhone}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="用户电话号码"/>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row mb15" <c:if test="${entity.id == null}">style="display:none"</c:if>  id="role-select">
+                    <div class="form-group row mb15"  id="role-select">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">用户角色：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>用户角色：</span>
                                 <select class="form-control" id="roleId" onchange="roleSelect('roleId')">
                                     <option value="0">选择用户角色</option>
                                     <c:forEach items="${entity.roleList}" var="item">
@@ -66,7 +65,7 @@
                     <div class="form-group row mb15" <c:if test="${entity.id == null || entity.areaId == 0}">style="display:none"</c:if> id="area-select">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">所属区域：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>所属区域：</span>
                                 <select class="form-control" id="areaId" onchange="areaSelect('../agent/getByAreaId','areaId','agentId')">
                                     <option value="0">选择所属区域</option>
                                     <c:forEach items="${entity.areaList}" var="item">
@@ -80,7 +79,7 @@
                     <div class="form-group row mb15" <c:if test="${entity.id == null || entity.agentId == 0}">style="display:none"</c:if> id="agent-select">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">所属代理：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>所属代理：</span>
                                 <select class="form-control" id="agentId">
                                     <option value="0">选择所属代理</option>
                                     <c:forEach items="${entity.agentList}" var="item">

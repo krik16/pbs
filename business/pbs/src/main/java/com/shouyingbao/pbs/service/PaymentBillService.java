@@ -2,6 +2,10 @@ package com.shouyingbao.pbs.service;
 
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.entity.PaymentBill;
+import com.shouyingbao.pbs.vo.PaymentBillVO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -9,6 +13,11 @@ import com.shouyingbao.pbs.entity.PaymentBill;
  * 2016/3/7 16:00
  **/
 public interface PaymentBillService {
+
+
+    List<PaymentBillVO> selectListByPage(Map<String,Object> map,Integer currentPage,Integer pageSize);
+
+    Integer selectListCount(Map<String,Object> map);
 
     /**
      * 微信扫码支付

@@ -7,6 +7,8 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <th>账号</th>
+            <th>姓名</th>
+            <th>电话号码</th>
             <th>角色</th>
             <th>所属区域</th>
             <th>所属分销代理</th>
@@ -19,6 +21,8 @@
                 <c:forEach var="entity" items="${list}" varStatus="status">
                     <tr>
                         <td>${entity.userAccount}</td>
+                        <td>${entity.userName}</td>
+                        <td>${entity.userPhone}</td>
                         <td>${entity.roleName}</td>
                         <td>${entity.areaName}</td>
                         <td>${entity.agentName}</td>

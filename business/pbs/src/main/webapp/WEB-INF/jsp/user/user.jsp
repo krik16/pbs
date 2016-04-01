@@ -8,14 +8,7 @@ pageEncoding="UTF-8"%>
     </head>
     <body>
         <div class="memSuper">
-            <div class="memSuper-title">公司管理 >用户管理</div>
             <div class="memSuper-main">
-        <%--        <div class="alert alert-warning">
-                    <a href="#" class="close" data-dismiss="alert">
-                        &times;
-                    </a>
-                    <strong>警告！</strong>您的网络连接有问题。
-                </div>--%>
                 <div class="page-content ng-scope">
                     <div class="panel panel-default">
                         <div class="panel-heading">

@@ -153,7 +153,7 @@ public class UserController extends BaseController{
         try {
             User user = new User();
             BeanUtils.copyProperties(userVO,user);
-            user.setIsEmployee(ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte());
+            user.setIsEmployee(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte());
             if (user.getId() == null) {
                 user.setCreateAt(DateUtil.getCurrDateTime());
                 user.setCreateBy(getUser().getId());

@@ -5,7 +5,6 @@
     <script src="${ctx}/js/mchSubCompany/mchSubCompany.js" type="text/javascript"></script>
 </head>
 <div class="memSuper">
-    <div class="memSuper-title">商户管理 >分公司管理 >编辑</div>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
@@ -21,7 +20,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted">名称：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>名称：</span>
                                 <input id="name" type="text" value="${entity.name}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="分公司名称"/>
@@ -41,7 +40,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">公司：</span>
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>公司：</span>
                                 <select class="form-control" id="companyId">
                                      <option value="0">选择所属公司</option>
                                     <c:forEach items="${entity.mchCompanyList}" var="item">

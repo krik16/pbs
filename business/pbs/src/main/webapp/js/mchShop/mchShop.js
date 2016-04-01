@@ -43,6 +43,12 @@ function save(){
 		});
 		return;
 	}
+	if(agentId <=0 && companyId <=0){
+		Modal.alert({
+			msg: "所属代理和所属公司不能同时为空!"
+		});
+		return;
+	}
 
 	$.post("../mchShop/save", {
 			id : id,

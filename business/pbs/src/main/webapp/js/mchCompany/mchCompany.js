@@ -38,6 +38,12 @@ function save(){
 		});
 		return;
 	}
+	if(!agentId || agentId <= 0){
+		Modal.alert({
+			msg: "分销代理不能为空!"
+		});
+		return;
+	}
 
 	$.post("../mchCompany/save", {
 			id : id,
