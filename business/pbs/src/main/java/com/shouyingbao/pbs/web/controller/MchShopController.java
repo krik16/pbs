@@ -4,10 +4,7 @@ import com.shouyingbao.pbs.Exception.UserNotFoundException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
-import com.shouyingbao.pbs.entity.AliMch;
-import com.shouyingbao.pbs.entity.MchCompany;
-import com.shouyingbao.pbs.entity.MchShop;
-import com.shouyingbao.pbs.entity.WeixinMch;
+import com.shouyingbao.pbs.entity.*;
 import com.shouyingbao.pbs.service.*;
 import com.shouyingbao.pbs.vo.AgentVO;
 import com.shouyingbao.pbs.vo.MchCompanyVO;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +69,7 @@ public class MchShopController extends BaseController{
                 map.put("areaId", getUser().getAreaId());
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
                 map.put("agentId", getUser().getAgentId());
-            } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority()) || ConstantEnum.AUTHORITY_MCH_FINANCE.getCodeStr().equals(getAuthority())) {
+            } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
                 map.put("companyId", getUser().getCompanyId());
             }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
                 map.put("subCompanyId", getUser().getSubCompanyId());
@@ -100,10 +98,10 @@ public class MchShopController extends BaseController{
     @RequestMapping("/edit")
     public String edit(ModelMap modelMap, Integer id) {
         LOGGER.info("edit:id={}",id);
-        Map<String,Object> companyMap = new HashMap<>();
         Map<String,Object> agentMap = new HashMap<>();
-        MchShopVO mchShopVO = new MchShopVO();
+        Map<String,Object> companyMap = new HashMap<>();
         Map<String,Object> subCompanyMap = new HashMap<>();
+        MchShopVO mchShopVO = new MchShopVO();
         //数据权限
         if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
             LOGGER.info("permission is admin");
@@ -115,7 +113,7 @@ public class MchShopController extends BaseController{
             agentMap.put("id", getUser().getAgentId());
             companyMap.put("agentId", getUser().getAgentId());
             subCompanyMap.put("agentId", getUser().getAgentId());
-        } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority()) || ConstantEnum.AUTHORITY_MCH_FINANCE.getCodeStr().equals(getAuthority())) {
+        } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
             MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
             if(mchCompany != null) {
                 agentMap.put("id", mchCompany.getAgentId());
@@ -131,7 +129,7 @@ public class MchShopController extends BaseController{
             subCompanyMap.put("id", getUser().getSubCompanyId());
         }  else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
             companyMap.put("id", getUser().getCompanyId());
-            subCompanyMap.put("companyId", getUser().getCompanyId());
+            subCompanyMap.put("id", getUser().getSubCompanyId());
         } else {
             LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
             return "mchShop/edit";
@@ -148,16 +146,16 @@ public class MchShopController extends BaseController{
             if(weixinMch != null){
                 mchShopVO.setWeixinMchId(weixinMch.getMchId());
             }
-            subCompanyMap.put("companyId",mchShop.getCompanyId());
         }
-        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(companyMap, null, null);
-
-        List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
 
         List<AgentVO> agentVOList = agentService.selectListByPage(agentMap,null,null);
+        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(companyMap, null, null);
+        List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
+
+
+        mchShopVO.setAgentVOList(agentVOList);
         mchShopVO.setCompanyList(mchCompanyList);
         mchShopVO.setSubCompanyVOList(mchSubCompanyVOList);
-        mchShopVO.setAgentVOList(agentVOList);
         modelMap.addAttribute("entity", mchShopVO);
         modelMap.addAttribute("authority",getAuthority());
         return "mchShop/edit";
@@ -244,7 +242,12 @@ public class MchShopController extends BaseController{
     public ResponseData getByCompanyId(Integer parentId) {
         LOGGER.info("getByCompanyId:parentId={}", parentId);
         try {
-            List<MchShop> mchShopList = mchShopService.selectByCompanyId(parentId);
+            List<MchShop> mchShopList = new ArrayList<>();
+            if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+                mchShopList.add(mchShopService.selectById(getUser().getShopId()));
+            }else {
+                mchShopList = mchShopService.selectByCompanyId(parentId);
+            }
             return ResponseData.success(mchShopList);
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());
@@ -261,7 +264,12 @@ public class MchShopController extends BaseController{
     public ResponseData getBySubCompanyId(Integer parentId) {
         LOGGER.info("getBySubCompanyId:parentId={}", parentId);
         try {
-            List<MchShop> mchShopList = mchShopService.selectBySubCompanyId(parentId);
+            List<MchShop> mchShopList = new ArrayList<>();
+            if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+                mchShopList.add(mchShopService.selectById(getUser().getShopId()));
+            }else {
+                mchShopList = mchShopService.selectBySubCompanyId(parentId);
+            }
             return ResponseData.success(mchShopList);
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());

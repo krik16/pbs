@@ -140,4 +140,14 @@
     from `role`
     where type = #{type}
   </select>
+  <select id="selectByTypeAndIdLimit" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from `role`
+    where type = #{type}
+    <if test="id >  1">
+    and id > #{id}
+    </if>
+  </select>
+
 </mapper>

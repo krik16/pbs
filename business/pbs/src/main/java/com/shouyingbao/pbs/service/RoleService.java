@@ -23,4 +23,6 @@ public interface RoleService {
     List<Role> selectByUserId(Integer userId);
 
     List<Role> selectByType(byte type);
+
+    List<Role> selectByTypeAndIdLimit(byte type,Integer id);
 }

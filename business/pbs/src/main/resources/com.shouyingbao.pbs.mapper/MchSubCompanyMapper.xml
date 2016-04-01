@@ -31,6 +31,9 @@
       and mch_sub_company.name like
       concat('%',#{name,jdbcType=VARCHAR},'%')
     </if>
+    <if test="id != null and id > 0">
+      and mch_sub_company.id = #{id}
+    </if>
     <if test="companyId != null and companyId != ''">
       and mch_sub_company.company_id = #{companyId}
     </if>

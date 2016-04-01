@@ -56,6 +56,8 @@ public class MchCompanyController extends BaseController {
                 map.put("areaId", getUser().getAreaId());
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
                 map.put("agentId", getUser().getAgentId());
+            }  else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
+                map.put("id", getUser().getCompanyId());
             } else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return "mchCompany/list";
@@ -151,7 +153,21 @@ public class MchCompanyController extends BaseController {
     public ResponseData getAll() {
         LOGGER.info("getAll");
         try {
-            List<MchCompanyVO> list = mchCompanyService.selectListByPage(new HashMap<String, Object>(), null, null);
+            Map<String,Object> map = new HashMap<>();
+            //数据权限
+            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                LOGGER.info("permission is admin");
+            }else  if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+                map.put("areaId", getUser().getAreaId());
+            } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+                map.put("agentId", getUser().getAgentId());
+            }  else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
+                map.put("id", getUser().getCompanyId());
+            } else {
+                LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+                return ResponseData.success();
+            }
+            List<MchCompanyVO> list = mchCompanyService.selectListByPage(map, null, null);
             return ResponseData.success(list);
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());

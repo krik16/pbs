@@ -47,23 +47,26 @@
             and user.user_account like
             concat('%',#{userAccount,jdbcType=VARCHAR},'%')
         </if>
+        <if test="isEmployee != null and isEmployee >= 0">
+            and user.is_employee = #{isEmployee}
+        </if>
         <if test="areaId != null and areaId > 0">
-            (user.area_id = #{areaId} or company_agent.area_id = #{areaId} or shop_agent.area_id = #{areaId})
+            and (user.area_id = #{areaId} or company_agent. = #{areaId} or shop_agent.area_id = #{areaId})
         </if>
         <if test="agentId != null and agentId > 0">
-            (user.agent_id = #{agentId} or mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
+            and (user.agent_id = #{agentId} or mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
         </if>
         <if test="companyId != null and companyId > 0">
-            user.company_id = #{companyId}
+            and user.company_id = #{companyId}
         </if>
         <if test="subCompanyId != null and subCompanyId > 0">
-            user.sub_company_id = #{subCompanyId}
+            and user.sub_company_id = #{subCompanyId}
         </if>
         <if test="shopId != null and shopId > 0">
-            user.shop_id = #{shopId}
+            and user.shop_id = #{shopId}
         </if>
         <if test="id != null and id > 0">
-            user.id = #{id}
+            and user.id = #{id}
         </if>
         and user.is_delete = 0
     </sql>

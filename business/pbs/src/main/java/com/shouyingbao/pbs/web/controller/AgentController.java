@@ -145,7 +145,21 @@ public class AgentController extends BaseController {
     public ResponseData getAll() {
         LOGGER.info("getAll");
         try {
-            List<AgentVO> list = agentService.selectListByPage(new HashMap<String, Object>(), null, null);
+            //数据权限
+            Map<String,Object> map = new HashMap<String, Object>();
+            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                LOGGER.info("permission is admin");
+            }else  if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){
+                map.put("areaId",getUser().getAreaId());
+            }else  if(ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())){
+                map.put("id",getUser().getAgentId());
+            }else  if(ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())){
+//                map.put("id",getUser().getAgentId());
+            }else {
+                LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+                return ResponseData.success();
+            }
+            List<AgentVO> list = agentService.selectListByPage(map, null, null);
             return ResponseData.success(list);
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());

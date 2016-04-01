@@ -7,9 +7,10 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <th>账号</th>
-            <th>角色</th>
-            <th>所属区域</th>
-            <th>所属分销代理</th>
+            <th>姓名</th>
+            <th>所属公司</th>
+            <th>所属分公司</th>
+            <th>所属门店</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -19,12 +20,13 @@
                 <c:forEach var="entity" items="${list}" varStatus="status">
                     <tr>
                         <td>${entity.userAccount}</td>
-                        <td>${entity.roleName}</td>
-                        <td>${entity.areaName}</td>
-                        <td>${entity.agentName}</td>
+                        <td>${entity.userName}</td>
+                        <td>${entity.companyName}</td>
+                        <td>${entity.subCompanyName}</td>
+                        <td>${entity.shopName}</td>
                         <td>
                             <div class="col-sm-3">
-                                <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/user/edit?id=${entity.id}">
+                                <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/mchUser/edit?id=${entity.id}">
                                     <i class="fa fa-edit"></i>
                                     <span class="btn-text" >修改</span>
                                 </a>

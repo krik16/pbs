@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class MchSubCompanyController extends BaseController{
                 companyMap.put("areaId", getUser().getAreaId());
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
                 companyMap.put("agentId", getUser().getAgentId());
-            } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+            } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
                 companyMap.put("id", getUser().getCompanyId());
             }  else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
@@ -161,10 +162,15 @@ public class MchSubCompanyController extends BaseController{
     public ResponseData getByCompanyId(Integer parentId) {
         LOGGER.info("getByCompanyId:parentId={}", parentId);
         try {
+            List<MchSubCompany> mchSubCompanyList=new ArrayList<>();
             if(parentId == 0){
                 return ResponseData.success();
             }
-            List<MchSubCompany> mchSubCompanyList = mchSubCompanyService.selectByCompanyId(parentId);
+            if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+                mchSubCompanyList.add(mchSubCompanyService.selectById(getUser().getSubCompanyId()));
+            }else{
+                mchSubCompanyList = mchSubCompanyService.selectByCompanyId(parentId);
+            }
             return ResponseData.success(mchSubCompanyList);
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());

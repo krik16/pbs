@@ -28,10 +28,10 @@ import java.util.Map;
  * 2016/3/17 11:05
  **/
 @Controller
-@RequestMapping("/user")
-public class UserController extends BaseController{
+@RequestMapping("/mchUser")
+public class MchUserController extends BaseController{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MchUserController.class);
 
     @Autowired
     MchCompanyService mchCompanyService;
@@ -58,7 +58,7 @@ public class UserController extends BaseController{
 
     @RequestMapping(value = "/search")
     public String search() {
-        return "/user/user";
+        return "/mchUser/mchUser";
     }
 
     @RequestMapping("/list")
@@ -66,8 +66,8 @@ public class UserController extends BaseController{
         LOGGER.info("list:map={}", map);
         try {
             chcekDataPermission(map);
-            map.put("isEmployee",ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte());
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
+            map.put("isEmployee",ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte());
             List<UserVO> userList = userService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = userService.selectListCount(map);
             model.addAttribute("rowCount", getRowCount(totalCount));
@@ -80,7 +80,7 @@ public class UserController extends BaseController{
             LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
-        return "user/list";
+        return "mchUser/list";
     }
 
     @RequestMapping("/edit")
@@ -91,21 +91,46 @@ public class UserController extends BaseController{
             UserVO userVO = new UserVO();
             Map<String,Object> areaMap = new HashMap<>();
             Map<String,Object> agentMap = new HashMap<>();
+            Map<String,Object> companyMap = new HashMap<>();
+            Map<String,Object> subCompanyMap = new HashMap<>();
+            Map<String,Object> shopMap = new HashMap<>();
             //数据权限
             if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
                 LOGGER.info("permission is admin");
             }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
                 agentMap.put("areaId", getUser().getAreaId());
+                companyMap.put("areaId", getUser().getAreaId());
+                subCompanyMap.put("areaId", getUser().getAreaId());
+                shopMap.put("areaId", getUser().getAreaId());
                 areaMap.put("id",getUser().getAreaId());
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
                 agentMap.put("id", getUser().getAgentId());
-                Agent agent = agentService.selectById(getUser().getAgentId());
-                if(agent != null) {
-                    areaMap.put("id", agent.getAreaId());
+                companyMap.put("agentId", getUser().getAgentId());
+                subCompanyMap.put("agentId", getUser().getAgentId());
+                shopMap.put("agentId", getUser().getAgentId());
+            } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
+                MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
+                if(mchCompany != null) {
+                    agentMap.put("id", mchCompany.getAgentId());
                 }
-            }else {
-                LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-                return "shop/edit";
+                companyMap.put("id", getUser().getCompanyId());
+                subCompanyMap.put("companyId", getUser().getCompanyId());
+                shopMap.put("companyId", getUser().getCompanyId());
+            }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
+                MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
+                if(mchCompany != null) {
+                    agentMap.put("id", mchCompany.getAgentId());
+                }
+                companyMap.put("id", getUser().getCompanyId());
+                subCompanyMap.put("id", getUser().getSubCompanyId());
+                shopMap.put("subCompanyId", getUser().getSubCompanyId());
+            }  else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+                companyMap.put("id", getUser().getCompanyId());
+                subCompanyMap.put("id", getUser().getSubCompanyId());
+                shopMap.put("id", getUser().getShopId());
+            } else {
+                LOGGER.info(getUser()+":"+ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+                return "mchShop/edit";
             }
             if (id != null && id > 0) {
                 User user = userService.selectById(id);
@@ -114,25 +139,28 @@ public class UserController extends BaseController{
                 if(userRole != null) {
                     userVO.setRoleId(userRole.getRoleId());
                 }
-                if(user.getAreaId() > 0){
-                    agentMap.put("areaId",user.getAreaId());
-                }
             }
-            List<Role> roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId());
+            List<Role> roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte(),loginUserRole.getRoleId());
             if(id == getUser().getId()){//修改自身信息时角色权限加1
-                if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+                if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){
                     Role role = new Role();
                     role.setId(2);
                     role.setName(ConstantEnum.AUTHORITY_AREA_AGENT.getValueStr());
                     roleList.add(role);
-                }else {
-                    roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId() - 1);
+                }else{
+                    roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte(),loginUserRole.getRoleId()-1);
                 }
             }
             List<Area> areaList = areaService.selectListByPage(areaMap, null, null);
             List<AgentVO> agentList = agentService.selectListByPage(agentMap,null,null);
+            List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(companyMap, null, null);
+            List<MchSubCompanyVO> mchSubCompanyList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
+            List<MchShopVO> mchShopList = mchShopService.selectListByPage(shopMap, null, null);
 
             userVO.setRoleList(roleList);
+            userVO.setCompanyList(mchCompanyList);
+            userVO.setSubCompanyVOList(mchSubCompanyList);
+            userVO.setShopList(mchShopList);
             userVO.setAreaList(areaList);
             userVO.setAgentList(agentList);
             modelMap.addAttribute("entity", userVO);
@@ -143,7 +171,7 @@ public class UserController extends BaseController{
             e.printStackTrace();
         }
 
-        return "user/edit";
+        return "mchUser/edit";
     }
 
     @RequestMapping("/save")
@@ -238,25 +266,6 @@ public class UserController extends BaseController{
             return ResponseData.failure(ConstantEnum.EXCEPTION_OPERATION_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_OPERATION_FAIL.getValueStr());
         }
 
-    }
-    private Map<String,Object> chcekDataPermission(Map<String,Object> map ){
-        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
-            LOGGER.info("permission is admin");
-        } else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
-            map.put("areaId", getUser().getAreaId());
-        } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
-            map.put("agentId", getUser().getAgentId());
-        } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
-            map.put("companyId", getUser().getCompanyId());
-        }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
-            map.put("subCompanyId", getUser().getSubCompanyId());
-        }else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
-            map.put("shopId", getUser().getShopId());
-        }  else {
-            LOGGER.info(getUser().getUserAccount()+":"+ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-            throw new PermissionException(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getCodeStr(),ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-        }
-        return map;
     }
 
 }

@@ -28,7 +28,7 @@ public class UserVO extends User{
 
     private List<MchSubCompanyVO> subCompanyVOList;
 
-    private List<MchShop> shopList;
+    private List<MchShopVO> shopList;
 
     private List<Role> roleList;
 
@@ -101,11 +101,11 @@ public class UserVO extends User{
         this.roleList = roleList;
     }
 
-    public List<MchShop> getShopList() {
+    public List<MchShopVO> getShopList() {
         return shopList;
     }
 
-    public void setShopList(List<MchShop> shopList) {
+    public void setShopList(List<MchShopVO> shopList) {
         this.shopList = shopList;
     }
 

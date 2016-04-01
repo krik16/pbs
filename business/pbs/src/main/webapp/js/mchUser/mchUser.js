@@ -1,7 +1,7 @@
 $.ajaxSetup({
     cache: false
 });
-var url_ = "../user/list";
+var url_ = "../mchUser/list";
 $(document).ready(function() {
 	ajaxCommonSearch(url_,getSearchEntity());
 
@@ -70,7 +70,7 @@ function save(){
 	}
 
 
-	$.post("../user/save", {
+	$.post("../mchUser/save", {
 			id : id,
 			userAccount : userAccount,
 			userName : userName,
@@ -101,7 +101,7 @@ function cance(id){
 		})
 		.on( function (e) {
 			if(e) {
-				$.post("../user/cance?id=" + id, function (data) {
+				$.post("../mchUser/cance?id=" + id, function (data) {
 					if (data.meta.errno != 0) {
 						Modal.alert({
 							msg: "操作失败,"+data.meta.msg
@@ -121,7 +121,7 @@ function reset(id){
 		})
 		.on( function (e) {
 			if(e) {
-				$.post("../user/resetPwd?id=" + id, function (data) {
+				$.post("../mchUser/resetPwd?id=" + id, function (data) {
 					if (data.meta.errno != 0) {
 						Modal.alert({
 							msg: "操作失败,"+data.meta.msg
@@ -139,54 +139,84 @@ function reset(id){
 }
 
 
-function isEmployeeSelect(parentId){
-	var pid = document.getElementById(parentId);
-	if(pid.value >=0){
-		$("#role-select").css("display","inline-block");
-	}else{
-		$("#role-select").css("display","none");
-	}
-
-	if(pid.value > 0){
-		//$("#company-select").css("display","inline-block");
-		//$("#shop-select").css("display","inline-block");
-	}else{
-		$("#area-select").css("display","none");
-		$("#areaId").val(0);
-		$("#agent-select").css("display","none");
-		$("#agentId").val(0);
-
-		$("#company-select").css("display","none");
-		$("#companyId").val(0);
-		$("#subCompany-select").css("display","none");
-		$("#subCompanyId").val(0);
-		$("#shop-select").css("display","none");
-		$("#shopId").val(0);
-
-	}
-	selectChange("../user/getRoleByType",parentId,'roleId');
-}
+//function isEmployeeSelect(parentId){
+//	var pid = document.getElementById(parentId);
+//	if(pid.value >=0){
+//		$("#role-select").css("display","inline-block");
+//	}else{
+//		$("#role-select").css("display","none");
+//	}
+//
+//	if(pid.value > 0){
+//		//$("#company-select").css("display","inline-block");
+//		//$("#shop-select").css("display","inline-block");
+//	}else{
+//		$("#company-select").css("display","none");
+//		$("#companyId").val(0);
+//		$("#subCompany-select").css("display","none");
+//		$("#subCompanyId").val(0);
+//		$("#shop-select").css("display","none");
+//		$("#shopId").val(0);
+//
+//	}
+//	selectChange("../mchUser/getRoleByType",parentId,'roleId');
+//}
 
 function roleSelect(parentId){
 	var pid = document.getElementById(parentId);
-	$("#area-select").css("display","none");
-	$("#areaId").val(0);
-	$("#agent-select").css("display","none");
-	$("#agentId").val(0);
 
-	if(pid.value > 1 && pid.value < 4){
-		if(pid.value >= 2){//区域
-			$("#area-select").css("display","inline-block");
-			selectChange("../area/getAll",parentId,"areaId");
+	$("#company-select").css("display","none");
+	$("#companyId").val(0);
+	$("#subCompany-select").css("display","none");
+	$("#subCompanyId").val(0);
+	$("#shop-select").css("display","none");
+	$("#shopId").val(0);
+
+	if(pid.value >= 4){
+		if(pid.value >= 4 || pid.value == 8) {//商户总公司
+			$("#company-select").css("display","inline-block");
+			//selectChange("../mchCompany/getAll","areaId","agentId");
 		}
-		if(pid.value >= 3){//代理
-			$("#agent-select").css("display","inline-block");
-			selectChange("../agent/getByAreaId","areaId","agentId");
+		if(pid.value >= 5 && pid.value < 8) {//分分公司
+			$("#subCompany-select").css("display","inline-block");
+			selectChange('../mchSubCompany/getByCompanyId','companyId','subCompanyId');
+		}
+		if(pid.value == 6 || pid.value == 7){//门店
+			$("#shop-select").css("display","inline-block");
+			selectChange('../mchShop/getBySubCompanyId','subCompanyId','shopId');
 		}
 	}
 }
 
 
 function areaSelect(url,parentId,eId){
+	//var pid = document.getElementById(parentId);
+	//if(pid.value > 0){
+	//	$("#agent-select").css("display","inline-block");
+	//}else{
+	//	$("#agent-select").css("display","none");
+	//	$("#agent-select").value=0;
+	//}
+	selectChange(url,parentId,eId);
+}
+
+function companySelect(url,parentId,eId){
+	var pid = document.getElementById(parentId);
+	var roleId = $("#roleId").val();
+	if(pid.value > 0 && roleId > 4 && roleId < 8){
+		$("#subCompany-select").css("display","inline-block");
+	}else{
+		$("#subCompany-select").css("display","none");
+		$("#subCompany-select").value=0;
+	}
+	//改变分公司选项
+	selectChange(url,parentId,eId);
+	//改变店铺选项
+	selectChange('../mchShop/getByCompanyId',parentId,'shopId');
+}
+
+
+function subCompanySelect(url,parentId,eId){
+	//var pid = document.getElementById(parentId);
 	selectChange(url,parentId,eId);
 }
