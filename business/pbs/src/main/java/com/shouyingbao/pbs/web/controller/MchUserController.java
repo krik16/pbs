@@ -268,4 +268,24 @@ public class MchUserController extends BaseController{
 
     }
 
+    private Map<String,Object> chcekDataPermission(Map<String,Object> map ){
+        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            LOGGER.info("permission is admin");
+        } else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+            map.put("areaId", getUser().getAreaId());
+        } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+            map.put("agentId", getUser().getAgentId());
+        } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
+            map.put("companyId", getUser().getCompanyId());
+        }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
+            map.put("subCompanyId", getUser().getSubCompanyId());
+        }else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+            map.put("shopId", getUser().getShopId());
+        }  else {
+            LOGGER.info(getUser().getUserAccount()+":"+ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+            throw new PermissionException(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getCodeStr(),ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+        }
+        return map;
+    }
+
 }
