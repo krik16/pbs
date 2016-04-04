@@ -30,7 +30,7 @@
             <i class="fa fa-bars"></i>
         </button>
         <h1 class="nav-logo">
-            <%--<img src="../image/logo.png">--%>
+            <img src="../image/logo.png">
             <span style="font-size: 20px; position: relative; top: 11px; height: 30px;">商户管理平台</span>
         </h1>
 
@@ -38,7 +38,7 @@
             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                 <i class="fa fa-user"></i> <span id="username">${sessionScope.user.userAccount}</span></i>
             </a>
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+            <a href="${ctx}/user/changePwd" class="dropdown-toggle" target="mainFrame">
                 <i class="fa fa-edit"></i> <span id="changePwd">修改密码</span></i>
             </a>
             <a  href="${ctx}/j_spring_security_logout" target="_parent" class="dropdown-toggle">

@@ -10,7 +10,7 @@
   <frame src="${ctx}/main/top" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
   <frameset cols="212px,*" frameborder="no" border="0" framespacing="0">
     <frame src="${ctx}/main/left" name="leftFrame" scrolling="No" noresize="noresize" id="leftFrame" title="leftFrame" style="border: 1px solid #d9dadc"/>
-    <frame src="" name="mainFrame" id="mainFrame" title="mainFrame" style="border: 1px solid #d9dadc;border-left: 0px;" />
+    <frame src="${ctx}/bill/search" name="mainFrame" id="mainFrame" title="mainFrame" style="border: 1px solid #d9dadc;border-left: 0px;" />
   </frameset>
 </frameset>
 <noframes><body>

@@ -44,11 +44,16 @@
                     <input type="password" name="j_password" id="j_password" ng-model="password" class="form-control"
                            placeholder="密码"/>
                 </div>
-                <%-- <div class="form-code" ng-show="needCaptcha">
+                 <%--<div class="form-code" ng-show="needCaptcha">
                      <input type="text" ng-model="captchaCode" placeholder="验证码"/>
                      <img class="code" ng-src="{{captchaImg}}" tppabs="http://msp.shouqianba.com/login/{{captchaImg}}">
                      <a class="refresh" href="javascript:;" ng-click="changeAuthcode()">看不清楚,换一张</a>
                  </div>--%>
+                <c:if test="${error != null && error != ''}">
+                    <font color="red" style="position:relative; top:2px;">
+                         用户名或密码错误
+                    </font>
+                </c:if>
             </div>
             <div class="form-btn">
                 <button type="submit" class="btn btn-primary" id="login-btn">登录</button>
@@ -57,9 +62,9 @@
 
         </form>
         <div class="footer" role="contentinfo">
-            <p class="copyright">
+<%--            <p class="copyright">
                 Copyright &copy; 2013 - 2014 Wosai Inc. All Rights Reserved
-            </p>
+            </p>--%>
         </div>
     </div>
 </div>

@@ -31,13 +31,16 @@ public class LoginController{
 
     @Autowired
     UserService userService;
+
+    private  Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
     /**
+     *
      * 指向登录页面
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginPage(
             @RequestParam(value = "error", required = false) boolean error,
-            ModelMap model,HttpServletRequest request) {
+            ModelMap model) {
         if (error == true) {
             model.put("error", ConstantEnum.ERROR_LOGIN.getValueStr());
         } else {
@@ -63,8 +66,7 @@ public class LoginController{
     @ResponseBody
     public ResponseData mobileLogin(HttpServletRequest request,@RequestBody UserParam userParam) {
         ResponseData responseData;
-        Md5PasswordEncoder md5 = new Md5PasswordEncoder();
-        userParam.setMd5Pwd(md5.encodePassword(userParam.getUserPwd(), null));
+        userParam.setMd5Pwd(md5PasswordEncoder.encodePassword(userParam.getUserPwd(), null));
         User user = userService.selectByUserAccountAndPwd(userParam.getUserAccount(),userParam.getMd5Pwd());
         if(user != null){
             user.setUserPwd(null);
@@ -99,4 +101,5 @@ public class LoginController{
             return ResponseData.failure(ConstantEnum.EXCEPTION_REFUND_AUTHORITY.getCodeStr(),ConstantEnum.EXCEPTION_REFUND_AUTHORITY.getValueStr());
         }
     }
+
 }

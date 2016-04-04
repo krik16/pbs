@@ -21,7 +21,7 @@ pageEncoding="UTF-8"%>
                                 <div class="col-sm-4">
                                     <div class="input-group">
                                         <span class="input-group-addon input-group-onlytext">名称：</span>
-                                        <input id="name" type="text" class="form-control dropdown-toggle ng-pristine ng-valid" placeholder="区域名称">
+                                        <input id="name" type="text" class="form-control dropdown-toggle ng-pristine ng-valid" placeholder="代理名称">
                                     </div>
                                 </div>
                                 <div class="col-sm-2">

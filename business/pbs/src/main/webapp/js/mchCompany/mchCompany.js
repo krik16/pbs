@@ -81,5 +81,4 @@ function cance(id){
 				}, "json");
 			}
 		});
-
 }

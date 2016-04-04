@@ -9,7 +9,6 @@ pageEncoding="UTF-8"%>
 
     <body>
         <div class="memSuper">
-            <div class="memSuper-title">公司管理 >区域管理</div>
             <div class="memSuper-main">
         <%--        <div class="alert alert-warning">
                     <a href="#" class="close" data-dismiss="alert">

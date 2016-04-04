@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -257,6 +258,40 @@ public class UserController extends BaseController{
             throw new PermissionException(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getCodeStr(),ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
         }
         return map;
+    }
+
+
+    @RequestMapping("/changePwd")
+    public String changePwd() {
+        return "changePwd";
+    }
+
+    /**
+     * 修改密码
+     *
+     * @return
+     */
+    @RequestMapping(value = "/saveChangePwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData saveChangePwd(UserParam userParam) {
+        LOGGER.info("changePwd:userParam={}", userParam);
+        try {
+            User user = getUser();
+            String md5OldPwd = md5PasswordEncoder.encodePassword(userParam.getOldPwd(), null);
+            if(!md5OldPwd.equals(user.getUserPwd())){
+                return ResponseData.failure(ConstantEnum.EXCEPTION_OLD_PWD_FAIL.getCodeStr(),ConstantEnum.EXCEPTION_OLD_PWD_FAIL.getValueStr());
+            }
+            if(!userParam.getNewPwd1().equals(userParam.getNewPwd2())){
+                return ResponseData.failure(ConstantEnum.EXCEPTION_NEW_PWD_FAIL.getCodeStr(),ConstantEnum.EXCEPTION_NEW_PWD_FAIL.getValueStr());
+            }
+            user.setUserPwd(md5PasswordEncoder.encodePassword(userParam.getNewPwd1(), null));
+            userService.update(user);
+            return ResponseData.success();
+        }catch (Exception e){
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_REFUND_AUTHORITY.getCodeStr(),ConstantEnum.EXCEPTION_REFUND_AUTHORITY.getValueStr());
+        }
     }
 
 }

@@ -3653,7 +3653,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 }
 
 .navbar-default {
-    background-color: #3f67ab;
+    background-color: #7D26CD;
     border-color: #1b82af
 }
 
@@ -3663,7 +3663,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
     color: #fff;
-    background-color: #234a8b
+    background-color: #8A2BE2
 }
 
 .navbar-default .navbar-text {
