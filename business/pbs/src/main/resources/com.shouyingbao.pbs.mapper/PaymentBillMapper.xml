@@ -71,9 +71,6 @@
         <if test="agentId != null and agentId > 0">
             and (mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
         </if>
-        <if test="agentId  != null and agentId > 0">
-            and (mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
-        </if>
         <if test="companyId  != null and companyId > 0">
             and mch_shop.company_id = #{companyId}
         </if>

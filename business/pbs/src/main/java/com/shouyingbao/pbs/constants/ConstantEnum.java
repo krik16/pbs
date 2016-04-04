@@ -45,6 +45,7 @@ public enum ConstantEnum {
 	EXCEPTION_NO_DATA_PERMISSION("1019120","此用户没有查看该数据的权限"),
 	EXCEPTION_OLD_PWD_FAIL("1019121","原始密码不正确"),
 	EXCEPTION_NEW_PWD_FAIL("1019122","两次密码不相同，请确认"),
+	EXCEPTION_USER_NOT_FOUND("1019123","用户不存在"),
 
 	ALI_PAY_TIME_EXPIRE_GOODS("60m","商品支付宝支付默认超时时间"),
 	ALI_PAY_TIME_EXPIRE_COUPONS("15m","代金券支付宝支付默认超时时间"),

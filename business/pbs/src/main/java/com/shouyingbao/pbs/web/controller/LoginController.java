@@ -14,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * kejun
  * 2016/3/14 16:22
@@ -64,7 +62,8 @@ public class LoginController{
 
     @RequestMapping(value = "/mobile/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData mobileLogin(HttpServletRequest request,@RequestBody UserParam userParam) {
+    public ResponseData mobileLogin(@RequestBody UserParam userParam) {
+        LOGGER.info("mobileLogin:userName={}",userParam.getUserAccount());
         ResponseData responseData;
         userParam.setMd5Pwd(md5PasswordEncoder.encodePassword(userParam.getUserPwd(), null));
         User user = userService.selectByUserAccountAndPwd(userParam.getUserAccount(),userParam.getMd5Pwd());

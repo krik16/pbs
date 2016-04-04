@@ -1,8 +1,12 @@
 package com.shouyingbao.pbs.web.controller;
 
+import com.shouyingbao.pbs.Exception.PermissionException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
+import com.shouyingbao.pbs.entity.Authority;
 import com.shouyingbao.pbs.entity.PaymentBill;
+import com.shouyingbao.pbs.entity.User;
+import com.shouyingbao.pbs.service.AuthorityService;
 import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.vo.PaymentBillVO;
 import org.slf4j.Logger;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -28,6 +33,8 @@ public class PaymentbIllController extends BaseController{
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentbIllController.class);
     @Autowired
     PaymentBillService paymentBillService;
+    @Autowired
+    AuthorityService authorityService;
 
     @RequestMapping(value = "/search")
     public String search() {
@@ -38,25 +45,7 @@ public class PaymentbIllController extends BaseController{
     public String list(ModelMap model, @RequestBody Map<String, Object> map) {
         LOGGER.info("list:map={}", map);
         try {
-            //数据权限
-            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
-                LOGGER.info("permission is admin");
-            }else  if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
-                map.put("areaId", getUser().getAreaId());
-            } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
-                map.put("agentId", getUser().getAgentId());
-            }  else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
-                map.put("companyId", getUser().getCompanyId());
-            } else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
-                map.put("subCompanyId", getUser().getSubCompanyId());
-            }else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
-                map.put("shopId", getUser().getShopId());
-            }else if (ConstantEnum.AUTHORITY_MCH_CASHIER.getCodeStr().equals(getAuthority())) {
-                map.put("shopId", getUser().getShopId());
-            }else {
-                LOGGER.info(getUser().getUserAccount()+":"+ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-                return "bill/list";
-            }
+            getDataPermission(map,getUser(),getAuthority());
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
             List<PaymentBillVO> mchCompanyList = paymentBillService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = paymentBillService.selectListCount(map);
@@ -64,13 +53,40 @@ public class PaymentbIllController extends BaseController{
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("currpage", currpage);
             model.addAttribute("list", mchCompanyList);
-        } catch (Exception e) {
+        }catch (PermissionException e){
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
         return "bill/list";
     }
-
+    /**
+     *  Description: 移动端交易查询
+     *  @param map 查询参数
+     **/
+    @RequestMapping(value = "/mobileBillList", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData mobileBillList(@RequestBody Map<String, Object> map){
+        LOGGER.info("mobileBillList:map={}",map);
+        if(map.get("currpage") == null || map.get("userId") == null){
+            return ResponseData.failure(ConstantEnum.EXCEPTION_PARAM_NULL.getCodeStr(),ConstantEnum.EXCEPTION_PARAM_NULL.getValueStr());
+        }
+        User user = userService.selectById(Integer.valueOf(map.get("userId").toString()));
+        if(user == null){
+            return ResponseData.failure(ConstantEnum.EXCEPTION_USER_NOT_FOUND.getCodeStr(),ConstantEnum.EXCEPTION_USER_NOT_FOUND.getValueStr());
+        }
+        List<Authority> authorityList = authorityService.selectByUserId(user.getId());
+        if(authorityList == null || authorityList.isEmpty()){
+            return ResponseData.failure(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getCodeStr(),ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+        }
+        getDataPermission(map,getUser(),authorityList.get(0).getValue());
+        Integer currpage = Integer.valueOf(map.get("currpage").toString());
+        List<PaymentBillVO> paymentBillVOList = paymentBillService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+        Integer totalCount = paymentBillService.selectListCount(map);
+        return  ResponseData.success(paymentBillVOList,currpage,ConstantEnum.LIST_PAGE_SIZE.getCodeInt(),totalCount);
+    }
 
     @RequestMapping("/detail")
     @ResponseBody
@@ -86,5 +102,28 @@ public class PaymentbIllController extends BaseController{
             responseData = ResponseData.failure(ConstantEnum.EXCEPTION_BILL_DETAIL.getCodeStr(),ConstantEnum.EXCEPTION_BILL_DETAIL.getValueStr());
         }
         return responseData;
+    }
+
+    private Map<String,Object> getDataPermission(Map<String,Object> map,User user,String authority){
+        //数据权限
+        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(authority)){
+            LOGGER.info("permission is admin");
+        }else  if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(authority)) {
+            map.put("areaId", user.getAreaId());
+        } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(authority)) {
+            map.put("agentId", user.getAgentId());
+        }  else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(authority)) {
+            map.put("companyId", user.getCompanyId());
+        } else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(authority)) {
+            map.put("subCompanyId", user.getSubCompanyId());
+        }else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(authority)) {
+            map.put("shopId", user.getShopId());
+        }else if (ConstantEnum.AUTHORITY_MCH_CASHIER.getCodeStr().equals(authority)) {
+            map.put("shopId", user.getShopId());
+        }else {
+            LOGGER.info(getUser().getUserAccount()+":"+ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+            throw new PermissionException(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getCodeStr(),ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+        }
+        return map;
     }
 }

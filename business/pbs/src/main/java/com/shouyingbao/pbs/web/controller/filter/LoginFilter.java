@@ -44,13 +44,14 @@ public class LoginFilter extends BaseController implements Filter {
 
             }else if(request.getServletPath().contains("/fonts/")){
 
+            }else if(request.getServletPath().contains("/bill/mobileBillList")){
+
             }else {
                 getSessionUser(request);
             }
             chain.doFilter(request, response);
         }catch (UserNotFoundException e){
             response.sendRedirect(request.getContextPath()+"/auth/login");
-//            req.getRequestDispatcher("/auth/login").forward(request,response);
         }catch (Exception e){
             e.printStackTrace();
         }
