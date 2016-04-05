@@ -3,6 +3,7 @@ package com.shouyingbao.pbs.service;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.entity.PaymentBill;
 import com.shouyingbao.pbs.vo.PaymentBillVO;
+import com.shouyingbao.pbs.vo.TradeTotal;
 
 import java.util.List;
 import java.util.Map;
@@ -63,5 +64,11 @@ public interface PaymentBillService {
     PaymentBill selectById(Integer id);
 
     PaymentBill selectByOrderNoAndTradeType(String orderNo,byte tradeType,byte payChannel,byte status);
+
+    TradeTotal selectTradeTotal(Map<String,Object> map);
+
+    PaymentBillVO selectDetailById(Integer id);
+
+
 
 }

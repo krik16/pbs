@@ -79,7 +79,7 @@
 <div id="tree" class="left">
     <ul class="nav nav-list">
         <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
-            <li class="folder expanded"><span class="menu-text">公司管理</span>
+            <li class="folder"><span class="menu-text">公司管理</span>
                 <ul>
                     <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER">
                         <li><a href="${ctx}/area/search" target="mainFrame">区域管理</a></li>
@@ -87,8 +87,11 @@
                     <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT">
                         <li><a href="${ctx}/agent/search" target="mainFrame">代理管理</a></li>
                     </sec:authorize>
-                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_FINANCE">
+                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
                         <li><a href="${ctx}/user/search" target="mainFrame">账号管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+                        <li><a href="${ctx}/bill/search" target="mainFrame">交易查询</a></li>
                     </sec:authorize>
                 </ul>
             </li>
@@ -110,7 +113,7 @@
                     <li><a href="${ctx}/mchUser/search" target="mainFrame">用户管理</a></li>
                 </sec:authorize>
                 <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
-                    <li><a href="${ctx}/bill/search" target="mainFrame">交易查询</a></li>
+                    <li><a href="${ctx}/mchBill/search" target="mainFrame">交易查询</a></li>
                 </sec:authorize>
             </ul>
             </sec:authorize>

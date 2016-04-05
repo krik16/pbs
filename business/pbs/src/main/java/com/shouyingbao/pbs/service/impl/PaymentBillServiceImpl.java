@@ -19,6 +19,7 @@ import com.shouyingbao.pbs.unit.AliPayUnit;
 import com.shouyingbao.pbs.unit.IdGenUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import com.shouyingbao.pbs.vo.PaymentBillVO;
+import com.shouyingbao.pbs.vo.TradeTotal;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -234,6 +235,18 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
         map.put("payChannel", payChannel);
         map.put("status", status);
         return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectByOrderNoAndTradeType",map);
+    }
+
+    @Override
+    public TradeTotal selectTradeTotal(Map<String, Object> map) {
+        return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectTradeTotal",map);
+    }
+
+    @Override
+    public PaymentBillVO selectDetailById(Integer id) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectDetailById",map);
     }
 
     /**

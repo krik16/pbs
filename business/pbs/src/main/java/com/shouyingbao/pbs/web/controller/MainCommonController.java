@@ -27,8 +27,10 @@ public class MainCommonController extends BaseController{
 
 
     @RequestMapping("/index")
-    public String index(){
+    public String index(ModelMap model){
         LOGGER.info("index");
+        String authority = getAuthority();
+
         return "index";
     }
     /**

@@ -12,6 +12,14 @@ public class PaymentBillVO extends PaymentBill{
 
     private String shopName;
 
+    private String areaName;
+
+    private String agentName;
+
+    private String companyName;
+
+    private String subCompanyName;
+
     public String getTradeNo() {
         return tradeNo;
     }
@@ -26,6 +34,38 @@ public class PaymentBillVO extends PaymentBill{
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getSubCompanyName() {
+        return subCompanyName;
+    }
+
+    public void setSubCompanyName(String subCompanyName) {
+        this.subCompanyName = subCompanyName;
     }
 
     @Override

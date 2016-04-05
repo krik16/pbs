@@ -24,6 +24,14 @@
     <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.PaymentBillVO" extends="BaseResultMap">
         <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
         <result column="shop_name" property="shopName" jdbcType="VARCHAR"/>
+        <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
+        <result column="agent_name" property="agentName" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="sub_company_name" property="subCompanyName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="TradeDetailCountResultMap" type="com.shouyingbao.pbs.vo.TradeTotal">
+        <result column="amount_total" property="amountTotal" jdbcType="DECIMAL"/>
+        <result column="count_total" property="countTotal" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, order_no,refund_no, pay_channel, mch_id, pay_type, pay_amount, `status`, trade_type, create_at,
@@ -31,12 +39,27 @@
     </sql>
 
     <sql id="Base_Column_VOList">
-        pb.id, pb.order_no,pb.refund_no, pb.pay_channel, pb.mch_id, pb.pay_type, pb.pay_amount, pb.`status`, pb.trade_type, pb.create_at,
+        pb.id, pb.order_no,pb.refund_no, pb.pay_channel, pb.mch_id, pb.pay_type, pb.pay_amount, pb.`status`,
+        pb.trade_type, pb.create_at,
         pb.finish_at, pb.pay_account, pb.pay_name, pb.shop_id, pb.uesr_id, pe.trade_no,mch_shop.name as shop_name
     </sql>
 
+    <sql id="Detail_Column">
+        pb.id, pb.order_no,pb.refund_no, pb.pay_channel, pb.mch_id, pb.pay_type, pb.pay_amount, pb.`status`,
+        pb.trade_type, pb.create_at,
+        pb.finish_at, pb.pay_account, pb.pay_name, pb.shop_id, pb.uesr_id, pe.trade_no,mch_shop.name as shop_name,
+        area. name as area_name,mch_company. name as company_name,mch_sub_company. name as sub_company_name,
+        case
+        when mch_shop.company_id > 0 then
+        agent. name
+        else
+        agent_shop. name
+        end as agent_name
+    </sql>
+
+
     <sql id="list_where_clause">
-        pb.is_delete = 0
+        pb.is_delete = 0 and pb.status = 2
         <if test="orderNo != null and orderNo != ''">
             and pb.order_no = #{orderNo}
         </if>
@@ -44,10 +67,10 @@
             and pb.pay_channel = #{payChannel}
         </if>
         <if test="payType != null and payType >= 0">
-           and pb.pay_type = #{payType}
+            and pb.pay_type = #{payType}
         </if>
         <if test="status != null and status >= 0">
-           and pb.status = #{status}
+            and pb.status = #{status}
         </if>
         <if test="tradeType != null and tradeType >= 0">
             and pb.trade_type = #{tradeType}
@@ -66,7 +89,7 @@
             and pe.trade_no = #{tradeNo}
         </if>
         <if test="areaId  != null and areaId > 0">
-            and (agent.area_id = #{areaId}  or agent_shop.area_id = #{areaId})
+            and (agent.area_id = #{areaId} or agent_shop.area_id = #{areaId})
         </if>
         <if test="agentId != null and agentId > 0">
             and (mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
@@ -80,6 +103,19 @@
         <if test="shopId != null and shopId > 0">
             and
             mch_shop.id = #{shopId}
+        </if>
+    </sql>
+    <sql id="list_from_clause">
+        payment_bill pb
+        left join payment_event pe on pb.id = pe.payment_bill_id
+        left join mch_shop on pb.shop_id = mch_shop.id
+        <if test="areaId > 0 or agentId > 0">
+            left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+            left join mch_company on mch_sub_company.company_id = mch_company.id
+            <if test="areaId > 0">
+                left join agent on mch_company.agent_id = agent.id
+                left join agent as agent_shop on agent_shop.id = mch_shop.agent_id
+            </if>
         </if>
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -248,17 +284,8 @@
     <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_VOList"/>
-        from payment_bill as pb
-        left join payment_event pe on pb.id = pe.payment_bill_id
-        left join mch_shop on pb.shop_id = mch_shop.id
-        <if test="areaId > 0 or agentId > 0">
-            left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
-            left join mch_company on mch_sub_company.company_id = mch_company.id
-            <if test="areaId > 0">
-                left join agent on mch_company.agent_id = agent.id
-                left join agent as agent_shop on agent_shop.id = mch_shop.agent_id
-            </if>
-        </if>
+        from
+        <include refid="list_from_clause"/>
         <where>
             <include refid="list_where_clause"/>
         </where>
@@ -275,19 +302,37 @@
         select
         count(1)
         from
-        payment_bill pb
-        left join payment_event pe on pb.id = pe.payment_bill_id
-        left join mch_shop on pb.shop_id = mch_shop.id
-        <if test="areaId > 0 or agentId > 0">
-            left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
-            left join mch_company on mch_sub_company.company_id = mch_company.id
-            <if test="areaId > 0">
-                left join agent on mch_company.agent_id = agent.id
-                left join agent as agent_shop on agent_shop.id = mch_shop.agent_id
-            </if>
-        </if>
+        <include refid="list_from_clause"/>
         <where>
             <include refid="list_where_clause"/>
         </where>
+    </select>
+
+    <select id="selectTradeTotal" resultMap="TradeDetailCountResultMap"
+            parameterType="java.util.Map">
+        select ROUND(sum(pb.pay_amount)/100,2)
+        amount_total,count(pe.id)
+        count_total
+        from
+        <include refid="list_from_clause"/>
+        <where>
+            <include refid="list_where_clause"/>
+        </where>
+    </select>
+
+    <select id="selectDetailById" resultMap="BaseResultMapVO"
+            parameterType="java.util.Map">
+        select
+        <include refid="Detail_Column"/>
+        from
+        payment_bill pb
+        left join payment_event pe on pb.id = pe.payment_bill_id
+        left join mch_shop on pb.shop_id = mch_shop.id
+        left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+        left join mch_company on mch_sub_company.company_id = mch_company.id
+        left join agent on mch_company.agent_id = agent.id
+        left join agent as agent_shop on agent_shop.id = mch_shop.agent_id
+        left join area on agent.area_id = area.id
+        where pb.id = #{id}
     </select>
 </mapper>

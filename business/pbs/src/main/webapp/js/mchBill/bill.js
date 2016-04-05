@@ -1,10 +1,9 @@
 $.ajaxSetup({
-	cache: false
+    cache: false
 });
-var url_ = "../bill/list";
+var url_ = "../mchBill/list";
 $(document).ready(function() {
 	ajaxCommonSearch(url_,getSearchEntity());
-	$("#outTotalCount").val()
 	$('.startTime').datetimepicker({
 		timeFormat: "HH:mm:ss",
 		dateFormat: "yy-mm-dd",
@@ -32,7 +31,7 @@ function search(){
  * 查询参数
  */
 function getSearchEntity(){
-	var currentPage = $('#currpage').val();
+	  var currentPage = $('#currpage').val();
 	if(currentPage == null || currentPage == ''){
 		currentPage = 1;
 	}
@@ -47,29 +46,6 @@ function getSearchEntity(){
 	searchEntity.tradeEndTime = $("#tradeEndTime").val();
 	searchEntity.shopName = $("#shopName").val();
 	searchEntity.shopId = $("#shopId").val();
-	searchEntity.companyId = $("#companyId").val();
-	searchEntity.agentId = $("#agentId").val();
-	searchEntity.areaId = $("#areaId").val();
-	return searchEntity;
-}
-
-function areaSelect(url,parentId,eId){
-	var pid = document.getElementById(parentId);
-	if(pid.value > 0) {
-		selectChange(url, parentId, eId);
-	}
-}
-function agentSelect(url,parentId,eId){
-	var pid = document.getElementById(parentId);
-	if(pid.value > 0) {
-		selectChange(url, parentId, eId);
-	}
-}
-
-function companySelect(url,parentId,eId){
-	var pid = document.getElementById(parentId);
-	if(pid.value > 0) {
-		selectChange(url, parentId, eId);
-	}
+	 return searchEntity;
 }
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 2016/3/11 17:06
  **/
 @Controller
+@RequestMapping("/pay/ali")
 public class AliPayController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AliPayController.class);

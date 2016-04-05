@@ -3,12 +3,14 @@ package com.shouyingbao.pbs.web.controller;
 import com.shouyingbao.pbs.Exception.PermissionException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
-import com.shouyingbao.pbs.entity.Area;
 import com.shouyingbao.pbs.entity.Authority;
-import com.shouyingbao.pbs.entity.PaymentBill;
 import com.shouyingbao.pbs.entity.User;
-import com.shouyingbao.pbs.service.*;
-import com.shouyingbao.pbs.vo.*;
+import com.shouyingbao.pbs.service.AuthorityService;
+import com.shouyingbao.pbs.service.MchShopService;
+import com.shouyingbao.pbs.service.PaymentBillService;
+import com.shouyingbao.pbs.vo.MchShopVO;
+import com.shouyingbao.pbs.vo.PaymentBillVO;
+import com.shouyingbao.pbs.vo.TradeTotal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +30,14 @@ import java.util.Map;
  * 2016/3/8 17:33
  **/
 @Controller
-@RequestMapping("/bill")
-public class PaymentbIllController extends BaseController{
+@RequestMapping("/mchBill")
+public class MchPaymentbIllController extends BaseController{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentbIllController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MchPaymentbIllController.class);
     @Autowired
     PaymentBillService paymentBillService;
     @Autowired
     AuthorityService authorityService;
-
-    @Autowired
-    AreaService areaService;
-
-    @Autowired
-    AgentService agentService;
-
-    @Autowired
-    MchCompanyService mchCompanyService;
 
     @Autowired
     MchShopService mchShopService;
@@ -53,15 +46,9 @@ public class PaymentbIllController extends BaseController{
     public String search(ModelMap model) {
         Map<String,Object> map = new HashMap<>();
         getDataPermission(map,getUser(),getAuthority());
-        List<Area> areaList = areaService.selectListByPage(map,null,null);
-        List<AgentVO> agentList = agentService.selectListByPage(map,null,null);
-        List<MchCompanyVO> companyList = mchCompanyService.selectListByPage(map,null,null);
         List<MchShopVO> mchShopVOList = mchShopService.selectListByPage(map,null,null);
-        model.addAttribute("areaList",areaList);
-        model.addAttribute("agentList",agentList);
-        model.addAttribute("companyList",companyList);
         model.addAttribute("shopList",mchShopVOList);
-        return "/bill/bill";
+        return "/mchBill/bill";
     }
 
     @RequestMapping("/list")
@@ -70,14 +57,14 @@ public class PaymentbIllController extends BaseController{
         try {
             getDataPermission(map,getUser(),getAuthority());
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
-            List<PaymentBillVO> mchCompanyList = paymentBillService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+            List<PaymentBillVO> paymentBillVOList = paymentBillService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
             Integer totalCount = paymentBillService.selectListCount(map);
-            model.addAttribute("inTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt()));
-            model.addAttribute("outTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_1.getCodeInt()));
             model.addAttribute("rowCount", getRowCount(totalCount));
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("currpage", currpage);
-            model.addAttribute("list", mchCompanyList);
+            model.addAttribute("list", paymentBillVOList);
+            model.addAttribute("inTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt()));
+            model.addAttribute("outTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_1.getCodeInt()));
         }catch (PermissionException e){
             LOGGER.error(e.getMessage());
             e.printStackTrace();
@@ -85,7 +72,7 @@ public class PaymentbIllController extends BaseController{
             LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
-        return "bill/list";
+        return "mchBill/list";
     }
     /**
      *  Description: 移动端交易查询
@@ -113,34 +100,6 @@ public class PaymentbIllController extends BaseController{
         return  ResponseData.success(paymentBillVOList,currpage,ConstantEnum.LIST_PAGE_SIZE.getCodeInt(),totalCount);
     }
 
-    @RequestMapping("/info")
-    public String info(ModelMap model,Integer id){
-        LOGGER.info("info:id={}",id);
-        try {
-            PaymentBillVO paymentBillVO = paymentBillService.selectDetailById(id);
-            model.addAttribute("entity", paymentBillVO);
-        }catch (Exception e){
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-        }
-        return "bill/info";
-    }
-
-    @RequestMapping("/detail")
-    @ResponseBody
-    public ResponseData detail(@RequestBody Map<String,Object> map){
-        LOGGER.info("detail:map={}",map);
-        ResponseData responseData;
-        try {
-            PaymentBill paymentBill = paymentBillService.selectById(Integer.valueOf(map.get("id").toString()));
-            responseData = ResponseData.success(paymentBill);
-        }catch (Exception e){
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-            responseData = ResponseData.failure(ConstantEnum.EXCEPTION_BILL_DETAIL.getCodeStr(),ConstantEnum.EXCEPTION_BILL_DETAIL.getValueStr());
-        }
-        return responseData;
-    }
 
     private Map<String,Object> getDataPermission(Map<String,Object> map,User user,String authority){
         //数据权限
@@ -164,7 +123,6 @@ public class PaymentbIllController extends BaseController{
         }
         return map;
     }
-
     /**
      * @Description: 收入（支出）总数
      * @param map
@@ -180,7 +138,7 @@ public class PaymentbIllController extends BaseController{
             tradeTotal = paymentBillService.selectTradeTotal(map);
         }
         if (tradeTotal.getAmountTotal() == null)
-                tradeTotal.setAmountTotal(0d);
+            tradeTotal.setAmountTotal(0d);
         if (tradeTotal.getCountTotal() == null)
             tradeTotal.setCountTotal(0);
         return tradeTotal;

@@ -178,6 +178,24 @@ public class MchCompanyController extends BaseController {
         }
     }
 
+    @RequestMapping("/getByAgentId")
+    @ResponseBody
+    public ResponseData getByAgentId(Integer parentId) {
+        LOGGER.info("getByAgentId:parentId={}", parentId);
+        try {
+            Map<String,Object> map = new HashMap<>();
+            map.put("agentId", parentId);
+            List<MchCompanyVO> list = mchCompanyService.selectListByPage(map, null, null);
+            return ResponseData.success(list);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_CANCE_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_CANCE_FAIL.getValueStr());
+        }
+    }
+
     @RequestMapping("/getAgentById")
     @ResponseBody
     public ResponseData getAgentById(Integer parentId) {

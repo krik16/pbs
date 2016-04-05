@@ -46,6 +46,10 @@ public class LoginFilter extends BaseController implements Filter {
 
             }else if(request.getServletPath().contains("/bill/mobileBillList")){
 
+            }else if(request.getServletPath().contains("/pay/weixin/")){
+
+            }else if(request.getServletPath().contains("/pay/ali/")){
+
             }else {
                 getSessionUser(request);
             }
