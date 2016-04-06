@@ -8,6 +8,7 @@
 
 package com.shouyingbao.pbs.common.pay.weixin.service;
 
+import com.shouyingbao.pbs.common.pay.weixin.model.ScanFixedPayReqData;
 import com.shouyingbao.pbs.common.pay.weixin.model.UnifedOrderReqData;
 import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
 
@@ -36,6 +37,21 @@ public class UnifiedorderService extends BaseService{
         //发送HTTPS的Post请求到API地址
         //--------------------------------------------------------------------
         String responseString = sendPost(unifedOrderReqData,configure);
+        return responseString;
+    }
+
+    /**
+     * 固码扫码请求支付服务
+     * @param scanFixedPayReqData 这个数据对象里面包含了API要求提交的各种数据字段
+     * @return API返回的数据
+     * @throws Exception
+     */
+    public String request(ScanFixedPayReqData scanFixedPayReqData,Configure configure) throws Exception {
+
+        //--------------------------------------------------------------------
+        //发送HTTPS的Post请求到API地址
+        //--------------------------------------------------------------------
+        String responseString = sendPost(scanFixedPayReqData,configure);
         return responseString;
     }
 

@@ -8,9 +8,9 @@ import com.shouyingbao.pbs.common.pay.weixin.service.*;
 import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
 import com.shouyingbao.pbs.common.pay.weixin.util.Util;
 import com.shouyingbao.pbs.constants.ConstantEnum;
+import com.shouyingbao.pbs.constants.ConstantUtil;
 import com.shouyingbao.pbs.constants.Constants;
 import com.shouyingbao.pbs.core.bean.ResponseData;
-import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.WeixinMchService;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
@@ -37,10 +37,7 @@ public class WeixinPayUnit {
     WeixinMchService weixinMchService;
 
     /**
-     * param weixin
-     * return扫码刷卡支付
-     * 柯军
-     * 2015年9月2日下午1:32:08
+     * 扫码刷卡支付
      **/
     public ResponseData scanPay(WeixinPayVO weixinPayVO, WeixinMch weixinMch) {
         LOGGER.info("微信扫码支付", weixinPayVO.toString());
@@ -82,27 +79,38 @@ public class WeixinPayUnit {
         return responseData;
     }
 
-    public void scanFixedPay(){
-        //初始化配置信息
-        WeixinMch weixinMch = weixinMchService.selectByShopId(1);
-        Configure configure = weixinConfigUnit.initConfigure(weixinMch, 0);
-         String time_stamp =  String.valueOf(DateUtil.getCurrDateTime().getTime()).substring(0,10);
-        ScanFixedPayReqData scanFixedPayReqData = new ScanFixedPayReqData("1231231231",time_stamp,configure);
-        StringBuilder sb = new StringBuilder();
-        sb.append("weixin：//wxpay/bizpayurl?sign=");
-        sb.append(scanFixedPayReqData.getSign());
-        sb.append("&appid=");
-        sb.append(scanFixedPayReqData.getAppid());
-        sb.append("&mch_id=");
-        sb.append(scanFixedPayReqData.getMch_id());
-        sb.append("&product_id=");
-        sb.append(scanFixedPayReqData.getProduct_id());
-        sb.append("&time_stamp=");
-        sb.append(scanFixedPayReqData.getTime_stamp());
-        sb.append("&nonce_str=");
-        sb.append(scanFixedPayReqData.getNonce_str());
-        LOGGER.info("context={}",sb.toString());
-        ZxingUtil.getZxing(sb.toString());
+
+    /**
+     * 微信扫固码支付
+     **/
+    public ResponseData fixedPay(WeixinPayVO weixinPayVO, WeixinMch weixinMch) {
+        LOGGER.info("微信扫码支付", weixinPayVO.toString());
+        ScanFixedResData scanFixedResData;
+        ResponseData responseData = ResponseData.success();
+        try {
+            if (Strings.isNullOrEmpty(weixinPayVO.getOrderNo()) || null == weixinPayVO.getTotalFee() || Strings.isNullOrEmpty(weixinPayVO.getBody())) {
+                throw new ParamNullException();
+            }
+            //初始化配置信息
+            Configure configure = weixinConfigUnit.initConfigure(weixinMch, weixinPayVO.getWeixinPayType());
+            //封装请求参数
+            ScanFixedPayReqData scanFixedPayReqData = new ScanFixedPayReqData(weixinPayVO.getBody(), "", "",
+                    weixinPayVO.getOrderNo(), weixinPayVO.getTotalFee(), weixinPayVO.getDeviceInfo(), "", "", "", "", ConstantUtil.PayWeiXin_V3.WEIXIN_NOTIFY_URL,configure);
+            UnifiedorderService unifiedorderService = new UnifiedorderService();
+            //发起支付请求
+            String result = unifiedorderService.request(scanFixedPayReqData, configure);
+            LOGGER.debug("result={}", result);
+            //处理支付结果
+            scanFixedResData = (ScanFixedResData) Util.getObjectFromXML(result, ScanFixedResData.class);
+            LOGGER.info("scanFixedResData={}", scanFixedResData);
+            ZxingUtil.getZxing(scanFixedResData.getCode_url());
+        } catch (WeixinException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new WeixinException(ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getValueStr());
+        }
+        return responseData;
     }
 
 

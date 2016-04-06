@@ -588,7 +588,7 @@
 				<artifactId>commons-configuration</artifactId>
 				<version>1.10</version>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf</artifactId>
 				<version>2.4.1</version>
@@ -596,7 +596,22 @@
 			<dependency>
 				<groupId>org.apache.neethi</groupId>
 				<artifactId>neethi</artifactId>
-				<version>3.0.3</version>
+				<version>3.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.xmlschema</groupId>
+				<artifactId>xmlschema-core</artifactId>
+				<version>2.0.1</version>
+			</dependency>-->
+			<dependency>
+				<groupId>wsdl4j</groupId>
+				<artifactId>wsdl4j</artifactId>
+				<version>1.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>axis</groupId>
+				<artifactId>axis</artifactId>
+				<version>1.4</version>
 			</dependency>
 		</dependencies>
 
@@ -607,8 +622,8 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-			<id>rongyi-repositories</id>
-			<url>http://192.168.1.101:8081/nexus/content/groups/rongyi-repositories/</url>
+			<id>pbs-repositories</id>
+			<url>http://120.25.197.98:8081/nexus/content/groups/pbs-repositories/</url>
 		</repository>
 	</repositories>
 
@@ -617,21 +632,21 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-			<id>rongyi-repositories</id>
-			<url>http://192.168.1.101:8081/nexus/content/groups/rongyi-repositories/</url>
+			<id>pbs-repositories</id>
+			<url>http://120.25.197.98:8081/nexus/content/groups/pbs-repositories/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
 	<distributionManagement>
 		<repository>
-			<id>rongyi-releases</id>
+			<id>releases</id>
 			<name>Nexus Release Repository</name>
-			<url>http://192.168.1.101:8081/nexus/content/repositories/rongyi-releases/</url>
+			<url>http://120.25.197.98:8081/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>rongyi-snapshots</id>
+			<id>snapshots</id>
 			<name>Nexus Snapshot Repository</name>
-			<url>http://192.168.1.101:8081/nexus/content/repositories/rongyi-snapshots/</url>
+			<url>http://120.25.197.98:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 

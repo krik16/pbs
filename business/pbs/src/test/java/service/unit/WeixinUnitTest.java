@@ -4,11 +4,12 @@ import base.BaseTest;
 import com.shouyingbao.pbs.common.pay.weixin.model.ScanPayReqData;
 import com.shouyingbao.pbs.common.pay.weixin.service.ScanPayService;
 import com.shouyingbao.pbs.common.pay.weixin.util.Configure;
+import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.unit.WeixinConfigUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
+import com.shouyingbao.pbs.vo.WeixinPayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.testng.annotations.Test;
 
 import java.net.URLEncoder;
 
@@ -43,7 +44,7 @@ public class WeixinUnitTest extends BaseTest{
 
     }
 
-    @Test
+//    @Test
     public void queryOrderTest(){
         weixinPayUnit.scanPayQueryOrder(null, "0031583473408161345", 1);
     }
@@ -53,9 +54,17 @@ public class WeixinUnitTest extends BaseTest{
         weixinPayUnit.reverseOrder("0030814341376164130", 1);
     }
 
-    @Test
+//    @Test
     public void scanFixedPayTest(){
-        weixinPayUnit.scanFixedPay();
+        WeixinPayVO weixinPayVO = new WeixinPayVO();
+        weixinPayVO.setTotalFee(1);
+        weixinPayVO.setDeviceInfo("11");
+        weixinPayVO.setBody("test");
+        weixinPayVO.setWeixinPayType(1);
+        weixinPayVO.setOrderNo("123123131223131231");
+        WeixinMch weixinMch = new WeixinMch();
+        weixinMch.setMchId("1321136301");
+        weixinPayUnit.fixedPay(weixinPayVO,weixinMch);
     }
 
 }
