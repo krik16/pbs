@@ -13,7 +13,6 @@ import java.io.Serializable;
  * @version
  * @since JDK 1.6
  */
-@Deprecated
 public class Page implements Serializable {
   private static final long serialVersionUID = -7006923880930437506L;
   protected int pageNo = 1;// 第几页

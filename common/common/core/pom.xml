@@ -203,6 +203,11 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 		</dependency>
+		<!-- 			建周短信平台 -->
+		<dependency>
+		  <groupId>com.jianzhou</groupId>
+		  <artifactId>jzsms</artifactId>
+		</dependency>
 		<!-- mongo start -->
 		<dependency>
 			<groupId>org.mongodb</groupId>

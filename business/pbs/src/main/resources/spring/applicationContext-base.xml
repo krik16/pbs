@@ -16,7 +16,8 @@
 			<list>
 				<value>classpath:/maven_build/01_dev.properties</value>
 				<value>file:/data/etc/common/*.properties</value>
-				<value>file:/data/etc/projects/pbs.properties</value>
+				<value>file:/data/etc/projects/pbs_test.properties</value>
+				<!--<value>file:/data/etc/projects/pbs.properties</value>-->
 			</list>
 		</property>
 	</bean>

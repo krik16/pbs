@@ -8,6 +8,7 @@ import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.unit.WeixinConfigUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -54,14 +55,14 @@ public class WeixinUnitTest extends BaseTest{
         weixinPayUnit.reverseOrder("0030814341376164130", 1);
     }
 
-//    @Test
+    @Test
     public void scanFixedPayTest(){
         WeixinPayVO weixinPayVO = new WeixinPayVO();
         weixinPayVO.setTotalFee(1);
         weixinPayVO.setDeviceInfo("11");
         weixinPayVO.setBody("test");
         weixinPayVO.setWeixinPayType(1);
-        weixinPayVO.setOrderNo("123123131223131231");
+        weixinPayVO.setOrderNo("1231231312231312321");
         WeixinMch weixinMch = new WeixinMch();
         weixinMch.setMchId("1321136301");
         weixinPayUnit.fixedPay(weixinPayVO,weixinMch);
