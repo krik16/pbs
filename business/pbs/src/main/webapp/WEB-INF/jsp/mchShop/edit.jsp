@@ -41,7 +41,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext" >公司：</span>
-                                    <select class="form-control" id="companyId"
+                                    <select class="form-control selectpicker" data-live-search="true" id="companyId"
                                             onchange="companySelect('../mchSubCompany/getByCompanyId','companyId','subCompanyId')">
                                         <option value="0">选择所属公司</option>
                                         <c:forEach items="${entity.companyList}" var="item">
@@ -56,7 +56,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">分公司：</span>
-                                    <select class="form-control" id="subCompanyId">
+                                    <select class="form-control selectpicker" data-live-search="true" id="subCompanyId">
                                         <option value="0">选择所属公分司</option>
                                         <c:forEach items="${entity.subCompanyVOList}" var="item">
                                             <option value="${item.id}"
@@ -70,7 +70,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">分销代理：</span>
-                                    <select class="form-control" id="agentId"
+                                    <select class="form-control selectpicker" data-live-search="true" id="agentId"
                                             onchange="agentSelect('../mchSubCompany/getByCompanyId','agentId','companyId')">
                                         <option value="0">选择所属分销代理</option>
                                         <c:forEach items="${entity.agentVOList}" var="item">

@@ -82,7 +82,7 @@
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">区域：</span>
-                                    <select class="form-control" id="areaId"
+                                    <select class="form-control selectpicker" data-live-search="true" id="areaId"
                                             onchange="areaSelect('../agent/getByAreaId','areaId','agentId')">
                                         <option value="0">选择区域</option>
                                         <c:forEach items="${areaList}" var="item">
@@ -96,7 +96,7 @@
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">代理：</span>
-                                    <select class="form-control" id="agentId"
+                                    <select class="form-control selectpicker" data-live-search="true" id="agentId"
                                             onchange="agentSelect('../mchCompany/getByAgentId','agentId','companyId')">
                                         <option value="0">选择代理</option>
                                         <c:forEach items="${agentList}" var="item">
@@ -113,7 +113,7 @@
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">商户公司：</span>
-                                    <select class="form-control" id="companyId" onchange="companySelect('../mchShop/getByCompanyId','companyId','shopId')">
+                                    <select class="form-control selectpicker" data-live-search="true" id="companyId" onchange="companySelect('../mchShop/getByCompanyId','companyId','shopId')">
                                         <option value="0">选择公司</option>
                                         <c:forEach items="${companyList}" var="item">
                                             <option value="${item.id}">${item.name}</option>
@@ -125,7 +125,7 @@
                         <div class="col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">门店：</span>
-                                <select class="form-control" id="shopId" onchange="shopSelect('../user/getByShopId','shopId','userId')">
+                                <select class="form-control selectpicker" data-live-search="true" id="shopId" onchange="shopSelect('../user/getByShopId','shopId','userId')">
                                     <option value="0">选择门店</option>
                                     <c:forEach items="${shopList}" var="item">
                                         <option value="${item.id}">${item.name}</option>
@@ -136,7 +136,7 @@
                         <div class="col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">收银员：</span>
-                                <select class="form-control" id="userId">
+                                <select class="form-control selectpicker" data-live-search="true" id="userId">
                                     <option value="0">选择收银员</option>
                                     <c:forEach items="${userList}" var="item">
                                         <option value="${item.id}">${item.userName}</option>

@@ -81,7 +81,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">门店：</span>
-                                <select class="form-control" id="shopId" onchange="shopSelect('../user/getByShopId','shopId','userId')">
+                                <select class="form-control selectpicker" data-live-search="true" id="shopId" onchange="shopSelect('../user/getByShopId','shopId','userId')">
                                     <option value="0">选择门店</option>
                                     <c:forEach items="${shopList}" var="item">
                                         <option value="${item.id}">${item.name}</option>
@@ -92,7 +92,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">收银员：</span>
-                                <select class="form-control" id="userId">
+                                <select class="form-control selectpicker" data-live-search="true" id="userId">
                                     <option value="0">选择收银员</option>
                                     <c:forEach items="${userList}" var="item">
                                         <option value="${item.id}">${item.userName}</option>

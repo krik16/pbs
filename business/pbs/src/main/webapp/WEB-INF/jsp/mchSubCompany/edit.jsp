@@ -41,7 +41,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>公司：</span>
-                                <select class="form-control" id="companyId">
+                                <select class="form-control selectpicker" data-live-search="true" id="companyId">
                                      <option value="0">选择所属公司</option>
                                     <c:forEach items="${entity.mchCompanyList}" var="item">
                                         <option value="${item.id}" <c:if test="${item.id==entity.companyId}">selected="true"</c:if>>${item.name}</option>

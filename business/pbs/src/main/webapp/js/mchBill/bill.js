@@ -56,7 +56,7 @@ function shopSelect(url,parentId,eId){
 		var pid = document.getElementById(parentId);
 		var sid = document.getElementById(eId);
 		//清除原有选项
-		sid.options.length = 1;
+		sid.options.length = 0;
 		$.post(url, {
 			parentId: pid.value
 		}, function (data) {
@@ -73,6 +73,8 @@ function shopSelect(url,parentId,eId){
 					sid.add(opp);
 				}
 			}
+			$('.selectpicker').selectpicker('refresh');
 		}, "json");
 	}
+
 }

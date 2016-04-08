@@ -25,5 +25,6 @@ function selectChange(url, parentId, eId) {
                 sid.add(opp);
             }
         }
+        $('.selectpicker').selectpicker('refresh');
     }, "json");
 }

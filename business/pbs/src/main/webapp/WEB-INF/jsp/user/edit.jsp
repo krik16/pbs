@@ -66,7 +66,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>所属区域：</span>
-                                <select class="form-control" id="areaId" onchange="areaSelect('../agent/getByAreaId','areaId','agentId')">
+                                <select class="form-control selectpicker" data-live-search="true" id="areaId" onchange="areaSelect('../agent/getByAreaId','areaId','agentId')">
                                     <option value="0">选择所属区域</option>
                                     <c:forEach items="${entity.areaList}" var="item">
                                         <option value="${item.id}" <c:if test="${item.id==entity.areaId}">selected="true"</c:if>>${item.name}</option>
@@ -80,7 +80,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>所属代理：</span>
-                                <select class="form-control" id="agentId">
+                                <select class="form-control selectpicker" data-live-search="true" id="agentId">
                                     <option value="0">选择所属代理</option>
                                     <c:forEach items="${entity.agentList}" var="item">
                                         <option value="${item.id}" <c:if test="${item.id==entity.agentId}">selected="true"</c:if>>${item.name}</option>

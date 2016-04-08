@@ -32,7 +32,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>区域：</span>
-                                <select class="form-control" id="area" name="area" required>
+                                <select class="form-control selectpicker" data-live-search="true" id="area" name="area" required>
                                     <option value="0">选择所属区域</option>
                                     <c:forEach items="${agent.areaList}" var="item">
                                         <option value="${item.id}" <c:if test="${item.id==agent.areaId}">selected="true"</c:if>>${item.name}</option>

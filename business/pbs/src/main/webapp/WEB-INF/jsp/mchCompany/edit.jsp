@@ -43,7 +43,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>分销代理：</span>
-                                <select class="form-control" id="agentId">
+                                <select class="form-control selectpicker" data-live-search="true" id="agentId">
                                     <option value="0">选择所属分销代理</option>
                                     <c:forEach items="${agentList}" var="item">
                                         <option value="${item.id}"

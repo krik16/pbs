@@ -68,7 +68,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>所属公司：</span>
-                                <select class="form-control" id="companyId" onchange="companySelect('../mchSubCompany/getByCompanyId','companyId','subCompanyId')">
+                                <select class="form-control selectpicker" data-live-search="true" id="companyId" onchange="companySelect('../mchSubCompany/getByCompanyId','companyId','subCompanyId')">
                                     <option value="0">选择所属公司</option>
                                     <c:forEach items="${entity.companyList}" var="item">
                                         <option value="${item.id}" <c:if test="${item.id==entity.companyId}">selected="true"</c:if>>${item.name}</option>
@@ -82,7 +82,7 @@
                        <div class="col-sm-4">
                            <div class="input-group">
                                <span class="input-group-addon input-group-onlytext">分公司：</span>
-                               <select class="form-control" id="subCompanyId" onchange="subCompanySelect('../mchShop/getBySubCompanyId','subCompanyId','shopId')">
+                               <select class="form-control selectpicker" data-live-search="true" id="subCompanyId" onchange="subCompanySelect('../mchShop/getBySubCompanyId','subCompanyId','shopId')">
                                    <option value="0">选择所属公分司</option>
                                    <c:forEach items="${entity.subCompanyVOList}" var="item">
                                        <option value="${item.id}" <c:if test="${item.id==entity.subCompanyId}">selected="true"</c:if>>${item.name}</option>
@@ -96,7 +96,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">所属门店：</span>
-                                <select class="form-control" id="shopId">
+                                <select class="form-control selectpicker" data-live-search="true" id="shopId">
                                     <option value="0">选择所属门店</option>
                                     <c:forEach items="${entity.shopList}" var="item">
                                         <option value="${item.id}" <c:if test="${item.id==entity.shopId}">selected="true"</c:if>>${item.name}</option>
