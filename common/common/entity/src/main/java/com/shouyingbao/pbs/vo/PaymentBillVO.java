@@ -20,6 +20,8 @@ public class PaymentBillVO extends PaymentBill{
 
     private String subCompanyName;
 
+    private String userName;
+
     public String getTradeNo() {
         return tradeNo;
     }
@@ -66,6 +68,14 @@ public class PaymentBillVO extends PaymentBill{
 
     public void setSubCompanyName(String subCompanyName) {
         this.subCompanyName = subCompanyName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

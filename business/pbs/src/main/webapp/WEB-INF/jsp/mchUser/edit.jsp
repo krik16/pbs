@@ -21,7 +21,7 @@
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>账号：</span>
+                                <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>账号(手机号)：</span>
                                 <input id="userAccount" type="text" value="${entity.userAccount}"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
                                        placeholder="用户登录账号"/>
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row mb15">
+                 <%--   <div class="form-group row mb15">
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>电话号码：</span>
@@ -47,7 +47,7 @@
                                        placeholder="用户电话号码"/>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
 
                     <div class="form-group row mb15" id="role-select">
                         <div class="col-sm-4">

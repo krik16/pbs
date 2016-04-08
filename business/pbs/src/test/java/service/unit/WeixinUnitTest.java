@@ -8,9 +8,9 @@ import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.unit.WeixinConfigUnit;
 import com.shouyingbao.pbs.unit.WeixinPayUnit;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.testng.annotations.Test;
 
 import java.net.URLEncoder;
 
@@ -32,7 +32,7 @@ public class WeixinUnitTest extends BaseTest{
     public void scanPayTest(){
         try {
             Configure configure = weixinConfigUnit.initConfigure(null,0);
-            String  xmString = new String("闪购".toString().getBytes("UTF-8"));
+            String  xmString = new String("test".toString().getBytes("UTF-8"));
             String body = URLEncoder.encode(xmString, "UTF-8");
             ScanPayReqData scanPayReqData = new ScanPayReqData("123",body,"", "",
                     "12312312313",1, "1","","","","",configure);
@@ -62,10 +62,15 @@ public class WeixinUnitTest extends BaseTest{
         weixinPayVO.setDeviceInfo("11");
         weixinPayVO.setBody("test");
         weixinPayVO.setWeixinPayType(1);
-        weixinPayVO.setOrderNo("1231231312231312321");
+        weixinPayVO.setOrderNo("123123131221231312321");
         WeixinMch weixinMch = new WeixinMch();
         weixinMch.setMchId("1321136301");
-        weixinPayUnit.fixedPay(weixinPayVO,weixinMch);
+        weixinPayUnit.fixedPay(weixinPayVO, weixinMch);
+    }
+
+    @Test
+    public void scanForEverFixedPay(){
+        weixinPayUnit.scanForEverFixedPay("123131391922123121");
     }
 
 }

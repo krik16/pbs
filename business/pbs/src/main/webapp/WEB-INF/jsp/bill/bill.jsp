@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="form-group row mb15">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">起始时间：</span>
                                 <input name="start" type="text" value=""
@@ -70,7 +70,7 @@
                                        id="tradeStartTime"/>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">结束时间：</span>
                                 <input name="end" type="text" value=""
@@ -78,14 +78,6 @@
                                        id="tradeEndTime"/>
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-primary" style="width: 90px;" id="search-button">
-                                <i class="fa fa-search"></i>
-                                <span class="btn-text">查询</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="form-group row mb15">
                         <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER">
                             <div class="col-sm-3">
                                 <div class="input-group">
@@ -114,6 +106,9 @@
                                 </div>
                             </div>
                         </sec:authorize>
+                    </div>
+                    <div class="form-group row mb15">
+
                         <sec:authorize  ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
                             <div class="col-sm-3">
                                 <div class="input-group">
@@ -130,13 +125,30 @@
                         <div class="col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">门店：</span>
-                                <select class="form-control" id="shopId">
+                                <select class="form-control" id="shopId" onchange="shopSelect('../user/getByShopId','shopId','userId')">
                                     <option value="0">选择门店</option>
                                     <c:forEach items="${shopList}" var="item">
                                         <option value="${item.id}">${item.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext">收银员：</span>
+                                <select class="form-control" id="userId">
+                                    <option value="0">选择收银员</option>
+                                    <c:forEach items="${userList}" var="item">
+                                        <option value="${item.id}">${item.userName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <a class="btn btn-primary" style="width: 90px;" id="search-button">
+                                <i class="fa fa-search"></i>
+                                <span class="btn-text">查询</span>
+                            </a>
                         </div>
                     </div>
                     <div id="result" style="margin: 0 30px;"></div>

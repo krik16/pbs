@@ -17,7 +17,7 @@
         <result column="pay_name" property="payName" jdbcType="VARCHAR"/>
         <result column="order_title" property="orderTitle" jdbcType="VARCHAR"/>
         <result column="shop_id" property="shopId" jdbcType="INTEGER"/>
-        <result column="uesr_id" property="uesrId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="batch_no" property="batchNo" jdbcType="VARCHAR"/>
         <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
     </resultMap>
@@ -28,6 +28,7 @@
         <result column="agent_name" property="agentName" jdbcType="VARCHAR"/>
         <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
         <result column="sub_company_name" property="subCompanyName" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="TradeDetailCountResultMap" type="com.shouyingbao.pbs.vo.TradeTotal">
         <result column="amount_total" property="amountTotal" jdbcType="DECIMAL"/>
@@ -35,19 +36,19 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, order_no,refund_no, pay_channel, mch_id, pay_type, pay_amount, `status`, trade_type, create_at,
-        finish_at, pay_account, pay_name, order_title, shop_id, uesr_id, batch_no, is_delete
+        finish_at, pay_account, pay_name, order_title, shop_id, user_id, batch_no, is_delete
     </sql>
 
     <sql id="Base_Column_VOList">
         pb.id, pb.order_no,pb.refund_no, pb.pay_channel, pb.mch_id, pb.pay_type, pb.pay_amount, pb.`status`,
         pb.trade_type, pb.create_at,
-        pb.finish_at, pb.pay_account, pb.pay_name, pb.shop_id, pb.uesr_id, pe.trade_no,mch_shop.name as shop_name
+        pb.finish_at, pb.pay_account, pb.pay_name, pb.shop_id, pb.user_id,pe.trade_no,mch_shop.name as shop_name,user.user_name
     </sql>
 
     <sql id="Detail_Column">
         pb.id, pb.order_no,pb.refund_no, pb.pay_channel, pb.mch_id, pb.pay_type, pb.pay_amount, pb.`status`,
         pb.trade_type, pb.create_at,
-        pb.finish_at, pb.pay_account, pb.pay_name, pb.shop_id, pb.uesr_id, pe.trade_no,mch_shop.name as shop_name,
+        pb.finish_at, pb.pay_account, pb.pay_name, pb.shop_id, pb.user_id, pe.trade_no,mch_shop.name as shop_name,
         area. name as area_name,mch_company. name as company_name,mch_sub_company. name as sub_company_name,
         case
         when mch_shop.company_id > 0 then
@@ -101,13 +102,16 @@
             and mch_shop.sub_company_id = #{subCompanyId}
         </if>
         <if test="shopId != null and shopId > 0">
-            and
-            mch_shop.id = #{shopId}
+            and mch_shop.id = #{shopId}
+        </if>
+        <if test="userId != null and userId > 0">
+            and pb.user_id = #{userId}
         </if>
     </sql>
     <sql id="list_from_clause">
         payment_bill pb
         left join payment_event pe on pb.id = pe.payment_bill_id
+        left join user on pb.user_id = user.id
         left join mch_shop on pb.shop_id = mch_shop.id
         <if test="areaId > 0 or agentId > 0">
             left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
@@ -133,14 +137,14 @@
         pay_type, pay_amount, `status`,
         trade_type, create_at, finish_at,
         pay_account, pay_name, order_title,
-        shop_id, uesr_id, batch_no,
+        shop_id, user_id, batch_no,
         is_delete)
         values (#{orderNo,jdbcType=VARCHAR},#{refundNo,jdbcType=VARCHAR}, #{payChannel,jdbcType=TINYINT},
         #{mchId,jdbcType=INTEGER},
         #{payType,jdbcType=TINYINT}, #{payAmount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT},
         #{tradeType,jdbcType=TINYINT}, #{createAt,jdbcType=TIMESTAMP}, #{finishAt,jdbcType=TIMESTAMP},
         #{payAccount,jdbcType=VARCHAR}, #{payName,jdbcType=VARCHAR}, #{orderTitle,jdbcType=VARCHAR},
-        #{shopId,jdbcType=INTEGER}, #{uesrId,jdbcType=INTEGER}, #{batchNo,jdbcType=VARCHAR},
+        #{shopId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{batchNo,jdbcType=VARCHAR},
         #{isDelete,jdbcType=TINYINT})
     </insert>
     <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.PaymentBill" useGeneratedKeys="true"
@@ -161,7 +165,7 @@
             pay_name,
             order_title,
             shop_id,
-            uesr_id,
+            user_id,
             batch_no,
             is_delete,
         </trim>
@@ -180,7 +184,7 @@
             #{payName,jdbcType=VARCHAR},
             #{orderTitle,jdbcType=VARCHAR},
             #{shopId,jdbcType=INTEGER},
-            #{uesrId,jdbcType=INTEGER},
+            #{userId,jdbcType=INTEGER},
             #{batchNo,jdbcType=VARCHAR},
             #{isDelete,jdbcType=TINYINT},
         </trim>
@@ -230,8 +234,8 @@
             <if test="shopId != null">
                 shop_id = #{shopId,jdbcType=INTEGER},
             </if>
-            <if test="uesrId != null">
-                uesr_id = #{uesrId,jdbcType=INTEGER},
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
             </if>
             <if test="batchNo != null">
                 batch_no = #{batchNo,jdbcType=VARCHAR},
@@ -259,7 +263,7 @@
         pay_name = #{payName,jdbcType=VARCHAR},
         order_title = #{orderTitle,jdbcType=VARCHAR},
         shop_id = #{shopId,jdbcType=INTEGER},
-        uesr_id = #{uesrId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
         batch_no = #{batchNo,jdbcType=VARCHAR},
         is_delete = #{isDelete,jdbcType=TINYINT}
         where id = #{id,jdbcType=INTEGER}

@@ -9,7 +9,7 @@
             <span style="font-size: 18px;color: gray;">${inTradeTotal.countTotal}笔</span>
         </div>
         <div style="float: right;margin-right: 200px">
-            <span style="font-size: 22px;font-weight: 500;">支出</span><br>
+            <span style="font-size: 22px;font-weight: 500;">退款</span><br>
             <span style="font-size: 18px;color: red;">-${outTradeTotal.amountTotal}&nbsp;元</span><br>
             <span style="font-size: 18px;color: gray;">${outTradeTotal.countTotal}笔</span>
         </div>
@@ -24,6 +24,7 @@
             <th>收款渠道</th>
             <th>交易金额</th>
             <th>门店名称</th>
+            <th>收银员</th>
             <th>交易类型</th>
             <th>交易时间</th>
         </tr>
@@ -39,6 +40,7 @@
                         <td>${entity.payChannel == 0 ? '支付宝':'微信'}</td>
                         <td>${entity.payAmount/100}</td>
                         <td>${entity.shopName}</td>
+                        <td>${entity.userName}</td>
                         <td>${entity.tradeType == 0 ? '收款':'退款'}</td>
                         <td><fmt:formatDate value="${entity.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     </tr>

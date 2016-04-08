@@ -58,6 +58,8 @@ public class MchSubCompanyController extends BaseController{
                 map.put("agentId", getUser().getAgentId());
             } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
                 map.put("companyId", getUser().getCompanyId());
+            }  else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
+                map.put("id", getUser().getSubCompanyId());
             }  else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return "mchSubCompany/list";
@@ -89,6 +91,8 @@ public class MchSubCompanyController extends BaseController{
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
                 companyMap.put("agentId", getUser().getAgentId());
             } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
+                companyMap.put("id", getUser().getCompanyId());
+            } else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
                 companyMap.put("id", getUser().getCompanyId());
             }  else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
@@ -166,7 +170,7 @@ public class MchSubCompanyController extends BaseController{
             if(parentId == 0){
                 return ResponseData.success();
             }
-            if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+            if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority()) || ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
                 mchSubCompanyList.add(mchSubCompanyService.selectById(getUser().getSubCompanyId()));
             }else{
                 mchSubCompanyList = mchSubCompanyService.selectByCompanyId(parentId);

@@ -106,7 +106,7 @@ public class UserController extends BaseController{
                 }
             }else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-                return "shop/edit";
+                return "user/edit";
             }
             if (id != null && id > 0) {
                 User user = userService.selectById(id);
@@ -119,16 +119,11 @@ public class UserController extends BaseController{
                     agentMap.put("areaId",user.getAreaId());
                 }
             }
-            List<Role> roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId());
-            if(id == getUser().getId()){//修改自身信息时角色权限加1
-                if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
-                    Role role = new Role();
-                    role.setId(2);
-                    role.setName(ConstantEnum.AUTHORITY_AREA_AGENT.getValueStr());
-                    roleList.add(role);
-                }else {
-                    roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId() - 1);
-                }
+            List<Role> roleList;
+            if(id == getUser().getId() || ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){//修改自身或者管理员
+                roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId());
+            }else{
+                roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId()+1);
             }
             List<Area> areaList = areaService.selectListByPage(areaMap, null, null);
             List<AgentVO> agentList = agentService.selectListByPage(agentMap,null,null);
@@ -152,19 +147,25 @@ public class UserController extends BaseController{
     public ResponseData save(UserVO userVO){
         LOGGER.info("save:user={}", userVO);
         try {
+            boolean result = userService.validateUserExist(userVO.getUserAccount(),userVO.getId());
+            if(result){
+                return ResponseData.failure(ConstantEnum.EXCEPTION_USER_IS_EXIST.getCodeStr(),ConstantEnum.EXCEPTION_USER_IS_EXIST.getValueStr());
+            }
             User user = new User();
             BeanUtils.copyProperties(userVO,user);
             user.setIsEmployee(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte());
             if (user.getId() == null) {
                 user.setCreateAt(DateUtil.getCurrDateTime());
                 user.setCreateBy(getUser().getId());
-                user.setUserPwd(md5PasswordEncoder.encodePassword(ConstantEnum.DEFAULT_PASSWORD.getCodeStr(),null));
+                user.setUserPwd(md5PasswordEncoder.encodePassword(ConstantEnum.DEFAULT_PASSWORD.getCodeStr(), null));
+                user.setUserPhone(userVO.getUserAccount());
                 userService.insert(user);
                 UserRole userRole = new UserRole();
                 userRole.setUserId(user.getId());
                 userRole.setRoleId(userVO.getRoleId());
                 userRoleService.insert(userRole);
             } else {
+                user.setUserPhone(userVO.getUserAccount());
                 user.setUpdateAt(DateUtil.getCurrDateTime());
                 user.setUpdateBy(getUser().getId());
                 userService.update(user);
@@ -291,6 +292,25 @@ public class UserController extends BaseController{
             LOGGER.error(e.getMessage());
             e.printStackTrace();
             return ResponseData.failure(ConstantEnum.EXCEPTION_REFUND_AUTHORITY.getCodeStr(),ConstantEnum.EXCEPTION_REFUND_AUTHORITY.getValueStr());
+        }
+    }
+
+    @RequestMapping("/getByShopId")
+    @ResponseBody
+    public ResponseData getByShopId(Integer parentId) {
+        LOGGER.info("getByShopId:parentId={}", parentId);
+        try {
+            Map<String,Object> map = new HashMap<>();
+            map.put("shopId", parentId);
+            map.put("roleId",ConstantEnum.ROLE_MCH_CASHIER.getCodeInt());
+            List<UserVO> list = userService.selectListByPage(map, null, null);
+            return ResponseData.success(list);
+        } catch (UserNotFoundException e) {
+            return ResponseData.failure(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseData.failure(ConstantEnum.EXCEPTION_OPERATION_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_OPERATION_FAIL.getValueStr());
         }
     }
 

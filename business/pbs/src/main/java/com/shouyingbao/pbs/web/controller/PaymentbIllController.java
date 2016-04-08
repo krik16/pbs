@@ -49,6 +49,9 @@ public class PaymentbIllController extends BaseController{
     @Autowired
     MchShopService mchShopService;
 
+    @Autowired
+    UserService userService;
+
     @RequestMapping(value = "/search")
     public String search(ModelMap model) {
         Map<String,Object> map = new HashMap<>();
@@ -57,10 +60,13 @@ public class PaymentbIllController extends BaseController{
         List<AgentVO> agentList = agentService.selectListByPage(map,null,null);
         List<MchCompanyVO> companyList = mchCompanyService.selectListByPage(map,null,null);
         List<MchShopVO> mchShopVOList = mchShopService.selectListByPage(map,null,null);
+        map.put("roleId",ConstantEnum.ROLE_MCH_CASHIER.getCodeInt());
+        List<UserVO> userList = userService.selectListByPage(map,null,null);
         model.addAttribute("areaList",areaList);
         model.addAttribute("agentList",agentList);
         model.addAttribute("companyList",companyList);
         model.addAttribute("shopList",mchShopVOList);
+        model.addAttribute("userList",userList);
         return "/bill/bill";
     }
 

@@ -22,8 +22,10 @@ public interface UserService {
 
     Integer selectListCount(Map<String,Object> map);
 
-    User selectByUserAccount(String userName);
+    User selectByUserAccount(String userAccount);
 
     User selectByUserAccountAndPwd(String userName,String userPwd);
+
+    boolean validateUserExist(String userAccount,Integer id);
 
 }

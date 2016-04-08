@@ -68,4 +68,13 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         map.put("userPwd",userPwd);
         return this.getBaseDao().selectOneBySql(NAMESPACE + ".selectByUserAccountAndPwd", map);
     }
+
+    @Override
+    public boolean validateUserExist(String userAccount, Integer id) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("userAccount",userAccount);
+        map.put("id",id);
+        User user = this.getBaseDao().selectOneBySql(NAMESPACE + ".validateUserExist", map);
+        return user != null;
+    }
 }

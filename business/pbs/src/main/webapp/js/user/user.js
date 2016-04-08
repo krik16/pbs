@@ -44,18 +44,27 @@ function save(){
 		});
 		return;
 	}
+
+	var re = /^1\d{10}$/
+	if (!re.test(userAccount)) {
+		Modal.alert({
+			msg: "账号必须为正确的手机号"
+		});
+		return;
+	}
+
 	if(!userName){
 		Modal.alert({
 			msg: "用户姓名不能为空!"
 		});
 		return;
 	}
-	if(!userPhone){
+	/*if(!userPhone){
 		Modal.alert({
 			msg: "电话号码不能为空!"
 		});
 		return;
-	}
+	}*/
 	if(roleId<=0){
 		Modal.alert({
 			msg: "用户角色不能为空!"
@@ -81,7 +90,7 @@ function save(){
 			id : id,
 			userAccount : userAccount,
 			userName : userName,
-			userPhone : userPhone,
+			//userPhone : userPhone,
 			isEmployee : isEmployee,
 			roleId : roleId,
 			companyId : companyId,

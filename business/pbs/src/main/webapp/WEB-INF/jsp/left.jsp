@@ -97,22 +97,22 @@
             </li>
         </sec:authorize>
         <sec:authorize
-                ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
         <li class="folder expanded">商家服务
             <ul>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY">
+                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY">
                     <li><a href="${ctx}/mchCompany/search" target="mainFrame">公司管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY">
+                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,MCH_COMPANY,MCH_SUB_COMPANY">
                 <li><a href="${ctx}/mchSubCompany/search" target="mainFrame">分公司管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
                 <li><a href="${ctx}/mchShop/search" target="mainFrame">门店管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
                     <li><a href="${ctx}/mchUser/search" target="mainFrame">用户管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
+                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
                     <li><a href="${ctx}/mchBill/search" target="mainFrame">交易查询</a></li>
                 </sec:authorize>
             </ul>

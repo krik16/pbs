@@ -25,7 +25,7 @@ public class Configure {
             //扫码支付
             if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getCodeStr().equals(weixinMch.getTradeType())) {
                 setTradeType(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_MICROPAY.getValueStr());
-            }if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_NATIVE.getCodeStr().equals(weixinMch.getTradeType())) {
+            }else if (ConstantEnum.WEIXIN_PAY_TRADE_TYPE_NATIVE.getCodeStr().equals(weixinMch.getTradeType())) {
                 setTradeType(ConstantEnum.WEIXIN_PAY_TRADE_TYPE_NATIVE.getValueStr());
             }else{
                throw new WeixinException("eror","未找到支付方式");

@@ -36,7 +36,7 @@ public class PaymentBill implements Serializable {
 
     private Integer shopId;
 
-    private Integer uesrId;
+    private Integer userId;
 
     private String batchNo;
 
@@ -162,12 +162,12 @@ public class PaymentBill implements Serializable {
         this.shopId = shopId;
     }
 
-    public Integer getUesrId() {
-        return uesrId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUesrId(Integer uesrId) {
-        this.uesrId = uesrId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getBatchNo() {
@@ -199,7 +199,7 @@ public class PaymentBill implements Serializable {
         paymentBill.setPayType(payType);
         paymentBill.setShopId(shopId);
         paymentBill.setStatus((byte)0);
-        paymentBill.setUesrId(userId);
+        paymentBill.setUserId(userId);
         paymentBill.setTradeType(tradeType);
         return paymentBill;
     }

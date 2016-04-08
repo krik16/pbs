@@ -11,6 +11,7 @@ import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.vo.MchShopVO;
 import com.shouyingbao.pbs.vo.PaymentBillVO;
 import com.shouyingbao.pbs.vo.TradeTotal;
+import com.shouyingbao.pbs.vo.UserVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,10 @@ public class MchPaymentbIllController extends BaseController{
         Map<String,Object> map = new HashMap<>();
         getDataPermission(map,getUser(),getAuthority());
         List<MchShopVO> mchShopVOList = mchShopService.selectListByPage(map,null,null);
+        map.put("roleId",ConstantEnum.ROLE_MCH_CASHIER.getCodeInt());
+        List<UserVO> userList = userService.selectListByPage(map,null,null);
         model.addAttribute("shopList",mchShopVOList);
+        model.addAttribute("userList",userList);
         return "/mchBill/bill";
     }
 

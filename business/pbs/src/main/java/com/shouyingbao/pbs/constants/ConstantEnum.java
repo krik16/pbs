@@ -46,6 +46,7 @@ public enum ConstantEnum {
 	EXCEPTION_OLD_PWD_FAIL("1019121","原始密码不正确"),
 	EXCEPTION_NEW_PWD_FAIL("1019122","两次密码不相同，请确认"),
 	EXCEPTION_USER_NOT_FOUND("1019123","用户不存在"),
+	EXCEPTION_USER_IS_EXIST("1019124","账号已存在，请修改账号"),
 
 	ALI_PAY_TIME_EXPIRE_GOODS("60m","商品支付宝支付默认超时时间"),
 	ALI_PAY_TIME_EXPIRE_COUPONS("15m","代金券支付宝支付默认超时时间"),
@@ -89,6 +90,15 @@ public enum ConstantEnum {
 	AUTHORITY_MCH_SHOPKEEPER("MCH_SHOPKEEPER","门店店长"),
 	AUTHORITY_MCH_CASHIER("MCH_CASHIER","门店收银员"),
 //	AUTHORITY_MCH_FINANCE("MCH_FINANCE","商户财务"),
+
+	ROLE_COMPANY_SHAREHOLDER(1,"公司股东"),
+	ROLE_AREA_AGENT(2,"区域代理"),
+	ROLE_DISTRIBUTION_AGENT(3,"分销代理"),
+	ROLE_MCH_COMPANY(4,"商户总公司"),
+	ROLE_MCH_SUB_COMPANY(5,"商户分公司"),
+	ROLE_MCH_SHOPKEEPER(6,"门店店长"),
+	ROLE_MCH_CASHIER(7,"门店收银员"),
+
 
 	DEFAULT_PASSWORD("123456","默认密码"),
 

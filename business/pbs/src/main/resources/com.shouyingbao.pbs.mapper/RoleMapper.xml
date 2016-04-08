@@ -145,8 +145,8 @@
     <include refid="Base_Column_List" />
     from `role`
     where type = #{type}
-    <if test="id >  1">
-    and id > #{id}
+    <if test="id > 1">
+    and id = #{id}
     </if>
   </select>
 

@@ -26,7 +26,7 @@ public class ZxingUtil {
             Map hints = new HashMap();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, 400, 400,hints);
-            File file1 = new File(path,"test1.jpg");
+            File file1 = new File(path,"test.jpg");
             MatrixToImageWriter.writeToFile(bitMatrix, "jpg", file1);
 
         } catch (Exception e) {

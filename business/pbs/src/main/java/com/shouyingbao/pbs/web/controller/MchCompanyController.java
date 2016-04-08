@@ -6,6 +6,7 @@ import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.entity.Agent;
 import com.shouyingbao.pbs.entity.MchCompany;
+import com.shouyingbao.pbs.entity.User;
 import com.shouyingbao.pbs.service.AgentService;
 import com.shouyingbao.pbs.service.MchCompanyService;
 import com.shouyingbao.pbs.vo.AgentVO;
@@ -80,14 +81,20 @@ public class MchCompanyController extends BaseController {
     @RequestMapping("/edit")
     public String edit(ModelMap modelMap, Integer id) {
         MchCompany mchCompany = null;
+        User user = getUser();
         Map<String,Object> agentMap = new HashMap<>();
         //数据权限
         if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
             LOGGER.info("permission is admin");
         }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
-            agentMap.put("areaId", getUser().getAreaId());
+            agentMap.put("areaId", user.getAreaId());
         } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
-            agentMap.put("id", getUser().getAgentId());
+            agentMap.put("id", user.getAgentId());
+        }else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
+            MchCompany loginMchCompany = mchCompanyService.selectById(user.getCompanyId());
+            if(loginMchCompany != null) {
+                agentMap.put("id", loginMchCompany.getAgentId());
+            }
         } else {
             LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
             return "mchCompany/edit";
@@ -163,7 +170,9 @@ public class MchCompanyController extends BaseController {
                 map.put("agentId", getUser().getAgentId());
             }  else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
                 map.put("id", getUser().getCompanyId());
-            } else {
+            } else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
+                map.put("id", getUser().getCompanyId());
+            }else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return ResponseData.success();
             }

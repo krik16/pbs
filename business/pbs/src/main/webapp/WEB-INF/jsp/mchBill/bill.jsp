@@ -23,14 +23,14 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group row mb15">
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">订单号：</span>
                                 <input id="orderNo" type="text" class="form-control dropdown-toggle ng-pristine ng-valid"
                                        placeholder="订单号">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">交易号：</span>
                                 <input id="tradeNo" type="text"
@@ -48,6 +48,23 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group row mb15">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext">起始时间：</span>
+                                <input name="start" type="text" value=""
+                                       class="form-control dropdown-toggle ng-pristine ng-valid startTime"
+                                       id="tradeStartTime"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext">结束时间：</span>
+                                <input name="end" type="text" value=""
+                                       class="form-control dropdown-toggle ng-pristine ng-valid endTime" id="tradeEndTime"/>
+                            </div>
+                        </div>
                         <div class="col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">交易类型：</span>
@@ -58,27 +75,13 @@
                                 </select>
                             </div>
                         </div>
+
                     </div>
                     <div class="form-group row mb15">
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">起始时间：</span>
-                                <input name="start" type="text" value=""
-                                       class="form-control dropdown-toggle ng-pristine ng-valid startTime"
-                                       id="tradeStartTime"/>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext">结束时间：</span>
-                                <input name="end" type="text" value=""
-                                       class="form-control dropdown-toggle ng-pristine ng-valid endTime" id="tradeEndTime"/>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext">门店：</span>
-                                <select class="form-control" id="shopId">
+                                <select class="form-control" id="shopId" onchange="shopSelect('../user/getByShopId','shopId','userId')">
                                     <option value="0">选择门店</option>
                                     <c:forEach items="${shopList}" var="item">
                                         <option value="${item.id}">${item.name}</option>
@@ -86,7 +89,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext">收银员：</span>
+                                <select class="form-control" id="userId">
+                                    <option value="0">选择收银员</option>
+                                    <c:forEach items="${userList}" var="item">
+                                        <option value="${item.id}">${item.userName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
                             <a class="btn btn-primary" style="width: 90px;" id="search-button">
                                 <i class="fa fa-search"></i>
                                 <span class="btn-text">查询</span>

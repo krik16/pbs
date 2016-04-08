@@ -24,18 +24,22 @@
                         <td>${entity.mchCompanyName}</td>
                         <td>${entity.desc}</td>
                         <td>
-                        <div class="col-sm-3">
-                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/mchSubCompany/edit?id=${entity.id}">
-                                <i class="fa fa-edit"></i>
-                                <span class="btn-text" >修改</span>
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a class="btn btn btn-danger list-add" style="width: 90px;" id="cance-button" onclick="cance(${entity.id})">
-                                <i class="fa fa-times-circle"></i>
-                                <span class="btn-text" >删除</span>
-                            </a>
-                        </div>
+                            <div class="col-sm-3">
+                                <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button"
+                                   href="${ctx}/mchSubCompany/edit?id=${entity.id}">
+                                    <i class="fa fa-edit"></i>
+                                    <span class="btn-text">修改</span>
+                                </a>
+                            </div>
+                            <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AUTHORITY_MCH_COMPANY">
+                                <div class="col-sm-3">
+                                    <a class="btn btn btn-danger list-add" style="width: 90px;" id="cance-button"
+                                       onclick="cance(${entity.id})">
+                                        <i class="fa fa-times-circle"></i>
+                                        <span class="btn-text">删除</span>
+                                    </a>
+                                </div>
+                            </sec:authorize>
                         </td>
                     </tr>
                 </c:forEach>

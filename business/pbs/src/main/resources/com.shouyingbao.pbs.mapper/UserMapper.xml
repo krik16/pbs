@@ -31,12 +31,14 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, user_phone, user_account, user_pwd, user_name, user_nick_name, card_id, is_employee,
-        `desc`,shop_id, company_id, sub_company_id,area_id,agent_id, create_at, create_by, update_at, update_by, is_delete
+        `desc`,shop_id, company_id, sub_company_id,area_id,agent_id, create_at, create_by, update_at, update_by,
+        is_delete
     </sql>
 
     <sql id="Base_Column_VOList">
         user.id, user.user_phone, user.user_account,user.user_name, user.user_nick_name, user.card_id, user.is_employee,
-        user.`desc`,user.shop_id, user.company_id, user.sub_company_id,user.area_id,user.agent_id, user.create_at, user.create_by, user.update_at,
+        user.`desc`,user.shop_id, user.company_id, user.sub_company_id,user.area_id,user.agent_id, user.create_at,
+        user.create_by, user.update_at,
         user.update_by, user.is_delete,
         mch_company.name as company_name,mch_sub_company.name as sub_company_name,mch_shop.name as shop_name,role.name
         as role_name,area.name as areaName,agent.name as agentName
@@ -51,7 +53,7 @@
             and user.is_employee = #{isEmployee}
         </if>
         <if test="areaId != null and areaId > 0">
-            and (user.area_id = #{areaId} or company_agent. = #{areaId} or shop_agent.area_id = #{areaId})
+            and (user.area_id = #{areaId} or company_agent.area_id = #{areaId} or shop_agent.area_id = #{areaId})
         </if>
         <if test="agentId != null and agentId > 0">
             and (user.agent_id = #{agentId} or mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
@@ -68,6 +70,17 @@
         <if test="id != null and id > 0">
             and user.id = #{id}
         </if>
+        <if test="roleId != null and roleId > 0">
+            and role.id = #{roleId}
+        </if>
+        <if test="roleIdList != null and roleIdList != ''">
+            and role.id in
+            <foreach collection="roleIdList" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
         and user.is_delete = 0
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -91,7 +104,8 @@
         #{userName,jdbcType=VARCHAR}, #{userNickName,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR},
         #{isEmployee,jdbcType=TINYINT}, #{desc,jdbcType=VARCHAR},
         #{shopId,jdbcType=INTEGER},#{companyId,jdbcType=INTEGER},
-        #{subCompanyId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{agentId,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+        #{subCompanyId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{agentId,jdbcType=INTEGER},
+        #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
         #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
         )
     </insert>
@@ -100,37 +114,37 @@
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userPhone != null and userPhone != ''">
-            user_phone,
+                user_phone,
             </if>
             <if test="userAccount != null and userAccount != ''">
-            user_account,
+                user_account,
             </if>
             <if test="userPwd != null and userPwd != ''">
-            user_pwd,
+                user_pwd,
             </if>
             <if test="userName != null and userName != ''">
-            user_name,
+                user_name,
             </if>
             <if test="userNickName != null and userNickName != ''">
-            user_nick_name,
+                user_nick_name,
             </if>
             <if test="cardId != null and cardId != ''">
-            card_id,
+                card_id,
             </if>
             <if test="isEmployee != null and isEmployee != ''">
-            is_employee,
+                is_employee,
             </if>
             <if test="desc != null and desc != ''">
-            `desc`,
+                `desc`,
             </if>
             <if test="shopId != null and shopId != ''">
-            shop_id,
+                shop_id,
             </if>
             <if test="companyId != null and companyId != ''">
-            company_id,
+                company_id,
             </if>
             <if test="subCompanyId != null and subCompanyId != ''">
-            sub_company_id,
+                sub_company_id,
             </if>
             <if test="areaId != null and areaId != ''">
                 area_id,
@@ -139,19 +153,19 @@
                 agent_id,
             </if>
             <if test="createAt != null and createAt != ''">
-            create_at,
+                create_at,
             </if>
             <if test="createBy != null and createBy != ''">
-            create_by,
+                create_by,
             </if>
             <if test="updateAt != null and updateAt != ''">
-            update_at,
+                update_at,
             </if>
             <if test="updateBy != null and updateBy != ''">
-            update_by,
+                update_by,
             </if>
             <if test="isDelete != null and isDelete != ''">
-            is_delete,
+                is_delete,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -382,5 +396,16 @@
         user
         where user_account = #{userAccount}
         and user_pwd = #{userPwd}
+    </select>
+    <select id="validateUserExist" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        id
+        from
+        user
+        where user_account = #{userAccount}
+        <if test="id != null and id > 0">
+            and id != #{id}
+        </if>
+        and is_delete = 0
     </select>
 </mapper>

@@ -8,9 +8,6 @@
 <div class="memSuper">
     <div class="memSuper-main">
         <div class="page-content ng-scope">
-            <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
-            <input id="rowCount" type="hidden" name="rowCount" value="${rowCount}"/>
-
             <div class="panel panel-default">
                 <div class="panel-heading">
                     门店信息
@@ -69,7 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row mb15" id="agent-select" <c:if test="${entity.agentId <= 0}">style="display:none"</c:if> >
+                        <div class="form-group row mb15" id="agent-select" <c:if test="${entity.agentId <= 0 || authority == 'MCH_COMPANY' || authority == 'MCH_SUB_COMPANY'}">style="display:none"</c:if> >
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">分销代理：</span>

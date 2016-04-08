@@ -11,6 +11,7 @@ import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.constants.ConstantUtil;
 import com.shouyingbao.pbs.constants.Constants;
 import com.shouyingbao.pbs.core.bean.ResponseData;
+import com.shouyingbao.pbs.core.common.util.DateUtil;
 import com.shouyingbao.pbs.entity.WeixinMch;
 import com.shouyingbao.pbs.service.WeixinMchService;
 import com.shouyingbao.pbs.vo.WeixinPayVO;
@@ -79,12 +80,34 @@ public class WeixinPayUnit {
         return responseData;
     }
 
+    public void scanForEverFixedPay(String orderNo) {
+
+        WeixinMch weixinMch = weixinMchService.selectByShopId(1);
+        Configure configure = weixinConfigUnit.initConfigure(weixinMch, 0);
+        String timeStamp = String.valueOf(DateUtil.getCurrDateTime().getTime()).substring(0, 10);
+        ScanForeverFixedPayReqData scanFixedPayReqData = new ScanForeverFixedPayReqData(timeStamp, orderNo, configure);
+        StringBuilder sb = new StringBuilder();
+        sb.append("weixin://wxpay/bizpayurl?appid=");
+        sb.append(scanFixedPayReqData.getAppid());
+        sb.append("&mch_id=");
+        sb.append(scanFixedPayReqData.getMch_id());
+        sb.append("&nonce_str=");
+        sb.append(scanFixedPayReqData.getNonce_str());
+        sb.append("&product_id=");
+        sb.append(scanFixedPayReqData.getProduct_id());
+        sb.append("&time_stamp=");
+        sb.append(scanFixedPayReqData.getTime_stamp());
+        sb.append("&sign=");
+        sb.append(scanFixedPayReqData.getSign());
+        LOGGER.info("context={}", sb.toString());
+        ZxingUtil.getZxing(sb.toString());
+    }
 
     /**
-     * 微信扫固码支付
+     * 微信扫临时固码支付
      **/
     public ResponseData fixedPay(WeixinPayVO weixinPayVO, WeixinMch weixinMch) {
-        LOGGER.info("微信扫码支付", weixinPayVO.toString());
+        LOGGER.info("微信扫临时固码支付", weixinPayVO.toString());
         ScanFixedResData scanFixedResData;
         ResponseData responseData = ResponseData.success();
         try {
@@ -95,7 +118,7 @@ public class WeixinPayUnit {
             Configure configure = weixinConfigUnit.initConfigure(weixinMch, weixinPayVO.getWeixinPayType());
             //封装请求参数
             ScanFixedPayReqData scanFixedPayReqData = new ScanFixedPayReqData(weixinPayVO.getBody(), "", "",
-                    weixinPayVO.getOrderNo(), weixinPayVO.getTotalFee(), weixinPayVO.getDeviceInfo(), "", "", "", "", ConstantUtil.PayWeiXin_V3.WEIXIN_NOTIFY_URL,configure);
+                    weixinPayVO.getOrderNo(), weixinPayVO.getTotalFee(), weixinPayVO.getDeviceInfo(), "", "", "", "", ConstantUtil.PayWeiXin_V3.WEIXIN_NOTIFY_URL, configure);
             UnifiedorderService unifiedorderService = new UnifiedorderService();
             //发起支付请求
             String result = unifiedorderService.request(scanFixedPayReqData, configure);
@@ -116,7 +139,8 @@ public class WeixinPayUnit {
 
     /**
      * 扫码支付等待用户支付处理
-     * @param orderNo 订单号
+     *
+     * @param orderNo     订单号
      * @param weixinMchId 商户id
      */
     private void waitUserPaying(String orderNo, Integer weixinMchId) {
@@ -134,20 +158,20 @@ public class WeixinPayUnit {
             } catch (Exception e) {
                 e.printStackTrace();
                 if (i == this.retryTimes - 1) {
-                    LOGGER.error("query order failed after retry {} times!", this.retryTimes);
+                    LOGGER.error("wait user paying failed after retry {} times!", this.retryTimes);
                     break;
                 }
                 try {
                     Thread.sleep(this.retryInterval);
                 } catch (InterruptedException e1) {
-                    LOGGER.warn("query order process has been blocked. Wait {} seconds and retry {}", this.retryInterval / 1000, i + 1);
+                    LOGGER.warn("wait user paying has been blocked. Wait {} seconds and retry {}", this.retryInterval / 1000, i + 1);
                 }
             }
         }
         if (!result) {
             LOGGER.info("用户超时未完成支付,调用撤销订单,用户需重新支付");
             reverseOrder(orderNo, weixinMchId);
-            throw new WeixinException(ConstantEnum.EXCEPTION_USER_UN_PAY.getCodeStr(), ConstantEnum.EXCEPTION_USER_UN_PAY.getValueStr());
+//            throw new WeixinException(ConstantEnum.EXCEPTION_USER_UN_PAY.getCodeStr(), ConstantEnum.EXCEPTION_USER_UN_PAY.getValueStr());
         }
     }
 
@@ -193,7 +217,7 @@ public class WeixinPayUnit {
     public RefundQueryResData refundQuery(String tradeNo, String orderNo, String refundNo, Integer weixinMchId) {
         LOGGER.info("退款查询,refundQuery tradeNo={},orderNo={},refundNo={},weixinMchId={}", tradeNo, orderNo, refundNo, weixinMchId);
         RefundQueryResData refundQueryResData;
-        String result="";
+        String result = "";
         try {
             if (Strings.isNullOrEmpty(tradeNo) && Strings.isNullOrEmpty(orderNo) && Strings.isNullOrEmpty(refundNo)) {
                 throw new ParamNullException();
@@ -202,9 +226,9 @@ public class WeixinPayUnit {
             Configure configure = weixinConfigUnit.initConfigure(weixinMchId);
             RefundQueryReqData refundQueryReqData = new RefundQueryReqData(tradeNo, orderNo, null, refundNo, null, configure);
             result = refundQueryService.request(refundQueryReqData, configure);
-             refundQueryResData = (RefundQueryResData) Util.getObjectFromXML(result, RefundQueryResData.class);
+            refundQueryResData = (RefundQueryResData) Util.getObjectFromXML(result, RefundQueryResData.class);
         } catch (Exception e) {
-            LOGGER.info("查询结果result={}",result);
+            LOGGER.info("查询结果result={}", result);
             LOGGER.error(e.getMessage());
             e.printStackTrace();
             throw new WeixinException(ConstantEnum.EXCEPTION_WEIXIN_REFUND_QUERY_ORDER.getCodeStr(), ConstantEnum.EXCEPTION_WEIXIN_REFUND_QUERY_ORDER.getValueStr());
@@ -215,7 +239,7 @@ public class WeixinPayUnit {
     /**
      * 撤销订单
      *
-     * @param orderNo 订单号
+     * @param orderNo     订单号
      * @param weixinMchId 商户号
      */
     public void reverseOrder(String orderNo, Integer weixinMchId) {
@@ -231,8 +255,7 @@ public class WeixinPayUnit {
             ReverseReqData reverseReqData = new ReverseReqData(null, orderNo, configure);
             String response = reverseService.request(reverseReqData, configure);
             ReverseResData reverseResData = (ReverseResData) Util.getObjectFromXML(response, ReverseResData.class);
-            if (!"SUCCESS".equals(reverseResData.getReturn_code()) || !"SUCCESS".equals(reverseResData.getResult_code()) || !"SUCCESS".equals(reverseResData.getTrade_state()))
-            {
+            if (!"SUCCESS".equals(reverseResData.getReturn_code()) || !"SUCCESS".equals(reverseResData.getResult_code())) {
                 LOGGER.error("撤销订单失败，response={}", response);
             }
         } catch (WeixinException e) {
