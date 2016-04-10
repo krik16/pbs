@@ -98,7 +98,7 @@
       #{companyId,jdbcType=INTEGER},
       #{subCompanyId,jdbcType=INTEGER},
       #{address,jdbcType=VARCHAR},
-      #{agent_id,jdbcType=INTEGER},
+      #{agentId,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP},
