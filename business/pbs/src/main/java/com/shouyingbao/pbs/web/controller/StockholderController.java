@@ -4,14 +4,10 @@ import com.shouyingbao.pbs.Exception.UserNotFoundException;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.core.common.util.DateUtil;
-import com.shouyingbao.pbs.entity.Area;
 import com.shouyingbao.pbs.entity.Stockholder;
-import com.shouyingbao.pbs.service.AreaService;
 import com.shouyingbao.pbs.service.StockholderService;
-import com.shouyingbao.pbs.vo.AreaVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,20 +24,17 @@ import java.util.Map;
  * 2016/3/17 11:05
  **/
 @Controller
-@RequestMapping("/area")
-public class AreaController extends BaseController{
+@RequestMapping("/stockholder")
+public class StockholderController extends BaseController{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AreaController.class);
-
-    @Autowired
-    AreaService areaService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(StockholderController.class);
 
     @Autowired
     StockholderService stockholderService;
 
     @RequestMapping(value = "/search")
     public String search() {
-        return "/area/area";
+        return "/stockholder/stockholder";
     }
 
     @RequestMapping("/list")
@@ -55,59 +48,46 @@ public class AreaController extends BaseController{
                 map.put("stockholderId",getUser().getStockholderId());
             }else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-                return "area/list";
+                return "stockholder/list";
             }
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
-            List<AreaVO> areaList = areaService.selectListVOByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
-            Integer totalCount = areaService.selectListCount(map);
+            List<Stockholder> stockholderList = stockholderService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+            Integer totalCount = stockholderService.selectListCount(map);
             model.addAttribute("rowCount", getRowCount(totalCount));
             model.addAttribute("currpage", currpage);
             model.addAttribute("totalCount", totalCount);
-            model.addAttribute("list", areaList);
+            model.addAttribute("list", stockholderList);
         }catch (Exception e){
             LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
-        return "area/list";
+        return "stockholder/list";
     }
 
     @RequestMapping("/edit")
     public String edit(ModelMap modelMap, Integer id) {
-        AreaVO areaVO = new AreaVO();
-        Map<String,Object> stockholderMap = new HashMap<>();
-        //数据权限
-        if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
-            LOGGER.info("permission is admin");
-        }else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
-            stockholderMap.put("id",getUser().getStockholderId());
-        }else {
-            LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-            return "area/edit";
-        }
+        Stockholder stockholder = new Stockholder();
         if (id != null && id > 0) {
-            Area area = areaService.selectById(id);
-            BeanUtils.copyProperties(area, areaVO);
+            stockholder = stockholderService.selectById(id);
         }
-        List<Stockholder> stockholderList = stockholderService.selectListByPage(stockholderMap, null, null);
-        areaVO.setStockholderList(stockholderList);
-        modelMap.addAttribute("entity", areaVO);
-        return "area/edit";
+        modelMap.addAttribute("entity", stockholder);
+        return "stockholder/edit";
     }
 
     @RequestMapping("/save")
     @ResponseBody
-    public ResponseData save(Area area){
-        LOGGER.info("save:area={}", area);
+    public ResponseData save(Stockholder stockholder){
+        LOGGER.info("save:area={}", stockholder);
         try {
 
-            if (area.getId() == null) {
-                area.setCreateAt(DateUtil.getCurrDateTime());
-                area.setCreateBy(getUser().getId());
-                areaService.insert(area);
+            if (stockholder.getId() == null) {
+                stockholder.setCreateAt(DateUtil.getCurrDateTime());
+                stockholder.setCreateBy(getUser().getId());
+                stockholderService.insert(stockholder);
             } else {
-                area.setUpdateAt(DateUtil.getCurrDateTime());
-                area.setUpdateBy(getUser().getId());
-                areaService.update(area);
+                stockholder.setUpdateAt(DateUtil.getCurrDateTime());
+                stockholder.setUpdateBy(getUser().getId());
+                stockholderService.update(stockholder);
             }
             return ResponseData.success();
         }catch (UserNotFoundException e){
@@ -125,11 +105,11 @@ public class AreaController extends BaseController{
     public ResponseData cance(Integer id) {
         LOGGER.info("cance:id={}", id);
         try {
-            Area area = areaService.selectById(id);
-            area.setUpdateAt(DateUtil.getCurrDateTime());
-            area.setUpdateBy(getUser().getId());
-            area.setIsDelete(ConstantEnum.IS_DELETE_1.getCodeByte());
-            areaService.update(area);
+            Stockholder stockholder = stockholderService.selectById(id);
+            stockholder.setUpdateAt(DateUtil.getCurrDateTime());
+            stockholder.setUpdateBy(getUser().getId());
+            stockholder.setIsDelete(ConstantEnum.IS_DELETE_1.getCodeByte());
+            stockholderService.update(stockholder);
             return ResponseData.success();
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());
@@ -151,15 +131,13 @@ public class AreaController extends BaseController{
             if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
                 LOGGER.info("permission is admin");
             }else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
-                map.put("stockholderId", getUser().getStockholderId());
-            }else  if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){
-                map.put("areaId",getUser().getAreaId());
+                map.put("id", getUser().getStockholderId());
             }else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return ResponseData.success();
             }
-            List<Area> areaList = areaService.selectListByPage(map,null,null);
-            return ResponseData.success(areaList);
+            List<Stockholder> stockholderList = stockholderService.selectListByPage(map,null,null);
+            return ResponseData.success(stockholderList);
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());
         } catch (Exception e) {

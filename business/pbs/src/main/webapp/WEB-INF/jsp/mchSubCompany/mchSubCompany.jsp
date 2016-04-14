@@ -30,7 +30,7 @@
                                 <span class="btn-text">查询</span>
                             </a>
                         </div>
-                        <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AUTHORITY_MCH_COMPANY">
+                        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AUTHORITY_MCH_COMPANY">
                             <div class="col-sm-2">
                                 <a class="btn btn-primary" style="width: 90px;" href="${ctx}/mchSubCompany/edit">
                                     <i class="fa fa-edit"></i>

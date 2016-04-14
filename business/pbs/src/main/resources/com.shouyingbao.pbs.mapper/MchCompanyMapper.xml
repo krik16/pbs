@@ -34,6 +34,9 @@
     <if test="areaId != null and areaId > 0" >
       and agent.area_id = #{areaId}
     </if>
+    <if test="stockholderId != null and stockholderId > 0" >
+      and area.stockholder_id = #{stockholderId}
+    </if>
     <if test="id != null and id > 0" >
       and mch_company.id = #{id}
     </if>
@@ -133,6 +136,7 @@
     <include refid="Base_Column_VOList" />
     from mch_company
     left join agent on mch_company.agent_id = agent.id
+    left join area on area.id = agent.area_id
     <where>
       <include refid="list_where_clause" />
     </where>
@@ -151,6 +155,7 @@
     from
     mch_company
     left join agent on mch_company.agent_id = agent.id
+    left join area on area.id = agent.area_id
     <where>
       <include refid="list_where_clause" />
     </where>

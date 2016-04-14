@@ -88,6 +88,7 @@ public class MchUserController extends BaseController {
     public String edit(ModelMap modelMap, Integer id) {
         LOGGER.info("edit:id={}", id);
         try {
+            User user = getUser();
             UserRole loginUserRole = userRoleService.selectByUserId(getUser().getId());
             UserVO userVO = new UserVO();
             Map<String, Object> areaMap = new HashMap<>();
@@ -96,53 +97,61 @@ public class MchUserController extends BaseController {
             Map<String, Object> subCompanyMap = new HashMap<>();
             Map<String, Object> shopMap = new HashMap<>();
             //数据权限
-            if (ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())) {
+            if (ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())) {
                 LOGGER.info("permission is admin");
-            } else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
-                agentMap.put("areaId", getUser().getAreaId());
-                companyMap.put("areaId", getUser().getAreaId());
-                subCompanyMap.put("areaId", getUser().getAreaId());
-                shopMap.put("areaId", getUser().getAreaId());
-                areaMap.put("id", getUser().getAreaId());
+            } else if (ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())) {
+                agentMap.put("stockholderId",user.getStockholderId());
+                companyMap.put("stockholderId",user.getStockholderId());
+                subCompanyMap.put("stockholderId",user.getStockholderId());
+                shopMap.put("stockholderId",user.getStockholderId());
+                areaMap.put("stockholderId",user.getStockholderId());
+            }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+                agentMap.put("areaId",user.getAreaId());
+                companyMap.put("areaId",user.getAreaId());
+                subCompanyMap.put("areaId",user.getAreaId());
+                shopMap.put("areaId",user.getAreaId());
+                areaMap.put("id",user.getAreaId());
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
-                agentMap.put("id", getUser().getAgentId());
-                companyMap.put("agentId", getUser().getAgentId());
-                subCompanyMap.put("agentId", getUser().getAgentId());
-                shopMap.put("agentId", getUser().getAgentId());
+                agentMap.put("id",user.getAgentId());
+                companyMap.put("agentId",user.getAgentId());
+                subCompanyMap.put("agentId",user.getAgentId());
+                shopMap.put("agentId",user.getAgentId());
             } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
                 MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
                 if (mchCompany != null) {
                     agentMap.put("id", mchCompany.getAgentId());
                 }
-                companyMap.put("id", getUser().getCompanyId());
-                subCompanyMap.put("companyId", getUser().getCompanyId());
-                shopMap.put("companyId", getUser().getCompanyId());
+                companyMap.put("id",user.getCompanyId());
+                subCompanyMap.put("companyId",user.getCompanyId());
+                shopMap.put("companyId",user.getCompanyId());
             } else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
                 MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
                 if (mchCompany != null) {
                     agentMap.put("id", mchCompany.getAgentId());
                 }
-                companyMap.put("id", getUser().getCompanyId());
-                subCompanyMap.put("id", getUser().getSubCompanyId());
-                shopMap.put("subCompanyId", getUser().getSubCompanyId());
+                companyMap.put("id",user.getCompanyId());
+                subCompanyMap.put("id",user.getSubCompanyId());
+                shopMap.put("subCompanyId",user.getSubCompanyId());
             } else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
-                companyMap.put("id", getUser().getCompanyId());
-                subCompanyMap.put("id", getUser().getSubCompanyId());
-                shopMap.put("id", getUser().getShopId());
+                companyMap.put("id",user.getCompanyId());
+                subCompanyMap.put("id",user.getSubCompanyId());
+                shopMap.put("id",user.getShopId());
             } else {
                 LOGGER.info(getUser() + ":" + ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return "mchUser/edit";
             }
             if (id != null && id > 0) {
-                User user = userService.selectById(id);
-                BeanUtils.copyProperties(user, userVO);
+                User oldUser = userService.selectById(id);
+                BeanUtils.copyProperties(oldUser, userVO);
                 UserRole userRole = userRoleService.selectByUserId(userVO.getId());
                 if (userRole != null) {
                     userVO.setRoleId(userRole.getRoleId());
                 }
             }
             List<Role> roleList;
-            if((getUser() != null && id != null && id.equals(getUser().getId())) ||  ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())) {
+            if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
+                roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte(),0);
+            }else if(id != null && id.equals(user.getId()) ||  ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())) {
                 roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte(), loginUserRole.getRoleId());
             } else {
                 roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte(), loginUserRole.getRoleId() + 1);
@@ -284,8 +293,10 @@ public class MchUserController extends BaseController {
 
     private Map<String, Object> chcekDataPermission(Map<String, Object> map) {
         List<String> roleIdList = new ArrayList<>();
-        if (ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())) {
+        if (ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())) {
             LOGGER.info("permission is admin");
+        } else if (ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())) {
+            map.put("stockholderId", getUser().getStockholderId());
         } else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
             map.put("areaId", getUser().getAreaId());
         } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {

@@ -62,21 +62,24 @@ public class MchShopController extends BaseController{
     public String list(ModelMap model,@RequestBody Map<String,Object> map){
         LOGGER.info("list:map={}", map);
         try {
+            User user = getUser();
             //数据权限
-            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
-              LOGGER.info("permission is admin");
+            if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
+                LOGGER.info("permission is admin");
+            } else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                map.put("stockholderId",user.getStockholderId());
             } else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
-                map.put("areaId", getUser().getAreaId());
+                map.put("areaId", user.getAreaId());
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
-                map.put("agentId", getUser().getAgentId());
+                map.put("agentId",user.getAgentId());
             } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
-                map.put("companyId", getUser().getCompanyId());
+                map.put("companyId", user.getCompanyId());
             }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
-                map.put("subCompanyId", getUser().getSubCompanyId());
+                map.put("subCompanyId", user.getSubCompanyId());
             }else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
-                map.put("id", getUser().getShopId());
+                map.put("id", user.getShopId());
             }else if (ConstantEnum.AUTHORITY_MCH_CASHIER.getCodeStr().equals(getAuthority())) {
-                map.put("id", getUser().getShopId());
+                map.put("id",user.getShopId());
             }   else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return "mchShop/list";
@@ -98,66 +101,77 @@ public class MchShopController extends BaseController{
     @RequestMapping("/edit")
     public String edit(ModelMap modelMap, Integer id) {
         LOGGER.info("edit:id={}",id);
-        Map<String,Object> agentMap = new HashMap<>();
-        Map<String,Object> companyMap = new HashMap<>();
-        Map<String,Object> subCompanyMap = new HashMap<>();
-        MchShopVO mchShopVO = new MchShopVO();
-        //数据权限
-        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
-            LOGGER.info("permission is admin");
-        }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
-            agentMap.put("areaId", getUser().getAreaId());
-            companyMap.put("areaId", getUser().getAreaId());
-            subCompanyMap.put("areaId", getUser().getAreaId());
-        } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
-            agentMap.put("id", getUser().getAgentId());
-            companyMap.put("agentId", getUser().getAgentId());
-            subCompanyMap.put("agentId", getUser().getAgentId());
-        } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
-            MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
-            if(mchCompany != null) {
-                agentMap.put("id", mchCompany.getAgentId());
+        try{
+            User user = getUser();
+            Map<String,Object> agentMap = new HashMap<>();
+            Map<String,Object> companyMap = new HashMap<>();
+            Map<String,Object> subCompanyMap = new HashMap<>();
+            MchShopVO mchShopVO = new MchShopVO();
+            //数据权限
+            if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
+                LOGGER.info("permission is admin");
+            } else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                agentMap.put("stockholderId",user.getAreaId());
+                companyMap.put("stockholderId", user.getAreaId());
+                subCompanyMap.put("stockholderId", user.getAreaId());
+            }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
+                agentMap.put("areaId", user.getAreaId());
+                companyMap.put("areaId", user.getAreaId());
+                subCompanyMap.put("areaId", user.getAreaId());
+            } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
+                agentMap.put("id", user.getAgentId());
+                companyMap.put("agentId", user.getAgentId());
+                subCompanyMap.put("agentId", user.getAgentId());
+            } else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(getAuthority())) {
+                MchCompany mchCompany = mchCompanyService.selectById(user.getCompanyId());
+                if(mchCompany != null) {
+                    agentMap.put("id", mchCompany.getAgentId());
+                }
+                companyMap.put("id", user.getCompanyId());
+                subCompanyMap.put("companyId", user.getCompanyId());
+            }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
+                MchCompany mchCompany = mchCompanyService.selectById(user.getCompanyId());
+                if(mchCompany != null) {
+                    agentMap.put("id", mchCompany.getAgentId());
+                }
+                companyMap.put("id", user.getCompanyId());
+                subCompanyMap.put("id", user.getSubCompanyId());
+            }  else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
+                companyMap.put("id", user.getCompanyId());
+                subCompanyMap.put("id", user.getSubCompanyId());
+            } else {
+                LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+                return "mchShop/edit";
             }
-            companyMap.put("id", getUser().getCompanyId());
-            subCompanyMap.put("companyId", getUser().getCompanyId());
-        }else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(getAuthority())) {
-            MchCompany mchCompany = mchCompanyService.selectById(getUser().getCompanyId());
-            if(mchCompany != null) {
-                agentMap.put("id", mchCompany.getAgentId());
+            if (id != null && id > 0) {
+                MchShop mchShop = mchShopService.selectById(id);
+                BeanUtils.copyProperties(mchShop, mchShopVO);
+                AliMch aliMch = aliMchService.selectByShopId(mchShop.getId());
+                if(aliMch != null){
+                    mchShopVO.setAliKey(aliMch.getKey());
+                    mchShopVO.setAliPid(aliMch.getPid());
+                }
+                WeixinMch weixinMch = weixinMchService.selectByShopId(mchShop.getId());
+                if(weixinMch != null){
+                    mchShopVO.setWeixinMchId(weixinMch.getMchId());
+                }
             }
-            companyMap.put("id", getUser().getCompanyId());
-            subCompanyMap.put("id", getUser().getSubCompanyId());
-        }  else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())) {
-            companyMap.put("id", getUser().getCompanyId());
-            subCompanyMap.put("id", getUser().getSubCompanyId());
-        } else {
-            LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
-            return "mchShop/edit";
+
+            List<AgentVO> agentVOList = agentService.selectListByPage(agentMap,null,null);
+            List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(companyMap, null, null);
+            List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
+
+
+            mchShopVO.setAgentVOList(agentVOList);
+            mchShopVO.setCompanyList(mchCompanyList);
+            mchShopVO.setSubCompanyVOList(mchSubCompanyVOList);
+            modelMap.addAttribute("entity", mchShopVO);
+            modelMap.addAttribute("authority",getAuthority());
+
+        }catch (Exception e){
+            LOGGER.error(e.getMessage(),e);
+            e.printStackTrace();
         }
-        if (id != null && id > 0) {
-            MchShop mchShop = mchShopService.selectById(id);
-            BeanUtils.copyProperties(mchShop, mchShopVO);
-            AliMch aliMch = aliMchService.selectByShopId(mchShop.getId());
-            if(aliMch != null){
-                mchShopVO.setAliKey(aliMch.getKey());
-                mchShopVO.setAliPid(aliMch.getPid());
-            }
-            WeixinMch weixinMch = weixinMchService.selectByShopId(mchShop.getId());
-            if(weixinMch != null){
-                mchShopVO.setWeixinMchId(weixinMch.getMchId());
-            }
-        }
-
-        List<AgentVO> agentVOList = agentService.selectListByPage(agentMap,null,null);
-        List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(companyMap, null, null);
-        List<MchSubCompanyVO> mchSubCompanyVOList = mchSubCompanyService.selectListByPage(subCompanyMap, null, null);
-
-
-        mchShopVO.setAgentVOList(agentVOList);
-        mchShopVO.setCompanyList(mchCompanyList);
-        mchShopVO.setSubCompanyVOList(mchSubCompanyVOList);
-        modelMap.addAttribute("entity", mchShopVO);
-        modelMap.addAttribute("authority",getAuthority());
         return "mchShop/edit";
     }
 
@@ -166,16 +180,17 @@ public class MchShopController extends BaseController{
     public ResponseData save(MchShopVO mchShopVO){
         LOGGER.info("save:mchShop={}", mchShopVO);
         try {
+            User user = getUser();
             AliMch aliMch;
             WeixinMch weixinMch;
             MchShop mchShop = new MchShop();
             BeanUtils.copyProperties(mchShopVO,mchShop);
             if (mchShopVO.getId() == null) {
                 mchShop.setCreateAt(DateUtil.getCurrDateTime());
-                mchShop.setCreateBy(getUser().getId());
+                mchShop.setCreateBy(user.getId());
                 aliMch = new AliMch();
                 aliMch.setCreateAt(DateUtil.getCurrDateTime());
-                aliMch.setCreateBy(getUser().getId());
+                aliMch.setCreateBy(user.getId());
                 weixinMch = new WeixinMch();
                 weixinMch.setCreateAt(DateUtil.getCurrDateTime());
                 weixinMch.setCreateBy(getUser().getId());
@@ -185,21 +200,21 @@ public class MchShopController extends BaseController{
                 aliMch = aliMchService.selectByShopId(mchShopVO.getId());
                 if(aliMch != null) {
                     aliMch.setUpdateAt(DateUtil.getCurrDateTime());
-                    aliMch.setUpdateBy(getUser().getId());
+                    aliMch.setUpdateBy(user.getId());
                 }else {
                     aliMch = new AliMch();
                     aliMch.setCreateAt(DateUtil.getCurrDateTime());
-                    aliMch.setCreateBy(getUser().getId());
+                    aliMch.setCreateBy(user.getId());
                 }
                 weixinMch = weixinMchService.selectByShopId(mchShopVO.getId());
                 if(weixinMch != null) {
                     weixinMch.setUpdateAt(DateUtil.getCurrDateTime());
-                    weixinMch.setUpdateBy(getUser().getId());
+                    weixinMch.setUpdateBy(user.getId());
                 }
                 else {
                     weixinMch = new WeixinMch();
                     weixinMch.setCreateAt(DateUtil.getCurrDateTime());
-                    weixinMch.setCreateBy(getUser().getId());
+                    weixinMch.setCreateBy(user.getId());
                 }
             }
             aliMch.setKey(mchShopVO.getAliKey());

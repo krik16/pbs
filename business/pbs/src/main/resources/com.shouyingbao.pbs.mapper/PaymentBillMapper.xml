@@ -89,6 +89,9 @@
         <if test="tradeNo != null and tradeNo != ''">
             and pe.trade_no = #{tradeNo}
         </if>
+        <if test="stockholderId  != null and stockholderId > 0">
+            and area.stockholder_id = #{stockholderId}
+        </if>
         <if test="areaId  != null and areaId > 0">
             and (agent.area_id = #{areaId} or agent_shop.area_id = #{areaId})
         </if>
@@ -113,12 +116,15 @@
         left join payment_event pe on pb.id = pe.payment_bill_id
         left join user on pb.user_id = user.id
         left join mch_shop on pb.shop_id = mch_shop.id
-        <if test="areaId > 0 or agentId > 0">
+        <if test="areaId > 0 or agentId > 0 or stockholderId > 0">
             left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
             left join mch_company on mch_sub_company.company_id = mch_company.id
-            <if test="areaId > 0">
+            <if test="areaId > 0  or stockholderId > 0">
                 left join agent on mch_company.agent_id = agent.id
                 left join agent as agent_shop on agent_shop.id = mch_shop.agent_id
+                <if test="stockholderId > 0">
+                    left join area on area.id = agent.area_id
+                </if>
             </if>
         </if>
     </sql>

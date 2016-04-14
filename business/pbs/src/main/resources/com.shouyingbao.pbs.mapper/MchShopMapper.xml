@@ -46,6 +46,9 @@
     <if test="areaId != null and areaId > 0" >
       and (agent.area_id = #{areaId} or agent2.area_id = #{areaId})
     </if>
+    <if test="stockholderId != null and stockholderId > 0" >
+      and area.stockholder_id = #{stockholderId}
+    </if>
     <if test="companyId != null and companyId != '' ">
      and mch_shop.company_id = #{companyId}
     </if>
@@ -168,6 +171,9 @@
     left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
     left join agent on mch_company.agent_id = agent.id
     left join agent as agent2 on mch_shop.agent_id = agent2.id
+    <if test="stockholderId != null and stockholderId > 0">
+      left join area as area on area.id = agent.area_id
+    </if>
     <where>
       <include refid="list_where_clause" />
     </where>
@@ -188,8 +194,9 @@
     left join mch_company on mch_shop.company_id = mch_company.id
     left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
     left join agent on mch_shop.agent_id = agent.id
-    <if test="areaId != null and areaId > 0">
-      left join agent as agent2 on mch_shop.agent_id = agent2.id
+    left join agent as agent2 on mch_shop.agent_id = agent2.id
+    <if test="stockholderId != null and stockholderId > 0">
+      left join area as area on area.id = agent.area_id
     </if>
     <where>
       <include refid="list_where_clause" />

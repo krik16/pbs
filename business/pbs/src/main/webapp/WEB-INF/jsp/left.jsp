@@ -78,41 +78,44 @@
 <body>
 <div id="tree" class="left">
     <ul class="nav nav-list">
-        <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
             <li class="folder"><span class="menu-text">公司管理</span>
                 <ul>
-                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER">
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR">
+                        <li><a href="${ctx}/stockholder/search" target="mainFrame">股东管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER">
                         <li><a href="${ctx}/area/search" target="mainFrame">区域管理</a></li>
                     </sec:authorize>
-                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT">
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT">
                         <li><a href="${ctx}/agent/search" target="mainFrame">代理管理</a></li>
                     </sec:authorize>
-                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
                         <li><a href="${ctx}/user/search" target="mainFrame">账号管理</a></li>
                     </sec:authorize>
-                    <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
                         <li><a href="${ctx}/bill/search" target="mainFrame">交易查询</a></li>
                     </sec:authorize>
                 </ul>
             </li>
         </sec:authorize>
         <sec:authorize
-                ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
         <li class="folder expanded">商家服务
             <ul>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY">
+                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY">
                     <li><a href="${ctx}/mchCompany/search" target="mainFrame">公司管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,MCH_COMPANY,MCH_SUB_COMPANY">
+                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,MCH_COMPANY,MCH_SUB_COMPANY">
                 <li><a href="${ctx}/mchSubCompany/search" target="mainFrame">分公司管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
                 <li><a href="${ctx}/mchShop/search" target="mainFrame">门店管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                <sec:authorize ifAnyGranted="ADMINISTRATOR,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
                     <li><a href="${ctx}/mchUser/search" target="mainFrame">用户管理</a></li>
                 </sec:authorize>
-                <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
+                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
                     <li><a href="${ctx}/mchBill/search" target="mainFrame">交易查询</a></li>
                 </sec:authorize>
             </ul>

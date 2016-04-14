@@ -150,8 +150,10 @@ public class PaymentbIllController extends BaseController{
 
     private Map<String,Object> getDataPermission(Map<String,Object> map,User user,String authority){
         //数据权限
-        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(authority)){
+        if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(authority)){
             LOGGER.info("permission is admin");
+        }else  if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(authority)){
+            map.put("stockholderId", user.getStockholderId());
         }else  if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(authority)) {
             map.put("areaId", user.getAreaId());
         } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(authority)) {

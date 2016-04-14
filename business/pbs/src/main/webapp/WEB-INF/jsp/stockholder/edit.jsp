@@ -2,7 +2,7 @@
 <%@ include file="../common/tag.jsp" %>
 <%@ include file="../common/include.jsp"%>
 <head>
-    <script src="${ctx}/js/area/area.js" type="text/javascript"></script>
+    <script src="${ctx}/js/stockholder/stockholder.js" type="text/javascript"></script>
 </head>
 <div class="memSuper">
     <div class="memSuper-main">
@@ -23,20 +23,7 @@
                                 <span class="input-group-addon input-group-onlytext-muted"><font color="red" style="position:relative; top:2px;">*</font>名称：</span>
                                 <input id="name" type="text" value="${entity.name}" name="name"
                                        class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
-                                       placeholder="区域名称"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row mb15">
-                        <div class="col-sm-4">
-                            <div class="input-group">
-                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>股东：</span>
-                                <select class="form-control selectpicker" data-live-search="true" id="stockholderId" name="stockholderId" required>
-                                    <option value="0">选择所属股东</option>
-                                    <c:forEach items="${entity.stockholderList}" var="item">
-                                        <option value="${item.id}" <c:if test="${item.id==entity.stockholderId}">selected="true"</c:if>>${item.name}</option>
-                                    </c:forEach>
-                                </select>
+                                       placeholder="股东名称"/>
                             </div>
                         </div>
                     </div>
@@ -45,7 +32,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon input-group-onlytext" name="desc">备注：</span>
                                 <textarea class="form-control" rows="3" id="desc"
-                                          placeholder="区域备注">${entity.desc}</textarea>
+                                          placeholder="股东备注">${entity.desc}</textarea>
                             </div>
                         </div>
                     </div>

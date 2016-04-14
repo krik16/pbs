@@ -31,7 +31,7 @@
                                     <span class="btn-text">修改</span>
                                 </a>
                             </div>
-                            <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AUTHORITY_MCH_COMPANY">
+                            <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AUTHORITY_MCH_COMPANY">
                                 <div class="col-sm-3">
                                     <a class="btn btn btn-danger list-add" style="width: 90px;" id="cance-button"
                                        onclick="cance(${entity.id})">

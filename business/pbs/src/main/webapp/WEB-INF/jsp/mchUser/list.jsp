@@ -27,7 +27,7 @@
                         <td>${entity.subCompanyName}</td>
                         <td>${entity.shopName}</td>
                         <td>
-                            <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                            <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
                                 <div class="col-sm-3">
                                     <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button"
                                        href="${ctx}/mchUser/edit?id=${entity.id}">

@@ -35,6 +35,7 @@ function save(){
 	var companyId = $("#companyId").val();
 	var subCompanyId = $("#subCompanyId").val();
 	var shopId = $("#shopId").val();
+	var stockholderId = $("#stockholderId").val();
 	var areaId = $("#areaId").val();
 	var agentId = $("#agentId").val();
 
@@ -72,6 +73,12 @@ function save(){
 		return;
 	}
 
+	if(roleId == 1 && stockholderId <= 0){
+		Modal.alert({
+			msg: "股东不能为空!"
+		});
+		return;
+	}
 	if(roleId == 2 && areaId <= 0){
 		Modal.alert({
 			msg: "区域不能为空!"
@@ -96,8 +103,9 @@ function save(){
 			companyId : companyId,
 			subCompanyId : subCompanyId,
 			shopId : shopId,
+			stockholderId : stockholderId,
 			areaId : areaId,
-			agentId : agentId,
+			agentId : agentId
 	}, function(data) {
 		if(data.meta.errno != 0){
 			Modal.alert({
@@ -189,8 +197,13 @@ function roleSelect(parentId){
 	$("#areaId").val(0);
 	$("#agent-select").css("display","none");
 	$("#agentId").val(0);
-
-	if(pid.value > 1 && pid.value < 4){
+	$("#stockholder-select").css("display","none");
+	$("#stockholderId").val(0);
+	if(pid.value >= 1 && pid.value < 4){
+		if(pid.value == 1){//股东
+			$("#stockholder-select").css("display","inline-block");
+			selectChange("../stockholder/getAll",parentId,"stockholderId");
+		}
 		if(pid.value >= 2){//区域
 			$("#area-select").css("display","inline-block");
 			selectChange("../area/getAll",parentId,"areaId");

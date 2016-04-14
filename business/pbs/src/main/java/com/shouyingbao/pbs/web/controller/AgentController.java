@@ -50,8 +50,10 @@ public class AgentController extends BaseController {
         LOGGER.info("list:map={}", map);
         try {
             //数据权限
-            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
                 LOGGER.info("permission is admin");
+            }else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                map.put("stockholderId", getUser().getStockholderId());
             }else  if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){
                 map.put("areaId",getUser().getAreaId());
             }else {
@@ -81,8 +83,10 @@ public class AgentController extends BaseController {
         }
         Map<String,Object> areaMap = new HashMap<>();
         //数据权限
-        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+        if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
             LOGGER.info("permission is admin");
+        }else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            areaMap.put("stockholderId",getUser().getStockholderId());
         }else  if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){
             areaMap.put("id",getUser().getAreaId());
         }else {
@@ -146,7 +150,7 @@ public class AgentController extends BaseController {
         LOGGER.info("getAll");
         try {
             //数据权限
-            Map<String,Object> map = new HashMap<String, Object>();
+            Map<String,Object> map = new HashMap<>();
             if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
                 LOGGER.info("permission is admin");
             }else  if(ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())){

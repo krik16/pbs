@@ -61,6 +61,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group row mb15" <c:if test="${entity.id == null || entity.stockholderId == 0}">style="display:none"</c:if> id="stockholder-select">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext"><font color="red" style="position:relative; top:2px;">*</font>所属股东：</span>
+                                <select class="form-control selectpicker" data-live-search="true" id="stockholderId">
+                                    <option value="0">选择所属股东</option>
+                                    <c:forEach items="${entity.stockholderList}" var="item">
+                                        <option value="${item.id}" <c:if test="${item.id==entity.stockholderId}">selected="true"</c:if>>${item.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group row mb15" <c:if test="${entity.id == null || entity.areaId == 0}">style="display:none"</c:if> id="area-select">
                         <div class="col-sm-4">

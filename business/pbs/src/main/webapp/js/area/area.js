@@ -28,6 +28,8 @@ function getSearchEntity(){
 function save(){
 	var id = $("#id").val();
 	var name = $("#name").val();
+	var name = $("#name").val();
+	var stockholderId = $("#stockholderId").val();
 	var desc = $("#desc").val();
 
 	if(!name){
@@ -36,11 +38,18 @@ function save(){
 		});
 		return;
 	}
+	if(!stockholderId){
+		Modal.alert({
+			msg: "所属股东不能为空!"
+		});
+		return;
+	}
 
 	$.post("../area/save", {
 			id : id,
 			name : name,
-			desc : desc
+			desc : desc,
+		stockholderId : stockholderId
 	}, function(data) {
 		if(data.meta.errno != 0){
 			Modal.alert({

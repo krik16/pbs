@@ -26,7 +26,7 @@
                                 <span class="btn-text">查询</span>
                             </a>
                         </div>
-                        <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT">
+                        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT">
                             <div class="col-sm-2">
                                 <a class="btn btn-primary" style="width: 90px;" href="${ctx}/mchCompany/edit">
                                     <i class="fa fa-edit"></i>

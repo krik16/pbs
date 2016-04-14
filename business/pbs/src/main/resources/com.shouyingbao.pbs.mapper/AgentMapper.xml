@@ -34,6 +34,9 @@
     <if test="id != null and id > 0">
       and agent.id = #{id}
     </if>
+    <if test="stockholderId != null and stockholderId > 0">
+      and area.stockholder_id = #{stockholderId}
+    </if>
     and agent.is_delete = 0
 
   </sql>
@@ -141,7 +144,7 @@
     select
     count(1)
     from
-    agent
+    agent  left join area on area.id = agent.area_id
     <where>
       <include refid="list_where_clause" />
     </where>

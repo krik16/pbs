@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.shouyingbao.pbs.mapper.RoleMapper" >
-  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.Role" >
+<mapper namespace="com.shouyingbao.pbs.mapper.StockholderMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.Stockholder" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="TINYINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
@@ -13,36 +12,41 @@
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, `name`, `desc`,type, create_at, create_by, update_at, update_by, is_delete
+    id, `name`, `desc`, create_at, create_by, update_at, update_by, is_delete
   </sql>
   <sql id="list_where_clause">
-    and is_delete = 0;
+    <if test="name != null and name != ''">
+      and name like
+      concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="id != null and id >0 ">
+      and id = #{id}
+    </if>
+    and is_delete = 0
   </sql>
-
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from `role`
+    from stockholder
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from `role`
+    delete from stockholder
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.Role" useGeneratedKeys="true" keyProperty="id" >
-    insert into `role` (`name`, `desc`,type,create_at,
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.Stockholder" useGeneratedKeys="true" keyProperty="id" >
+    insert into stockholder (`name`, `desc`, create_at, 
       create_by, update_at, update_by, 
       is_delete)
-    values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{createAt,jdbcType=TIMESTAMP},
+    values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
       #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
       #{isDelete,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.Role" useGeneratedKeys="true" keyProperty="id" >
-    insert into `role`
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.Stockholder" useGeneratedKeys="true" keyProperty="id" >
+    insert into stockholder
     <trim prefix="(" suffix=")" suffixOverrides="," >
       `name`,
       `desc`,
-       type,
       create_at,
       create_by,
       update_at,
@@ -52,7 +56,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{name,jdbcType=VARCHAR},
       #{desc,jdbcType=VARCHAR},
-      #{type,jdbcType=TINYINT},
       #{createAt,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP},
@@ -60,17 +63,14 @@
       #{isDelete,jdbcType=TINYINT},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.Role" >
-    update `role`
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.Stockholder" >
+    update stockholder
     <set >
       <if test="name != null" >
         `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="desc != null" >
         `desc` = #{desc,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=TINYINT},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -90,11 +90,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.Role" >
-    update `role`
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.Stockholder" >
+    update stockholder
     set `name` = #{name,jdbcType=VARCHAR},
       `desc` = #{desc,jdbcType=VARCHAR},
-      type = #{type,jdbcType=TINYINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -105,7 +104,7 @@
   <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from `role`
+    from stockholder
     <where>
       <include refid="list_where_clause" />
     </where>
@@ -122,33 +121,9 @@
     select
     count(1)
     from
-    `role`
+    stockholder
     <where>
       <include refid="list_where_clause" />
     </where>
   </select>
-  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    r.id, r.`name`, r.`desc`,r.type, r.create_at, r.create_by, r.update_at, r.update_by, r.is_delete
-    from `role` r left join user_role ur on r.id = ur.role_id
-    where ur.user_id = #{userId}
-
-  </select>
-  <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from `role`
-    where type = #{type} and is_delete = 0;
-  </select>
-  <select id="selectByTypeAndIdLimit" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from `role`
-    where type = #{type}
-    <if test="id > 1">
-    and id = #{id}
-    </if>
-    and is_delete = 0;
-  </select>
-
 </mapper>

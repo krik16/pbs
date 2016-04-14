@@ -5,25 +5,31 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="stockholder_id" property="stockholderId" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="update_by" property="updateBy" jdbcType="INTEGER" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
+  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.AreaVO" extends="BaseResultMap">
+    <result column="stockholder_name" property="stockholderName" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, `name`, `desc`, create_at, create_by, update_at, update_by, is_delete
+    area.id, area.`name`, area.`desc`,area.stockholder_id, area.create_at, area.create_by, area.update_at, area.update_by, area.is_delete
   </sql>
   <sql id="list_where_clause">
       <if test="name != null and name != ''">
-        and name like
+        and area.name like
         concat('%',#{name,jdbcType=VARCHAR},'%')
       </if>
     <if test="id != null and id >0 ">
-      and id = #{id}
+      and area.id = #{id}
     </if>
-
-    and is_delete = 0
+    <if test="stockholderId != null and stockholderId > 0">
+      and area.stockholder_id = #{stockholderId}
+    </if>
+      and area.is_delete = 0
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -36,10 +42,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.shouyingbao.pbs.entity.Area" useGeneratedKeys="true" keyProperty="id" >
-    insert into area (`name`, `desc`,
+    insert into area (`name`, `desc`,stockholder_id,
       create_at, create_by, update_at, 
       update_by, is_delete)
-    values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
+    values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},#{stockholderId,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP},
       #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT})
   </insert>
@@ -48,6 +54,7 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       `name`,
       `desc`,
+      stockholder_id,
       create_at,
       create_by,
       update_at,
@@ -57,6 +64,7 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{name,jdbcType=VARCHAR},
       #{desc,jdbcType=VARCHAR},
+      #{stockholderId,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP},
       #{createBy,jdbcType=INTEGER},
       #{updateAt,jdbcType=TIMESTAMP},
@@ -72,6 +80,9 @@
       </if>
       <if test="desc != null" >
         `desc` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="stockholderId != null" >
+        stockholder_id = #{stockholderId,jdbcType=INTEGER},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -95,6 +106,7 @@
     update area
     set `name` = #{name,jdbcType=VARCHAR},
       `desc` = #{desc,jdbcType=VARCHAR},
+      stockholder_id = #{stockholderId,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=INTEGER},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -118,12 +130,28 @@
       #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
     </if>
   </select>
+  <select id="selectListVOByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />,stockholder.name as stockholder_name
+    from area left join stockholder on area.stockholder_id = stockholder.id
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+    <if test="orderby == null">
+      order by area.create_at desc
+    </if>
+    <if test="currentPage != null">
+      limit
+      #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
   <select id="selectListCount" parameterType="java.util.Map"
           resultType="java.lang.Integer">
     select
     count(1)
     from
     area
+    left join stockholder on area.stockholder_id = stockholder.id
     <where>
       <include refid="list_where_clause" />
     </where>

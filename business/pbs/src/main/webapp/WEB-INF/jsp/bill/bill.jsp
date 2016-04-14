@@ -78,7 +78,7 @@
                                        id="tradeEndTime"/>
                             </div>
                         </div>
-                        <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER">
+                        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER">
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">区域：</span>
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                         </sec:authorize>
-                        <sec:authorize ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT">
+                        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT">
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">代理：</span>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="form-group row mb15">
 
-                        <sec:authorize  ifAnyGranted="COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+                        <sec:authorize  ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-onlytext">商户公司：</span>

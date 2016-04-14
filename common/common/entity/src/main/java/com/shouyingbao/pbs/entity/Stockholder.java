@@ -2,13 +2,12 @@ package com.shouyingbao.pbs.entity;
 
 import java.io.Serializable;
 
-public class Area extends BaseEntity implements Serializable {
-    private static final long serialVersionUID = 2986888824002246067L;
+public class Stockholder extends  BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1696543058446213586L;
     private String name;
 
     private String desc;
-
-    private Integer stockholderId;
 
     public String getName() {
         return name;
@@ -26,21 +25,12 @@ public class Area extends BaseEntity implements Serializable {
         this.desc = desc;
     }
 
-    public Integer getStockholderId() {
-        return stockholderId;
-    }
-
-    public void setStockholderId(Integer stockholderId) {
-        this.stockholderId = stockholderId;
-    }
-
     @Override
     public String toString() {
-        return "Area{" +
+        return "Stockholder{" +
                 "name='" + name + '\'' +
                 ", desc='" + desc + '\'' +
-                ", stockholderId='" + stockholderId + '\'' +
-                ", baseEntity='" +  super.toString() + '\'' +
+                ", BaseEntity='" + super.toString() + '\'' +
                 '}';
     }
 }

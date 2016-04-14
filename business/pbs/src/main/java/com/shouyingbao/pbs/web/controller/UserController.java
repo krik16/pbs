@@ -55,6 +55,9 @@ public class UserController extends BaseController{
     @Autowired
     AgentService agentService;
 
+    @Autowired
+    StockholderService stockholderService;
+
     private  Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 
     @RequestMapping(value = "/search")
@@ -90,11 +93,16 @@ public class UserController extends BaseController{
         try{
             UserRole loginUserRole = userRoleService.selectByUserId(getUser().getId());
             UserVO userVO = new UserVO();
+            Map<String,Object> stockholderMap = new HashMap<>();
             Map<String,Object> areaMap = new HashMap<>();
             Map<String,Object> agentMap = new HashMap<>();
             //数据权限
-            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
                 LOGGER.info("permission is admin");
+            }else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                stockholderMap.put("id", getUser().getStockholderId());
+                agentMap.put("stockholderId", getUser().getStockholderId());
+                areaMap.put("stockholderId", getUser().getStockholderId());
             }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
                 agentMap.put("areaId", getUser().getAreaId());
                 areaMap.put("id",getUser().getAreaId());
@@ -120,15 +128,19 @@ public class UserController extends BaseController{
                 }
             }
             List<Role> roleList;
-            if(id == getUser().getId() || ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){//修改自身或者管理员
+            if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
+                roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(),0);
+            }else if(id == getUser().getId()  || ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){//修改自身或者股东
                 roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId());
             }else{
                 roleList = roleService.selectByTypeAndIdLimit(ConstantEnum.USER_IS_EMPLOYEE_0.getCodeByte(), loginUserRole.getRoleId()+1);
             }
+            List<Stockholder> stockholderList = stockholderService.selectListByPage(stockholderMap,null,null);
             List<Area> areaList = areaService.selectListByPage(areaMap, null, null);
             List<AgentVO> agentList = agentService.selectListByPage(agentMap,null,null);
 
             userVO.setRoleList(roleList);
+            userVO.setStockholderList(stockholderList);
             userVO.setAreaList(areaList);
             userVO.setAgentList(agentList);
             modelMap.addAttribute("entity", userVO);
@@ -242,8 +254,10 @@ public class UserController extends BaseController{
 
     }
     private Map<String,Object> chcekDataPermission(Map<String,Object> map ){
-        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+        if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
             LOGGER.info("permission is admin");
+        }else  if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            map.put("stockholderId", getUser().getStockholderId());
         } else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
             map.put("areaId", getUser().getAreaId());
         } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {

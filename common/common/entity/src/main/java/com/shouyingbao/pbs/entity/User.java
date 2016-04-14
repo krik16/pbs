@@ -27,6 +27,8 @@ public class User extends BaseEntity implements Serializable{
 
     private Integer subCompanyId;
 
+    private Integer stockholderId;
+
     private Integer areaId;
 
     private Integer agentId;
@@ -135,6 +137,14 @@ public class User extends BaseEntity implements Serializable{
 
     public void setAgentId(Integer agentId) {
         this.agentId = agentId;
+    }
+
+    public Integer getStockholderId() {
+        return stockholderId;
+    }
+
+    public void setStockholderId(Integer stockholderId) {
+        this.stockholderId = stockholderId;
     }
 
     @Override

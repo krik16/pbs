@@ -32,6 +32,8 @@ public class UserVO extends User{
 
     private List<Role> roleList;
 
+    private List<Stockholder> stockholderList;
+
     private List<Area> areaList;
 
     private List<AgentVO> agentList;
@@ -140,6 +142,14 @@ public class UserVO extends User{
 
     public void setAreaList(List<Area> areaList) {
         this.areaList = areaList;
+    }
+
+    public List<Stockholder> getStockholderList() {
+        return stockholderList;
+    }
+
+    public void setStockholderList(List<Stockholder> stockholderList) {
+        this.stockholderList = stockholderList;
     }
 
     @Override

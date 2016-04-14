@@ -8,7 +8,6 @@
         <thead>
         <tr>
             <th>名称</th>
-            <th>所属股东</th>
             <th>备注</th>
             <th>操作</th>
         </tr>
@@ -19,11 +18,10 @@
                 <c:forEach var="entity" items="${list}" varStatus="status">
                     <tr>
                         <td>${entity.name}</td>
-                        <td>${entity.stockholderName}</td>
                         <td>${entity.desc}</td>
                         <td>
                         <div class="col-sm-3">
-                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/area/edit?id=${entity.id}">
+                            <a class="btn btn-primary list-add" style="width: 90px;" id="edit-button" href="${ctx}/stockholder/edit?id=${entity.id}">
                                 <i class="fa fa-edit"></i>
                                 <span class="btn-text" >修改</span>
                             </a>

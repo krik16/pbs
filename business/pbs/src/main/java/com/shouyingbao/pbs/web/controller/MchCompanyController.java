@@ -51,8 +51,10 @@ public class MchCompanyController extends BaseController {
         LOGGER.info("list:map={}", map);
         try {
             //数据权限
-            if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
                 LOGGER.info("permission is admin");
+            }else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+                map.put("stockholderId", getUser().getStockholderId());
             }else  if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
                 map.put("areaId", getUser().getAreaId());
             } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {
@@ -84,8 +86,10 @@ public class MchCompanyController extends BaseController {
         User user = getUser();
         Map<String,Object> agentMap = new HashMap<>();
         //数据权限
-        if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+        if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(getAuthority())){
             LOGGER.info("permission is admin");
+        }else if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(getAuthority())){
+            agentMap.put("stockholderId", user.getStockholderId());
         }else if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(getAuthority())) {
             agentMap.put("areaId", user.getAreaId());
         } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())) {

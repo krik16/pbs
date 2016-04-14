@@ -43,6 +43,9 @@
     <if test="areaId != null and areaId > 0" >
       and agent.area_id = #{areaId}
     </if>
+    <if test="stockholderId != null and stockholderId > 0" >
+      and area.stockholder_id = #{stockholderId}
+    </if>
     and mch_sub_company.is_delete = 0
   </sql>
 
@@ -142,8 +145,9 @@
     <include refid="Base_Column_VOList" />
     from mch_sub_company
     left join mch_company on mch_sub_company.company_id = mch_company.id
-    <if test="areaId != null and areaId > 0" >
-      left join agent on mch_company.agent_id = agent.id
+    left join agent on mch_company.agent_id = agent.id
+    <if test="stockholderId != null and stockholderId > 0" >
+      left join area on agent.area_id = area.id
     </if>
     <where>
       <include refid="list_where_clause" />
@@ -163,8 +167,9 @@
     from
     mch_sub_company
     left join mch_company on mch_sub_company.company_id = mch_company.id
-    <if test="areaId != null and areaId > 0" >
       left join agent on mch_company.agent_id = agent.id
+    <if test="stockholderId != null and stockholderId > 0" >
+      left join area on agent.area_id = area.id
     </if>
     <where>
       <include refid="list_where_clause" />
