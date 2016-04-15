@@ -39,7 +39,7 @@ public class LoginController{
     public String getLoginPage(
             @RequestParam(value = "error", required = false) boolean error,
             ModelMap model) {
-        if (error == true) {
+        if (error) {
             model.put("error", ConstantEnum.ERROR_LOGIN.getValueStr());
         } else {
             model.put("error", "");
@@ -51,7 +51,7 @@ public class LoginController{
     /**
      * 指定无访问额权限页面
      *
-     * @return
+     *
      */
     @RequestMapping(value = "/denied", method = RequestMethod.GET)
     public String test() {
@@ -80,7 +80,7 @@ public class LoginController{
     /**
      * 检查退款权限
      *
-     * @return
+     *
      */
     @RequestMapping(value = "/refundPermission", method = RequestMethod.POST)
     @ResponseBody
@@ -90,7 +90,7 @@ public class LoginController{
         try {
             result = authorityService.checkAuthority(ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr(), userParam.getUserId());
             if(result){
-                return ResponseData.success(result);
+                return ResponseData.success();
             }else{
                 return ResponseData.failure(ConstantEnum.NO_REFUND_AUTHORITY.getCodeStr(),ConstantEnum.NO_REFUND_AUTHORITY.getValueStr());
             }

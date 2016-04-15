@@ -14,13 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -45,58 +43,59 @@ public class WeixinPayController {
 
     /**
      * 扫码支付
+     *
      * @param weixinScanPayParam 请求参数
      * @return ResponseData 结果
      */
     @RequestMapping("/scanPay")
     @ResponseBody
-    public ResponseData scanPay(@RequestBody WeixinScanPayParam weixinScanPayParam){
-        LOGGER.info("微信扫码支付:weixinScanPayParam={}",weixinScanPayParam);
+    public ResponseData scanPay(@RequestBody WeixinScanPayParam weixinScanPayParam) {
+        LOGGER.info("微信扫码支付:weixinScanPayParam={}", weixinScanPayParam);
         ResponseData responseData;
         try {
-            if(weixinScanPayParam.getUserId() == null || StringUtils.isBlank(weixinScanPayParam.getAuthCode()) || weixinScanPayParam.getTotalFee() == null){
+            if (weixinScanPayParam.getUserId() == null || StringUtils.isBlank(weixinScanPayParam.getAuthCode()) || weixinScanPayParam.getTotalFee() == null) {
                 LOGGER.error("参数为空或不合法");
                 throw new ParamNullException();
             }
             responseData = paymentBillService.weixinScanPay(weixinScanPayParam.getUserId(), weixinScanPayParam.getAuthCode(), weixinScanPayParam.getTotalFee(), weixinScanPayParam.getDeviceInfo(), 0);
-        }catch (ParamNullException e){
+        } catch (ParamNullException e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
             responseData = ResponseData.failure(e.getCode(), e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
-            responseData =  ResponseData.failure(ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getCodeStr(),ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getValueStr());
+            responseData = ResponseData.failure(ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_WEIXIN_SCAN_FAIL.getValueStr());
         }
-        return  responseData;
+        return responseData;
     }
 
     /**
      * 扫码退款
+     *
      * @param weixinScanPayParam 请求参数
-     * @return
      */
     @RequestMapping("/scanRefund")
     @ResponseBody
-    public ResponseData scanRefund(@RequestBody WeixinScanPayParam weixinScanPayParam){
+    public ResponseData scanRefund(@RequestBody WeixinScanPayParam weixinScanPayParam) {
         ResponseData responseData;
         try {
-            if(weixinScanPayParam.getUserId() == null || StringUtils.isBlank(weixinScanPayParam.getOrderNo())){
+            if (weixinScanPayParam.getUserId() == null || StringUtils.isBlank(weixinScanPayParam.getOrderNo())) {
                 LOGGER.error("参数为空或不合法");
                 throw new ParamNullException();
             }
             boolean result = authorityService.checkAuthority(ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr(), weixinScanPayParam.getUserId());
-            if(result) {
+            if (result) {
                 responseData = paymentBillService.weixinScanRefund(weixinScanPayParam.getOrderNo(), weixinScanPayParam.getUserId());
-            }else {
-                return ResponseData.failure(ConstantEnum.NO_REFUND_AUTHORITY.getCodeStr(),ConstantEnum.NO_REFUND_AUTHORITY.getValueStr());
+            } else {
+                return ResponseData.failure(ConstantEnum.NO_REFUND_AUTHORITY.getCodeStr(), ConstantEnum.NO_REFUND_AUTHORITY.getValueStr());
             }
 
-        }catch (ParamNullException e){
+        } catch (ParamNullException e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
             responseData = ResponseData.failure(e.getCode(), e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
             responseData = ResponseData.failure(ConstantEnum.EXCEPTION_WEIXIN_REFUND_FAIL.getCodeStr(), ConstantEnum.EXCEPTION_WEIXIN_REFUND_FAIL.getValueStr());
@@ -105,28 +104,18 @@ public class WeixinPayController {
     }
 
     /**
-     * @Description: 固定二维码扫码结果通知
-     * @param model
-     * @param request
-     * @param response
-     * @Author: 柯军
-     * @datetime:2015年9月2日下午4:48:21
+     * 固定二维码扫码结果通知
      **/
     @RequestMapping("/scanFixed")
-    public void weixinNotify(Model model, HttpServletRequest request, HttpServletResponse response) {
+    public void weixinNotify(HttpServletRequest request) {
         LOGGER.info("scanFixed.....");
         Map<String, Object> requestMap = parseXml(request);
-       LOGGER.info("requestMap={}",requestMap);
+        LOGGER.info("requestMap={}", requestMap);
     }
 
     /**
-     * @Description: 解析微信异步通知中的xml元素值
-     * @param request
-     * @return
-     * @Author: 柯军
-     * @datetime:2015年8月11日下午3:33:45
+     * 解析微信异步通知中的xml元素值
      **/
-    @SuppressWarnings("unchecked")
     private static Map<String, Object> parseXml(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         try {

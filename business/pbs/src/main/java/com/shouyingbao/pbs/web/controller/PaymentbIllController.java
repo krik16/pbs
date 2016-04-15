@@ -84,9 +84,6 @@ public class PaymentbIllController extends BaseController{
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("currpage", currpage);
             model.addAttribute("list", mchCompanyList);
-        }catch (PermissionException e){
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
         }catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();

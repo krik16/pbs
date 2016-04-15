@@ -69,9 +69,6 @@ public class MchPaymentbIllController extends BaseController{
             model.addAttribute("list", paymentBillVOList);
             model.addAttribute("inTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt()));
             model.addAttribute("outTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_1.getCodeInt()));
-        }catch (PermissionException e){
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
         }catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
@@ -130,18 +127,15 @@ public class MchPaymentbIllController extends BaseController{
         return map;
     }
     /**
-     * @Description: 收入（支出）总数
-     * @param map
-     * @param tradeType
-     * @return
-     * @Author: 柯军
-     * @datetime:2015年6月12日下午2:12:55
+     *收入（支出）总数
      **/
     private TradeTotal getTradeTotal(Map<String, Object> map, Integer tradeType) {
         TradeTotal tradeTotal = new TradeTotal();
         if(Integer.valueOf(map.get("tradeType").toString()) < 0 || (Integer.valueOf(map.get("tradeType").toString()) >=0 && map.get("tradeType").equals(tradeType.toString()))){
-            map.put("tradeType",tradeType);
-            tradeTotal = paymentBillService.selectTradeTotal(map);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.putAll(map);
+            paramMap.put("tradeType", tradeType);
+            tradeTotal = paymentBillService.selectTradeTotal(paramMap);
         }
         if (tradeTotal.getAmountTotal() == null)
             tradeTotal.setAmountTotal(0d);

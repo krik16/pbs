@@ -72,6 +72,7 @@ public class AreaController extends BaseController {
                 tradeMap.put("tradeType", ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt());
                 tradeTotal = paymentBillService.selectTradeTotal(tradeMap);
                 if (tradeTotal == null || tradeTotal.getAmountTotal() == null) {
+                    tradeTotal = new TradeTotal();
                     tradeTotal.setAmountTotal(0.00d);
                 }
                 areaVO.setInTotalCount(tradeTotal.getAmountTotal());

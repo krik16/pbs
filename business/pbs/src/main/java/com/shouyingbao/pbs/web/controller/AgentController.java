@@ -76,6 +76,7 @@ public class AgentController extends BaseController {
                 tradeMap.put("tradeType", ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt());
                 tradeTotal = paymentBillService.selectTradeTotal(tradeMap);
                 if (tradeTotal == null || tradeTotal.getAmountTotal() == null) {
+                    tradeTotal = new TradeTotal();
                     tradeTotal.setAmountTotal(0.00d);
                 }
                 agentVO.setInTotalCount(tradeTotal.getAmountTotal());
@@ -182,8 +183,6 @@ public class AgentController extends BaseController {
                 map.put("areaId", getUser().getAreaId());
             }else  if(ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(getAuthority())){
                 map.put("id",getUser().getAgentId());
-            }else  if(ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(getAuthority())){
-//                map.put("id",getUser().getAgentId());
             }else {
                 LOGGER.info(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return ResponseData.success();
