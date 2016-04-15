@@ -16,17 +16,17 @@
     </div>
     <input id="currpage" type="hidden" name="currpage" value="${currpage}"/>
     <input id="rowCount" type="hidden" name="rowCount" value="${rowCount}"/>
-    <table class="table table-striped table-bordered table-hover">
+    <table class="table table-striped table-bordered table-hover" style="table-layout:fixed">
         <thead>
         <tr>
-            <th>订单号</th>
-            <th>交易流水号</th>
-            <th>收款渠道</th>
-            <th>交易金额</th>
-            <th>门店名称</th>
-            <th>收银员</th>
-            <th>交易类型</th>
-            <th>交易时间</th>
+            <th width="16%">订单号</th>
+            <th width="25%">交易流水号</th>
+            <th width="6%">渠道</th>
+            <th width="6%">金额</th>
+            <th width="18%">门店名称</th>
+            <th width="7%">收银员</th>
+            <th width="5%">类型</th>
+            <th width="15%">交易时间</th>
         </tr>
         </thead>
         <tbody>
@@ -39,8 +39,8 @@
                         <td>${entity.tradeNo}</td>
                         <td>${entity.payChannel == 0 ? '支付宝':'微信'}</td>
                         <td>${entity.payAmount/100}</td>
-                        <td>${entity.shopName}</td>
-                        <td>${entity.userName}</td>
+                        <td class="overflow"><a style="font-size: 15px;color: #363b42;" rel="tooltip" title="${entity.shopName}">${entity.shopName}</a></td>
+                        <td class="overflow"><a style="font-size: 15px;color: #363b42;" rel="tooltip" title="${entity.userName}">${entity.userName}</a></td>
                         <td>${entity.tradeType == 0 ? '收款':'退款'}</td>
                         <td><fmt:formatDate value="${entity.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     </tr>

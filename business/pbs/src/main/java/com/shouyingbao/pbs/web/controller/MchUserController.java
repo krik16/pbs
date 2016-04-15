@@ -89,8 +89,6 @@ public class MchUserController extends BaseController {
         LOGGER.info("edit:id={}", id);
         try {
             User user = getUser();
-            UserRole loginUserRole = userRoleService.selectByUserId(getUser().getId());
-            UserVO userVO = new UserVO();
             Map<String, Object> areaMap = new HashMap<>();
             Map<String, Object> agentMap = new HashMap<>();
             Map<String, Object> companyMap = new HashMap<>();
@@ -140,9 +138,10 @@ public class MchUserController extends BaseController {
                 LOGGER.info(getUser() + ":" + ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
                 return "mchUser/edit";
             }
+            UserRole loginUserRole = userRoleService.selectByUserId(getUser().getId());
+            UserVO userVO = new UserVO();
             if (id != null && id > 0) {
-                User oldUser = userService.selectById(id);
-                BeanUtils.copyProperties(oldUser, userVO);
+                userVO = userService.selectExtendInfoById(id);
                 UserRole userRole = userRoleService.selectByUserId(userVO.getId());
                 if (userRole != null) {
                     userVO.setRoleId(userRole.getRoleId());
@@ -205,24 +204,7 @@ public class MchUserController extends BaseController {
             User user = new User();
             BeanUtils.copyProperties(userVO, user);
             user.setIsEmployee(ConstantEnum.USER_IS_EMPLOYEE_1.getCodeByte());
-            if (user.getId() == null) {
-                user.setCreateAt(DateUtil.getCurrDateTime());
-                user.setCreateBy(getUser().getId());
-                user.setUserPwd(md5PasswordEncoder.encodePassword(ConstantEnum.DEFAULT_PASSWORD.getCodeStr(), null));
-                userService.insert(user);
-                UserRole userRole = new UserRole();
-                userRole.setUserId(user.getId());
-                userRole.setRoleId(userVO.getRoleId());
-                userRoleService.insert(userRole);
-            } else {
-                user.setUpdateAt(DateUtil.getCurrDateTime());
-                user.setUpdateBy(getUser().getId());
-                userService.update(user);
-                UserRole userRole = userRoleService.selectByUserId(user.getId());
-                userRole.setRoleId(userVO.getRoleId());
-                userRoleService.update(userRole);
-            }
-
+            userService.save(user, userVO, getUser().getId());
             return ResponseData.success();
         } catch (UserNotFoundException e) {
             return ResponseData.failure(e.getCode(), e.getMessage());

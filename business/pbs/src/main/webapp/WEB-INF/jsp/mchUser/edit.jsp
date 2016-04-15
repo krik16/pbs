@@ -105,7 +105,26 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="form-group row mb15">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext-muted">客服姓名：</span>
+                                <input id="custName" type="text" value="${entity.custName}"
+                                       class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
+                                       placeholder="客服姓名"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb15">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-onlytext-muted">客服电话：</span>
+                                <input id="custPhone" type="text" value="${entity.custPhone}"
+                                       class="form-control dropdown-toggle ng-pristine ng-valid" required="required"
+                                       placeholder="客服电话"/>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group row mb15">
                         <div class="col-sm-2">
                             <a class="btn btn-danger" style="width: 90px;" id="cance-button"

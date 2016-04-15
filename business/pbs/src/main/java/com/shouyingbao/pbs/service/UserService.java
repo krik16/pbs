@@ -28,4 +28,8 @@ public interface UserService {
 
     boolean validateUserExist(String userAccount,Integer id);
 
+    void save(User user,UserVO userVO,Integer createId);
+
+    UserVO selectExtendInfoById(Integer id);
+
 }

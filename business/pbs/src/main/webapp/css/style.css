@@ -7641,3 +7641,11 @@ span.msg{
     width: 250px;
     color: #9c9c9c;
 }
+
+.overflow{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+a:hover {text-decoration: none;}

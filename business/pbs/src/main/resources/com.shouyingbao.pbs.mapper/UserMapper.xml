@@ -28,6 +28,8 @@
         <result column="sub_company_name" property="subCompanyName" jdbcType="VARCHAR"/>
         <result column="shop_name" property="shopName" jdbcType="VARCHAR"/>
         <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="cust_name" property="custName" jdbcType="VARCHAR"/>
+        <result column="cust_phone" property="custPhone" jdbcType="VARCHAR"/>
 
     </resultMap>
     <sql id="Base_Column_List">
@@ -424,4 +426,13 @@
         </if>
         and is_delete = 0
     </select>
+    <select id="selectExtendInfoById" resultMap="BaseResultMapVO" parameterType="java.lang.Integer">
+        select
+        user.id, user_phone, user_account, user_pwd, user_name, user_nick_name, card_id, is_employee,
+        `desc`,shop_id, company_id, sub_company_id,stockholder_id,area_id,agent_id, create_at, create_by, update_at, update_by,
+        is_delete,ue.cust_name,ue.cust_phone
+        from user left join user_extend_info ue on ue.user_id = user.id
+        where user.id = #{id,jdbcType=INTEGER}
+    </select>
+
 </mapper>

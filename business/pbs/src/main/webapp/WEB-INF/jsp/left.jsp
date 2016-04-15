@@ -101,25 +101,32 @@
         </sec:authorize>
         <sec:authorize
                 ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
-        <li class="folder expanded">商家服务
+            <li class="folder expanded">商家服务
+                <ul>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY">
+                        <li><a href="${ctx}/mchCompany/search" target="mainFrame">公司管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,MCH_COMPANY,MCH_SUB_COMPANY">
+                        <li><a href="${ctx}/mchSubCompany/search" target="mainFrame">分公司管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize
+                            ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                        <li><a href="${ctx}/mchShop/search" target="mainFrame">门店管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                        <li><a href="${ctx}/mchUser/search" target="mainFrame">用户管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize
+                            ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
+                        <li><a href="${ctx}/mchBill/search" target="mainFrame">交易查询</a></li>
+                    </sec:authorize>
+                </ul>
+            </li>
+        </sec:authorize>
+        <li class="folder">账户中心
             <ul>
-                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY">
-                    <li><a href="${ctx}/mchCompany/search" target="mainFrame">公司管理</a></li>
-                </sec:authorize>
-                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,MCH_COMPANY,MCH_SUB_COMPANY">
-                <li><a href="${ctx}/mchSubCompany/search" target="mainFrame">分公司管理</a></li>
-                </sec:authorize>
-                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
-                <li><a href="${ctx}/mchShop/search" target="mainFrame">门店管理</a></li>
-                </sec:authorize>
-                <sec:authorize ifAnyGranted="ADMINISTRATOR,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
-                    <li><a href="${ctx}/mchUser/search" target="mainFrame">用户管理</a></li>
-                </sec:authorize>
-                <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
-                    <li><a href="${ctx}/mchBill/search" target="mainFrame">交易查询</a></li>
-                </sec:authorize>
+                <li><a href="${ctx}/user/info" target="mainFrame">账户概览</a></li>
             </ul>
-            </sec:authorize>
         </li>
     </ul>
 </div>

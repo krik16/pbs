@@ -38,6 +38,8 @@ function save(){
 	var stockholderId = $("#stockholderId").val();
 	var areaId = $("#areaId").val();
 	var agentId = $("#agentId").val();
+	var custName = $("#custName").val();
+	var custPhone = $("#custPhone").val();
 
 	if(!userAccount){
 		Modal.alert({
@@ -105,7 +107,9 @@ function save(){
 			shopId : shopId,
 			stockholderId : stockholderId,
 			areaId : areaId,
-			agentId : agentId
+			agentId : agentId,
+			custName : custName,
+			custPhone : custPhone
 	}, function(data) {
 		if(data.meta.errno != 0){
 			Modal.alert({

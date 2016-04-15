@@ -35,6 +35,8 @@ function save() {
     var companyId = $("#companyId").val();
     var subCompanyId = $("#subCompanyId").val();
     var shopId = $("#shopId").val();
+    var custName = $("#custName").val();
+    var custPhone = $("#custPhone").val();
 
     if (!userAccount) {
         Modal.alert({
@@ -91,7 +93,9 @@ function save() {
         roleId: roleId,
         companyId: companyId,
         subCompanyId: subCompanyId,
-        shopId: shopId
+        shopId: shopId,
+        custName : custName,
+        custPhone : custPhone
     }, function (data) {
         if (data.meta.errno != 0) {
             Modal.alert({

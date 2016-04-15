@@ -14,6 +14,8 @@ public class UserVO extends User{
 
     private String subCompanyName;
 
+    private String stockholderName;
+
     private String areaName;
 
     private String agentName;
@@ -38,6 +40,10 @@ public class UserVO extends User{
 
     private List<AgentVO> agentList;
 
+    /*User extend info */
+    private String custName;//客服名称
+
+    private String custPhone;//客服电话
 
     public String getCompanyName() {
         return companyName;
@@ -150,6 +156,30 @@ public class UserVO extends User{
 
     public void setStockholderList(List<Stockholder> stockholderList) {
         this.stockholderList = stockholderList;
+    }
+
+    public String getCustName() {
+        return custName;
+    }
+
+    public void setCustName(String custName) {
+        this.custName = custName;
+    }
+
+    public String getCustPhone() {
+        return custPhone;
+    }
+
+    public void setCustPhone(String custPhone) {
+        this.custPhone = custPhone;
+    }
+
+    public String getStockholderName() {
+        return stockholderName;
+    }
+
+    public void setStockholderName(String stockholderName) {
+        this.stockholderName = stockholderName;
     }
 
     @Override

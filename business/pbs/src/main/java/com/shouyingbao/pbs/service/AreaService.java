@@ -20,7 +20,7 @@ public interface AreaService {
 
     List<Area> selectListByPage(Map<String,Object> map,Integer currentPage,Integer pageSize);
 
-    public List<AreaVO> selectListVOByPage(Map<String, Object> map, Integer currentPage, Integer pageSize);
+    List<AreaVO> selectListVOByPage(Map<String, Object> map, Integer currentPage, Integer pageSize);
 
     Integer selectListCount(Map<String,Object> map);
 }
