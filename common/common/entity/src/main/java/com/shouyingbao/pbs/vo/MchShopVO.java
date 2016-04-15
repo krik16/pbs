@@ -9,7 +9,7 @@ import java.util.List;
  * kejun
  * 2016/3/25 14:11
  **/
-public class MchShopVO extends MchShop{
+public class MchShopVO extends MchShop implements Comparable{
 
     private List<MchCompanyVO> companyList;
 
@@ -30,6 +30,8 @@ public class MchShopVO extends MchShop{
     private String aliPid;
 
     private String aliKey;
+
+    private Double inTotalCount;
 
     public List<MchCompanyVO> getCompanyList() {
         return companyList;
@@ -109,5 +111,19 @@ public class MchShopVO extends MchShop{
 
     public void setAgentVOList(List<AgentVO> agentVOList) {
         this.agentVOList = agentVOList;
+    }
+
+    public Double getInTotalCount() {
+        return inTotalCount;
+    }
+
+    public void setInTotalCount(Double inTotalCount) {
+        this.inTotalCount = inTotalCount;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        MchShopVO mchShopVO = (MchShopVO)o;
+        return -this.getInTotalCount().compareTo(mchShopVO.getInTotalCount());
     }
 }

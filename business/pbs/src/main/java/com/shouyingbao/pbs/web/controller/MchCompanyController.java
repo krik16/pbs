@@ -9,8 +9,10 @@ import com.shouyingbao.pbs.entity.MchCompany;
 import com.shouyingbao.pbs.entity.User;
 import com.shouyingbao.pbs.service.AgentService;
 import com.shouyingbao.pbs.service.MchCompanyService;
+import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.vo.AgentVO;
 import com.shouyingbao.pbs.vo.MchCompanyVO;
+import com.shouyingbao.pbs.vo.TradeTotal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * kejun
@@ -41,8 +40,12 @@ public class MchCompanyController extends BaseController {
     @Autowired
     AgentService agentService;
 
+    @Autowired
+    PaymentBillService paymentBillService;
+
     @RequestMapping(value = "/search")
-    public String search() {
+    public String search(Integer agentId,ModelMap model) {
+        model.addAttribute("agentId",agentId);
         return "/mchCompany/mchCompany";
     }
 
@@ -66,12 +69,28 @@ public class MchCompanyController extends BaseController {
                 return "mchCompany/list";
             }
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
-            List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
-            Integer totalCount = mchCompanyService.selectListCount(map);
+            List<MchCompanyVO> mchCompanyList = mchCompanyService.selectListByPage(map, null,null);
+            Map<String, Object> tradeMap = new HashMap<>();
+            TradeTotal tradeTotal;
+            for (MchCompanyVO mchCompanyVO : mchCompanyList) {
+                tradeMap.put("companyId", mchCompanyVO.getId());
+                tradeMap.put("tradeType", ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt());
+                tradeTotal = paymentBillService.selectTradeTotal(tradeMap);
+                if (tradeTotal == null || tradeTotal.getAmountTotal() == null) {
+                    tradeTotal.setAmountTotal(0.00d);
+                }
+                mchCompanyVO.setInTotalCount(tradeTotal.getAmountTotal());
+            }
+            Collections.sort(mchCompanyList);
+            //分页(由于要统计交易额排序，无法在数据库存统计，故不在数据库做分页)
+            int startIndex = getStartIndex(currpage);
+            int endIndex = getEndIndex(currpage, mchCompanyList.size());
+            List<MchCompanyVO> subList = mchCompanyList.subList(startIndex, endIndex);
+            Integer totalCount =mchCompanyList.size();
             model.addAttribute("rowCount", getRowCount(totalCount));
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("currpage", currpage);
-            model.addAttribute("list", mchCompanyList);
+            model.addAttribute("list", subList);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();

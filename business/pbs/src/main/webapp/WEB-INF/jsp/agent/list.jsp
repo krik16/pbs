@@ -8,6 +8,7 @@
         <thead>
         <tr>
             <th>代理名称</th>
+            <th>交易总额</th>
             <th>代理描述</th>
             <th>所属区域</th>
             <th>操作</th>
@@ -18,7 +19,8 @@
             <c:when test="${not empty list}">
                 <c:forEach var="entity" items="${list}" varStatus="status">
                     <tr>
-                        <td>${entity.name}</td>
+                        <td><a href="${ctx}/mchCompany/search?agentId=${entity.id}" target="mainFrame" style="text-decoration: underline;font-size: 15px;">${entity.name}</a></td>
+                        <td>${entity.inTotalCount}</td>
                         <td>${entity.desc}</td>
                         <td>${entity.areaName}</td>
                         <td>

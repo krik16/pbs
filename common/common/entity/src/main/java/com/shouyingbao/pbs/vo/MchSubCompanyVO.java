@@ -8,11 +8,13 @@ import java.util.List;
  * kejun
  * 2016/3/25 11:49
  **/
-public class MchSubCompanyVO extends MchSubCompany{
+public class MchSubCompanyVO extends MchSubCompany implements Comparable{
 
     private List<MchCompanyVO> mchCompanyList;
 
     private String mchCompanyName;
+
+    private Double inTotalCount;
 
     public List<MchCompanyVO> getMchCompanyList() {
         return mchCompanyList;
@@ -28,5 +30,19 @@ public class MchSubCompanyVO extends MchSubCompany{
 
     public void setMchCompanyName(String mchCompanyName) {
         this.mchCompanyName = mchCompanyName;
+    }
+
+    public Double getInTotalCount() {
+        return inTotalCount;
+    }
+
+    public void setInTotalCount(Double inTotalCount) {
+        this.inTotalCount = inTotalCount;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        MchSubCompanyVO mchSubCompanyVO = (MchSubCompanyVO)o;
+        return -this.getInTotalCount().compareTo(mchSubCompanyVO.getInTotalCount());
     }
 }

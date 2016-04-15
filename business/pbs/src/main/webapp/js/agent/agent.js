@@ -22,6 +22,7 @@ function getSearchEntity(){
 	var searchEntity = new Object();
 	searchEntity.currpage = currentPage;
 	searchEntity.name = $("#name").val();
+	searchEntity.areaId = $("#areaId").val();
 	 return searchEntity;
 }
 

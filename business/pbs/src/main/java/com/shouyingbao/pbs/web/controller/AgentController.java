@@ -8,7 +8,9 @@ import com.shouyingbao.pbs.entity.Agent;
 import com.shouyingbao.pbs.entity.Area;
 import com.shouyingbao.pbs.service.AgentService;
 import com.shouyingbao.pbs.service.AreaService;
+import com.shouyingbao.pbs.service.PaymentBillService;
 import com.shouyingbao.pbs.vo.AgentVO;
+import com.shouyingbao.pbs.vo.TradeTotal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +42,12 @@ public class AgentController extends BaseController {
     @Autowired
     AreaService areaService;
 
+    @Autowired
+    PaymentBillService paymentBillService;
 
     @RequestMapping(value = "/search")
-    public String search() {
+    public String search(Integer areaId,ModelMap model) {
+        model.addAttribute("areaId",areaId);
         return "/agent/agent";
     }
 
@@ -61,12 +67,29 @@ public class AgentController extends BaseController {
                 return "agent/list";
             }
             Integer currpage = Integer.valueOf(map.get("currpage").toString());
-            List<AgentVO> areaList = agentService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
-            Integer totalCount = agentService.selectListCount(map);
+            List<AgentVO> agentVOList = agentService.selectListByPage(map, null, null);
+
+            Map<String, Object> tradeMap = new HashMap<>();
+            TradeTotal tradeTotal;
+            for (AgentVO agentVO : agentVOList) {
+                tradeMap.put("agentId", agentVO.getId());
+                tradeMap.put("tradeType", ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt());
+                tradeTotal = paymentBillService.selectTradeTotal(tradeMap);
+                if (tradeTotal == null || tradeTotal.getAmountTotal() == null) {
+                    tradeTotal.setAmountTotal(0.00d);
+                }
+                agentVO.setInTotalCount(tradeTotal.getAmountTotal());
+            }
+            Collections.sort(agentVOList);
+            //分页(由于要统计交易额排序，无法在数据库存统计，故不在数据库做分页)
+            int startIndex = getStartIndex(currpage);
+            int endIndex = getEndIndex(currpage, agentVOList.size());
+            List<AgentVO> subList = agentVOList.subList(startIndex, endIndex);
+            Integer totalCount =agentVOList.size();
             model.addAttribute("rowCount", getRowCount(totalCount));
             model.addAttribute("totalCount", totalCount);
             model.addAttribute("currpage", currpage);
-            model.addAttribute("list", areaList);
+            model.addAttribute("list", subList);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();

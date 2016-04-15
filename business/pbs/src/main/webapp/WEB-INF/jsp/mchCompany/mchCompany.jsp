@@ -8,9 +8,13 @@
 </head>
 <body>
 <div class="memSuper">
+    <input id="agentId" type="hidden" name="agentId" value="${agentId}"/>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    公司列表
+                </div>
                 <div class="panel-body">
                     <div class="form-group row mb15">
                         <div class="col-sm-4">
@@ -37,9 +41,6 @@
                     </div>
 
                     <div id="result" style="margin: 0 30px;"></div>
-                </div>
-                <div class="panel-heading">
-                    公司列表
                 </div>
             </div>
         </div>

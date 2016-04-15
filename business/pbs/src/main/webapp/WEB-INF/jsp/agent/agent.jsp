@@ -10,6 +10,7 @@ pageEncoding="UTF-8"%>
 
     <body>
         <div class="memSuper">
+            <input id="areaId" type="hidden" name="areaId" value="${areaId}"/>
             <div class="memSuper-main">
                 <div class="page-content ng-scope">
                     <div class="panel panel-default">

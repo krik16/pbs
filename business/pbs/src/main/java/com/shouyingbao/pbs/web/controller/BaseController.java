@@ -64,6 +64,25 @@ public class BaseController {
         return (int) Math.ceil(total / ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
     }
 
+    /**
+     *
+     * 列表分页起始值
+     */
+    public Integer getStartIndex(Integer currpage){
+        return (currpage - 1) * ConstantEnum.LIST_PAGE_SIZE.getCodeInt();
+    }
+
+    /**
+     * 列表分页结束值
+     */
+    public Integer getEndIndex(Integer currpage,Integer listSize){
+        int endIndex = currpage* ConstantEnum.LIST_PAGE_SIZE.getCodeInt();
+        if(endIndex > listSize){
+            endIndex = listSize;
+        }
+        return endIndex;
+    }
+
     public String getAuthority() {
         UserDetails userDetails = getUserDetails();
         Set<GrantedAuthority> authoritySet = (Set<GrantedAuthority>) userDetails.getAuthorities();

@@ -10,6 +10,7 @@
 
 <body>
 <div class="memSuper">
+    <input id="subCompanyId" type="hidden" name="subCompanyId" value="${subCompanyId}"/>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <div class="panel panel-default">

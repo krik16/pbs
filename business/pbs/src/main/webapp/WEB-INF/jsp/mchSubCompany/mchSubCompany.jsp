@@ -9,6 +9,7 @@
 
 <body>
 <div class="memSuper">
+    <input id="companyId" type="hidden" name="companyId" value="${companyId}"/>
     <div class="memSuper-main">
         <div class="page-content ng-scope">
             <div class="panel panel-default">
@@ -30,7 +31,7 @@
                                 <span class="btn-text">查询</span>
                             </a>
                         </div>
-                        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AUTHORITY_MCH_COMPANY">
+                        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,MCH_COMPANY">
                             <div class="col-sm-2">
                                 <a class="btn btn-primary" style="width: 90px;" href="${ctx}/mchSubCompany/edit">
                                     <i class="fa fa-edit"></i>
