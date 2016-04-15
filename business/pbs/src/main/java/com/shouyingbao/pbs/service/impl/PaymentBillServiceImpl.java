@@ -107,7 +107,7 @@ public class PaymentBillServiceImpl extends BaseServiceImpl implements PaymentBi
                 throw new WeixinException(ConstantEnum.EXCEPTION_MCH_NOT_EXIST.getCodeStr(), ConstantEnum.EXCEPTION_MCH_NOT_EXIST.getValueStr());
             }
             //初始化支付账单数据
-            PaymentBill paymentBill = initWeixinPayBill(weixinPayVO, weixinMch.getId(), userId, user.getId());
+            PaymentBill paymentBill = initWeixinPayBill(weixinPayVO, weixinMch.getId(), mchShop.getId(), user.getId());
             responseData = weixinPayUnit.scanPay(weixinPayVO,weixinMch);
             if("0".equals(responseData.getMeta().getErrno())){//扫码支付成功
                 ScanQueryResData scanQueryResData = weixinPayUnit.scanPayQueryOrder(null,weixinPayVO.getOrderNo(),weixinMch.getId());

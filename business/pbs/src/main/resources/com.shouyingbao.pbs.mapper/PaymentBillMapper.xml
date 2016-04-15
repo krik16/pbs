@@ -321,7 +321,7 @@
     <select id="selectTradeTotal" resultMap="TradeDetailCountResultMap"
             parameterType="java.util.Map">
         select ROUND(sum(pb.pay_amount)/100,2)
-        amount_total,count(pe.id)
+        amount_total,count(pb.id)
         count_total
         from
         <include refid="list_from_clause"/>

@@ -174,18 +174,15 @@ public class PaymentbIllController extends BaseController{
     }
 
     /**
-     * @Description: 收入（支出）总数
-     * @param map
-     * @param tradeType
-     * @return
-     * @Author: 柯军
-     * @datetime:2015年6月12日下午2:12:55
+     * 收入（支出）总数
      **/
     private TradeTotal getTradeTotal(Map<String, Object> map, Integer tradeType) {
         TradeTotal tradeTotal = new TradeTotal();
         if(Integer.valueOf(map.get("tradeType").toString()) < 0 || (Integer.valueOf(map.get("tradeType").toString()) >=0 && map.get("tradeType").equals(tradeType.toString()))){
-            map.put("tradeType",tradeType);
-            tradeTotal = paymentBillService.selectTradeTotal(map);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.putAll(map);
+            paramMap.put("tradeType", tradeType);
+            tradeTotal = paymentBillService.selectTradeTotal(paramMap);
         }
         if (tradeTotal.getAmountTotal() == null)
                 tradeTotal.setAmountTotal(0d);
