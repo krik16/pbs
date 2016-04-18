@@ -1,8 +1,6 @@
 package com.shouyingbao.pbs.aop;
 
 import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +14,7 @@ import java.util.UUID;
 @Aspect
 public class LogAdvice {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogAdvice.class);
-    @Pointcut("execution(* com.shouyingbao.pbs.service.impl.*.*(..))||execution(* com.shouyingbao.pbs.web.controller.*.*(..))")
+    @Pointcut("execution(* com.shouyingbao.pbs.web.controller..*(..))")
     public void pointcut(){
     }
 
@@ -35,7 +32,6 @@ public class LogAdvice {
     @AfterThrowing("pointcut()")
     public void afterThrowing()
     {
-        LOGGER.info("afterThrowing={}",MDC.get("logid"));
         MDC.clear();
     }
 }

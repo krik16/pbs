@@ -8,6 +8,7 @@ import com.shouyingbao.pbs.service.UserService;
 import com.shouyingbao.pbs.vo.UserParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -36,9 +37,11 @@ public class LoginController{
      * 指向登录页面
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getLoginPage(
+    public String login(
             @RequestParam(value = "error", required = false) boolean error,
             ModelMap model) {
+        LOGGER.info("login={}", MDC.get("logid"));
+        LOGGER.info("login page");
         if (error) {
             model.put("error", ConstantEnum.ERROR_LOGIN.getValueStr());
         } else {

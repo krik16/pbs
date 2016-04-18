@@ -24,6 +24,4 @@
 	<bean id="idGenService" class="com.shouyingbao.pbs.unit.IdGenUnit">
 		<constructor-arg name="workerId" value="${idgenService.workerId}" type="long"/>
 	</bean>
-	<aop:aspectj-autoproxy/>
-	<bean class="com.shouyingbao.pbs.aop.LogAdvice" />
 </beans>

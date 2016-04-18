@@ -618,6 +618,16 @@
 				<artifactId>axis</artifactId>
 				<version>1.4</version>
 			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>1.6.12</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>3.2.1</version>
+			</dependency>
 		</dependencies>
 
 	</dependencyManagement>
