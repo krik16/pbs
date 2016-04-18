@@ -77,7 +77,7 @@ public class StockholderController extends BaseController{
     @RequestMapping("/save")
     @ResponseBody
     public ResponseData save(Stockholder stockholder){
-        LOGGER.info("save:area={}", stockholder);
+        LOGGER.info("save:stockholder={}", stockholder);
         try {
 
             if (stockholder.getId() == null) {

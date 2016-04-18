@@ -34,23 +34,7 @@ public class LoginFilter extends BaseController implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         try{
-            if(request.getServletPath().equals("/auth/login")) {
-
-            }else if(request.getServletPath().contains("/css/")){
-
-            }else if(request.getServletPath().contains("/js/")){
-
-            }else if(request.getServletPath().contains("/image/")){
-
-            }else if(request.getServletPath().contains("/fonts/")){
-
-            }else if(request.getServletPath().contains("/bill/mobileBillList")){
-
-            }else if(request.getServletPath().contains("/pay/weixin/")){
-
-            }else if(request.getServletPath().contains("/pay/ali/")){
-
-            }else {
+            if(shouldFilter(request.getServletPath())){
                 getSessionUser(request);
             }
             chain.doFilter(request, response);
@@ -64,7 +48,6 @@ public class LoginFilter extends BaseController implements Filter {
 
     /**
      * 获取当前session里面的用户
-     * @return
      */
     public  User getSessionUser(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -79,5 +62,34 @@ public class LoginFilter extends BaseController implements Filter {
     @Override
     public void destroy() {
 
+    }
+
+    /**
+     * 检查请求是否应该过滤
+     */
+    private boolean shouldFilter(String path){
+        boolean result = true;
+        if(path.equals("/auth/login")) {
+            result = false;
+        }else if(path.contains("/css/")){
+            result = false;
+        }else if(path.contains("/js/")){
+            result = false;
+        }else if(path.contains("/image/")){
+            result = false;
+        }else if(path.contains("/fonts/")){
+            result = false;
+        }else if(path.contains("/bill/mobileBillList")){
+            result = false;
+        }else if(path.contains("/pay/weixin/")){
+            result = false;
+        }else if(path.contains("/pay/ali/")){
+            result = false;
+        }else if(path.contains("/commodityCategory/")){
+            result = false;
+        }else if(path.contains("/commodity/")){
+            result = false;
+        }
+        return result;
     }
 }

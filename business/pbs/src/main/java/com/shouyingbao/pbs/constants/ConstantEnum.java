@@ -23,6 +23,7 @@ public enum ConstantEnum {
 	WEIXIN_REFUND_RESULT_CHANGE("CHANGE","退款转入代发，退款到银行发现用户的卡作废或者冻结了，导致原路退款银行卡失败，资金回流到商户的现金帐号，需要商户人工干预，通过线下或者财付通转账的方式进行退款!"),
 	WEIXIN_REFUND_RESULT_FAIL("FAIL","退款失败!"),
 
+	EXCEPTION_SYSTEM_ERROR("1019100","系统异常"),
 	EXCEPTION_PARAM_NULL("1019101","参数为空或者不合法"),
 	EXCEPTION_ALI_PAY_SCAN_FAIL("1019102","支付宝扫码支付失败"),
 	EXCEPTION_ALI_QUERY_ORDER("1019103","订单查询失败"),
@@ -47,6 +48,7 @@ public enum ConstantEnum {
 	EXCEPTION_NEW_PWD_FAIL("1019122","两次密码不相同，请确认"),
 	EXCEPTION_USER_NOT_FOUND("1019123","用户不存在"),
 	EXCEPTION_USER_IS_EXIST("1019124","账号已存在，请修改账号"),
+	EXCEPTION_USER_NOT_FOUND_SHOP("1019125","未找到对应的门店信息"),
 
 	ALI_PAY_TIME_EXPIRE_GOODS("60m","商品支付宝支付默认超时时间"),
 	ALI_PAY_TIME_EXPIRE_COUPONS("15m","代金券支付宝支付默认超时时间"),
