@@ -27,7 +27,6 @@ public class WeixinPayUnit {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WeixinPayUnit.class);
 
-    private int retryTimes = 3;
 
     private long retryInterval = 5000;
 
@@ -144,8 +143,9 @@ public class WeixinPayUnit {
      * @param weixinMchId 商户id
      */
     private void waitUserPaying(String orderNo, Integer weixinMchId) {
+        int retryTimes = 3;
         boolean result = false;//支付结果
-        for (int i = 0; i < this.retryTimes; i++) {
+        for (int i = 0; i < retryTimes; i++) {
             try {
                 ScanQueryResData scanQueryResData = scanPayQueryOrder(null, orderNo, weixinMchId);
                 LOGGER.info("scanQueryResData={}", scanQueryResData);
@@ -157,8 +157,8 @@ public class WeixinPayUnit {
                 Thread.sleep(this.retryInterval);
             } catch (Exception e) {
                 e.printStackTrace();
-                if (i == this.retryTimes - 1) {
-                    LOGGER.error("wait user paying failed after retry {} times!", this.retryTimes);
+                if (i == retryTimes - 1) {
+                    LOGGER.error("wait user paying failed after retry {} times!", retryTimes);
                     break;
                 }
                 try {
