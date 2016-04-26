@@ -85,7 +85,7 @@ public class LoginController{
      *
      *
      */
-    @RequestMapping(value = "/refundPermission", method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/refundPermission", method = RequestMethod.POST)
     @ResponseBody
    public ResponseData refundPermission(@RequestBody UserParam userParam) {
         LOGGER.info("refundPermission:userId={}", userParam.getUserId());

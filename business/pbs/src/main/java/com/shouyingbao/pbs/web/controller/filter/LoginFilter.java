@@ -89,6 +89,8 @@ public class LoginFilter extends BaseController implements Filter {
             result = false;
         }else if(path.contains("/commodity/")){
             result = false;
+        }else if(path.contains("/mobile")){
+            result = false;
         }
         return result;
     }

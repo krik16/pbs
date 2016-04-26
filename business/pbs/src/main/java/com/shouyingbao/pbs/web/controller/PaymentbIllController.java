@@ -129,7 +129,7 @@ public class PaymentbIllController extends BaseController{
         return "bill/info";
     }
 
-    @RequestMapping("/detail")
+    @RequestMapping("/mobile/detail")
     @ResponseBody
     public ResponseData detail(@RequestBody Map<String,Object> map){
         LOGGER.info("detail:map={}",map);
