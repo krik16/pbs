@@ -1,10 +1,10 @@
 package com.shouyingbao.pbs.common.pay.weixin.util;
 
-import com.google.common.base.Strings;
 import com.shouyingbao.pbs.common.pay.weixin.service.IServiceRequest;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -63,7 +63,7 @@ public class HttpsRequest implements IServiceRequest {
         LOGGER.info("configure="+configure.toString());
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         String cretFilePath = configure.getCertLocalPath();
-        if (Strings.isNullOrEmpty(cretFilePath)) {
+        if (StringUtils.isEmpty(cretFilePath)) {
             cretFilePath = "/data/etc/projects/pbs/1268956601.p12";
             LOGGER.info("设置默认证书路径，certFilePath={}", cretFilePath);
         }

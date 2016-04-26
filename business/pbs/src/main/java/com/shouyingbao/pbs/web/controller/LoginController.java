@@ -3,6 +3,7 @@ package com.shouyingbao.pbs.web.controller;
 import com.shouyingbao.pbs.constants.ConstantEnum;
 import com.shouyingbao.pbs.core.bean.ResponseData;
 import com.shouyingbao.pbs.entity.User;
+import com.shouyingbao.pbs.redis.RedisClientTemplate;
 import com.shouyingbao.pbs.service.AuthorityService;
 import com.shouyingbao.pbs.service.UserService;
 import com.shouyingbao.pbs.vo.UserParam;
@@ -30,6 +31,9 @@ public class LoginController{
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private RedisClientTemplate redisClientTemplate;
 
     private  Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
     /**
@@ -67,6 +71,8 @@ public class LoginController{
     @ResponseBody
     public ResponseData mobileLogin(@RequestBody UserParam userParam) {
         LOGGER.info("mobileLogin:userName={}",userParam.getUserAccount());
+        redisClientTemplate.set("test","test");
+        LOGGER.info("redisValue={}",redisClientTemplate.get("test"));
         ResponseData responseData;
         userParam.setMd5Pwd(md5PasswordEncoder.encodePassword(userParam.getUserPwd(), null));
         User user = userService.selectByUserAccountAndPwd(userParam.getUserAccount(),userParam.getMd5Pwd());

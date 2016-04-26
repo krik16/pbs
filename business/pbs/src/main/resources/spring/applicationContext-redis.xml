@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxActive}" />
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxWaitMillis" value="${redis.maxWait}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="testOnReturn" value="true"/>
+    </bean>
+
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" destroy-method="destroy">
+        <constructor-arg ref="jedisPoolConfig"/>
+        <constructor-arg>
+            <list>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg value="${redis.host}" />
+                    <constructor-arg type="int" value="${redis.port}" />
+                    <constructor-arg value="instance:01" />
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>

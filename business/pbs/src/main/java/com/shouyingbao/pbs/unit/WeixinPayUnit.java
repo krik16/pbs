@@ -1,6 +1,5 @@
 package com.shouyingbao.pbs.unit;
 
-import com.google.common.base.Strings;
 import com.shouyingbao.pbs.Exception.ParamNullException;
 import com.shouyingbao.pbs.Exception.WeixinException;
 import com.shouyingbao.pbs.common.pay.weixin.model.*;
@@ -44,7 +43,7 @@ public class WeixinPayUnit {
         ScanPayResData scanPayResData;
         ResponseData responseData = ResponseData.success();
         try {
-            if (Strings.isNullOrEmpty(weixinPayVO.getOrderNo()) || null == weixinPayVO.getTotalFee() || Strings.isNullOrEmpty(weixinPayVO.getBody())) {
+            if (StringUtils.isEmpty(weixinPayVO.getOrderNo()) || null == weixinPayVO.getTotalFee() || StringUtils.isEmpty(weixinPayVO.getBody())) {
                 throw new ParamNullException();
             }
             //初始化配置信息
@@ -110,7 +109,7 @@ public class WeixinPayUnit {
         ScanFixedResData scanFixedResData;
         ResponseData responseData = ResponseData.success();
         try {
-            if (Strings.isNullOrEmpty(weixinPayVO.getOrderNo()) || null == weixinPayVO.getTotalFee() || Strings.isNullOrEmpty(weixinPayVO.getBody())) {
+            if (StringUtils.isEmpty(weixinPayVO.getOrderNo()) || null == weixinPayVO.getTotalFee() || StringUtils.isEmpty(weixinPayVO.getBody())) {
                 throw new ParamNullException();
             }
             //初始化配置信息
@@ -183,7 +182,7 @@ public class WeixinPayUnit {
     public ResponseData weixinRefund(String orderNo, Integer refundFee, Integer totalFee, String refundNo, Integer weixinMchId) {
         LOGGER.info("开始退款,weixinRefund orderNo={},refundFee={},totalFee={},newPayNo={}", orderNo, refundFee, totalFee, refundNo);
         try {
-            if (Strings.isNullOrEmpty(orderNo) || refundFee < 0d || totalFee < refundFee || Strings.isNullOrEmpty(refundNo)) {
+            if (StringUtils.isEmpty(orderNo) || refundFee < 0d || totalFee < refundFee || StringUtils.isEmpty(refundNo)) {
                 throw new ParamNullException();
             }
             RefundService refundService = new RefundService();
@@ -219,7 +218,7 @@ public class WeixinPayUnit {
         RefundQueryResData refundQueryResData;
         String result = "";
         try {
-            if (Strings.isNullOrEmpty(tradeNo) && Strings.isNullOrEmpty(orderNo) && Strings.isNullOrEmpty(refundNo)) {
+            if (StringUtils.isEmpty(tradeNo) &&StringUtils.isEmpty(orderNo) && StringUtils.isEmpty(refundNo)) {
                 throw new ParamNullException();
             }
             RefundQueryService refundQueryService = new RefundQueryService();
@@ -247,7 +246,7 @@ public class WeixinPayUnit {
         LOGGER.info("撤销订单开始,reverseOrder orderNo={}", orderNo);
         try {
             Thread.sleep(this.retryInterval);
-            if (Strings.isNullOrEmpty(orderNo)) {
+            if (StringUtils.isEmpty(orderNo)) {
                 throw new ParamNullException();
             }
             ReverseService reverseService = new ReverseService();
@@ -277,7 +276,7 @@ public class WeixinPayUnit {
         LOGGER.info("订单查询,queryOrder tradeNo={},orderNo={},weixinMchId={}", tradeNo, orderNo, weixinMchId);
         String result = null;
         try {
-            if (Strings.isNullOrEmpty(tradeNo) && Strings.isNullOrEmpty(orderNo)) {
+            if (StringUtils.isEmpty(tradeNo) && StringUtils.isEmpty(orderNo)) {
                 throw new ParamNullException();
             }
             PayQueryService payQueryService = new PayQueryService();

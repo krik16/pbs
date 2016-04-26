@@ -14,6 +14,6 @@ public class ParamNullException extends TradeException {
     }
 
     public ParamNullException(){
-       throw new WeixinException(ConstantEnum.EXCEPTION_PARAM_NULL.getCodeStr(), ConstantEnum.EXCEPTION_PARAM_NULL.getValueStr());
+       throw new ParamNullException(ConstantEnum.EXCEPTION_PARAM_NULL.getCodeStr(), ConstantEnum.EXCEPTION_PARAM_NULL.getValueStr());
    }
 }

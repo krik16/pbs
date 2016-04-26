@@ -422,7 +422,7 @@
 				<artifactId>httpclient</artifactId>
 				<version>4.3.4</version>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-core</artifactId>
 				<version>4.1.0</version>
@@ -431,7 +431,7 @@
 				<groupId>org.apache.solr</groupId>
 				<artifactId>solr-solrj</artifactId>
 				<version>4.1.0</version>
-			</dependency>
+			</dependency>-->
 			<!-- 加密 -->
 			<dependency>
 				<groupId>com.blemall</groupId>
@@ -511,7 +511,7 @@
 			<dependency>
 				<groupId>redis.clients</groupId>
 				<artifactId>jedis</artifactId>
-				<version>2.1.0</version>
+				<version>2.6.2</version>
 			</dependency>
 
 			<!-- drools start -->
