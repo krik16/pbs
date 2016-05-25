@@ -2,21 +2,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.rongyi</groupId>
-		<artifactId>easy-common</artifactId>
-		<version>2.9.5-SNAPSHOT</version>	
+		<groupId>com.shouyingbao</groupId>
+		<artifactId>common</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>easy-rss</artifactId>
+	<artifactId>rss</artifactId>
 	<packaging>jar</packaging>
  
 	<dependencies>
 		<dependency>
-			<groupId>com.rongyi</groupId>
-			<artifactId>easy-entity</artifactId>
+			<groupId>com.shouyingbao</groupId>
+			<artifactId>entity</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.rongyi</groupId>
-			<artifactId>easy-core</artifactId>
+			<groupId>com.shouyingbao</groupId>
+			<artifactId>core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>

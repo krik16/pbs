@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.shouyingbao.pbs.mapper.MchShopMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.MchShop" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="sub_company_id" property="subCompanyId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="BaseResultMapVO" type="com.shouyingbao.pbs.vo.MchShopVO" extends="BaseResultMap">
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="sub_company_name" property="subCompanyName" jdbcType="VARCHAR" />
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, `name`, `desc`, company_id, sub_company_id,address,agent_id, create_at, create_by, update_at,
+    update_by, is_delete
+  </sql>
+  <sql id="Base_Column_VOList" >
+    mch_shop.id, mch_shop.`name`, mch_shop.`desc`, mch_shop.company_id, mch_shop.sub_company_id,mch_shop.address,mch_shop.agent_id,mch_shop.create_at, mch_shop.create_by, mch_shop.update_at,
+    mch_shop.update_by, mch_shop.is_delete,mch_company.name as company_name,mch_sub_company.name as sub_company_name,
+    CASE WHEN agent.name IS NOT NULL
+    THEN
+    agent.name
+    ELSE
+    agent2.name
+    END
+    AS agentName
+  </sql>
+  <sql id="list_where_clause">
+    <if test="name != null and name != ''">
+      and mch_shop.name like
+      concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="agentId != null and agentId > 0" >
+      and (mch_company.agent_id = #{agentId} or mch_shop.agent_id = #{agentId})
+    </if>
+    <if test="areaId != null and areaId > 0" >
+      and (agent.area_id = #{areaId} or agent2.area_id = #{areaId})
+    </if>
+    <if test="stockholderId != null and stockholderId > 0" >
+      and area.stockholder_id = #{stockholderId}
+    </if>
+    <if test="companyId != null and companyId != '' ">
+     and mch_shop.company_id = #{companyId}
+    </if>
+    <if test="subCompanyId != null and subCompanyId != '' ">
+      and mch_shop.sub_company_id = #{subCompanyId}
+    </if>
+    <if test="id != null and id >= 0">
+     and mch_shop.id = #{id}
+    </if>
+    and mch_shop.is_delete = 0
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from mch_shop
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from mch_shop
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.MchShop" useGeneratedKeys="true" keyProperty="id" >
+    insert into mch_shop (`name`, `desc`, company_id, 
+      sub_company_id,address,agent_id, create_at, create_by,
+      update_at, update_by, is_delete
+      )
+    values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, 
+      #{subCompanyId,jdbcType=INTEGER},#{address,jdbcType=VARCHAR},#{agent_id,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+      #{updateAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.MchShop" useGeneratedKeys="true" keyProperty="id" >
+    insert into mch_shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      `name`,
+      `desc`,
+      company_id,
+      sub_company_id,
+      address,
+      agent_id,
+      create_at,
+      create_by,
+      update_at,
+      update_by,
+      is_delete,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{name,jdbcType=VARCHAR},
+      #{desc,jdbcType=VARCHAR},
+      #{companyId,jdbcType=INTEGER},
+      #{subCompanyId,jdbcType=INTEGER},
+      #{address,jdbcType=VARCHAR},
+      #{agentId,jdbcType=INTEGER},
+      #{createAt,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=INTEGER},
+      #{updateAt,jdbcType=TIMESTAMP},
+      #{updateBy,jdbcType=INTEGER},
+      #{isDelete,jdbcType=TINYINT},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.MchShop" >
+    update mch_shop
+    <set >
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null" >
+        `desc` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="subCompanyId != null" >
+        sub_company_id = #{subCompanyId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.MchShop" >
+    update mch_shop
+    set `name` = #{name,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=INTEGER},
+      sub_company_id = #{subCompanyId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      agent_id = #{agentId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectListByPage" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_VOList" />
+    from 	mch_shop
+    left join mch_company on mch_shop.company_id = mch_company.id
+    left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+    left join agent on mch_company.agent_id = agent.id
+    left join agent as agent2 on mch_shop.agent_id = agent2.id
+    <if test="stockholderId != null and stockholderId > 0">
+      left join area as area on area.id = agent.area_id
+    </if>
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+    <if test="orderby == null">
+      order by mch_shop.create_at desc
+    </if>
+    <if test="currentPage != null">
+      limit
+      #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectListCount" parameterType="java.util.Map"
+          resultType="java.lang.Integer">
+    select
+    count(1)
+    from
+    mch_shop
+    left join mch_company on mch_shop.company_id = mch_company.id
+    left join mch_sub_company on mch_shop.sub_company_id = mch_sub_company.id
+    left join agent on mch_shop.agent_id = agent.id
+    left join agent as agent2 on mch_shop.agent_id = agent2.id
+    <if test="stockholderId != null and stockholderId > 0">
+      left join area as area on area.id = agent.area_id
+    </if>
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+  </select>
+
+
+  <select id="selectByCompanyId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+    where company_id=#{companyId}
+  </select>
+
+  <select id="selectBySubCompanyId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+   where sub_company_id=#{subCompanyId}
+  </select>
+
+  <select id="selectAllList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+  </select>
+
+
+  <select id="selectOnlySelf" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from 	mch_shop
+    where company_id = 0 and sub_company_id = 0
+  </select>
+
+
+</mapper>

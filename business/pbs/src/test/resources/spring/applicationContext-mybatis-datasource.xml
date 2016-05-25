@@ -5,12 +5,10 @@
 	xsi:schemaLocation="
             http://www.springframework.org/schema/beans 
             http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
-			http://www.springframework.org/schema/aop 
-			http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
-			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context
 			http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<context:property-placeholder location="classpath:properties/jdbc.properties" />
+	<!--<context:property-placeholder location="classpath:properties/jdbc.properties" />-->
 
 	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
@@ -23,8 +21,5 @@
 		<property name="maxPoolSize" value="50" />
 		<property name="minPoolSize" value="10" />
 		<property name="maxIdleTime" value="1800" />
-		<!-- <property name="idleConnectionTestPeriod" value="180" />
-		<property name="testConnectionOnCheckin" value="true" />
-		<property name="testConnectionOnCheckin" value="true" /> -->
 	</bean>
 </beans>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.shouyingbao.pbs.mapper.PaymentEventMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.PaymentEvent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="notify_time" property="notifyTime" jdbcType="TIMESTAMP" />
+    <result column="notify_id" property="notifyId" jdbcType="VARCHAR" />
+    <result column="notify_type" property="notifyType" jdbcType="VARCHAR" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="payment_bill_id" property="paymentBillId" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="finish_at" property="finishAt" jdbcType="TIMESTAMP" />
+    <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="pay_amount" property="payAmount" jdbcType="INTEGER" />
+    <result column="buyer_id" property="buyerId" jdbcType="VARCHAR" />
+    <result column="buyer_email" property="buyerEmail" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, notify_time, notify_id, notify_type, transaction_id, order_no, payment_bill_id, 
+    create_at, finish_at, trade_no, `result`, pay_amount, buyer_id, buyer_email, open_id, 
+    is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from payment_event
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from payment_event
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" useGeneratedKeys="true" keyProperty="id" >
+    insert into payment_event (notify_time, notify_id, notify_type, 
+      transaction_id, order_no, payment_bill_id, 
+      create_at, finish_at, trade_no, 
+      `result`, pay_amount, buyer_id, 
+      buyer_email, open_id, is_delete
+      )
+    values (#{notifyTime,jdbcType=TIMESTAMP}, #{notifyId,jdbcType=VARCHAR}, #{notifyType,jdbcType=VARCHAR}, 
+      #{transactionId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{paymentBillId,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{finishAt,jdbcType=TIMESTAMP}, #{tradeNo,jdbcType=VARCHAR}, 
+      #{result,jdbcType=VARCHAR}, #{payAmount,jdbcType=INTEGER}, #{buyerId,jdbcType=VARCHAR}, 
+      #{buyerEmail,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" useGeneratedKeys="true" keyProperty="id" >
+    insert into payment_event
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      notify_time,
+      notify_id,
+      notify_type,
+      transaction_id,
+      order_no,
+      payment_bill_id,
+      create_at,
+      finish_at,
+      trade_no,
+      `result`,
+      pay_amount,
+      buyer_id,
+      buyer_email,
+      open_id,
+      is_delete,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{notifyTime,jdbcType=TIMESTAMP},
+      #{notifyId,jdbcType=VARCHAR},
+      #{notifyType,jdbcType=VARCHAR},
+      #{transactionId,jdbcType=VARCHAR},
+      #{orderNo,jdbcType=VARCHAR},
+      #{paymentBillId,jdbcType=INTEGER},
+      #{createAt,jdbcType=TIMESTAMP},
+      #{finishAt,jdbcType=TIMESTAMP},
+      #{tradeNo,jdbcType=VARCHAR},
+      #{result,jdbcType=VARCHAR},
+      #{payAmount,jdbcType=INTEGER},
+      #{buyerId,jdbcType=VARCHAR},
+      #{buyerEmail,jdbcType=VARCHAR},
+      #{openId,jdbcType=VARCHAR},
+      #{isDelete,jdbcType=TINYINT},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" >
+    update payment_event
+    <set >
+      <if test="notifyTime != null" >
+        notify_time = #{notifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="notifyId != null" >
+        notify_id = #{notifyId,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyType != null" >
+        notify_type = #{notifyType,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionId != null" >
+        transaction_id = #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentBillId != null" >
+        payment_bill_id = #{paymentBillId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishAt != null" >
+        finish_at = #{finishAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeNo != null" >
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        `result` = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=INTEGER},
+      </if>
+      <if test="buyerId != null" >
+        buyer_id = #{buyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerEmail != null" >
+        buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.PaymentEvent" >
+    update payment_event
+    set notify_time = #{notifyTime,jdbcType=TIMESTAMP},
+      notify_id = #{notifyId,jdbcType=VARCHAR},
+      notify_type = #{notifyType,jdbcType=VARCHAR},
+      transaction_id = #{transactionId,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      payment_bill_id = #{paymentBillId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      finish_at = #{finishAt,jdbcType=TIMESTAMP},
+      trade_no = #{tradeNo,jdbcType=VARCHAR},
+      `result` = #{result,jdbcType=VARCHAR},
+      pay_amount = #{payAmount,jdbcType=INTEGER},
+      buyer_id = #{buyerId,jdbcType=VARCHAR},
+      buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -24,7 +24,7 @@
 		<!-- 配置mapper生成目录和其它参数 -->
 		<sqlMapGenerator targetPackage="${mybatis.generator.package.path}" targetProject="${mybatis.generator.resourcesFileDir}"/>
 		<javaClientGenerator type="XMLMAPPER" targetPackage="${mybatis.generator.package.path}" targetProject="${mybatis.generator.javaFileDir}">
-<!-- 			<property name="rootInterface" value="com.rongyi.merchant.biz.mapper.BaseMapper"/> -->
+<!-- 			<property name="rootInterface" value="com.rongyi.merchant.biz.com.shouyingbao.pbs.mapper.BaseMapper"/> -->
 		</javaClientGenerator>
 		
 		<table tableName="integral_history_add" domainObjectName="domain.member.IntegralHistoryAdd"></table>

@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.rongyi</groupId>
-    <artifactId>easy-common</artifactId>
-    <version>2.9.5-SNAPSHOT</version>    
+    <groupId>com.shouyingbao</groupId>
+    <artifactId>common</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
     <modules>
-        <module>easy-entity</module>
-        <module>easy-core</module>
-        <module>easy-rss</module>
+        <module>entity</module>
+        <module>core</module>
+        <module>rss</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,7 +22,7 @@
         <mybatis.generator.configFile>${basedir}/src/main/resources/maven_build/generatorConfig.xml
         </mybatis.generator.configFile>
         <mybatis.generator.dbConfigFile>properties/jdbc.properties</mybatis.generator.dbConfigFile>
-        <mybatis.generator.package.path>com.rongyi.easy</mybatis.generator.package.path>
+        <mybatis.generator.package.path>com.shouyingbao</mybatis.generator.package.path>
         <mybatis.generator.javaFileDir>${basedir}/src/main/java</mybatis.generator.javaFileDir>
         <mybatis.generator.resourcesFileDir>${basedir}/src/main/resources</mybatis.generator.resourcesFileDir>
 
@@ -33,18 +33,18 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.rongyi</groupId>
-                <artifactId>easy-entity</artifactId>
+                <groupId>com.shouyingbao</groupId>
+                <artifactId>entity</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rongyi</groupId>
-                <artifactId>easy-core</artifactId>
+                <groupId>com.shouyingbao</groupId>
+                <artifactId>core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rongyi</groupId>
-                <artifactId>easy-rss</artifactId>
+                <groupId>com.shouyingbao</groupId>
+                <artifactId>rss</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- IBM MQ -->
@@ -569,6 +569,12 @@
                 <version>1.2</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf</artifactId>
+                <version>2.4.1</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -578,8 +584,8 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-            <id>rongyi-repositories</id>
-            <url>http://192.168.1.101:8081/nexus/content/groups/rongyi-repositories/</url>
+            <id>pbs-repositories</id>
+            <url>http://120.25.197.98:8081/nexus/content/groups/pbs-repositories/</url>
         </repository>
     </repositories>
 
@@ -588,23 +594,24 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-            <id>rongyi-repositories</id>
-            <url>http://192.168.1.101:8081/nexus/content/groups/rongyi-repositories/</url>
+            <id>pbs-repositories</id>
+            <url>http://120.25.197.98:8081/nexus/content/groups/pbs-repositories/</url>
         </pluginRepository>
     </pluginRepositories>
 
     <distributionManagement>
         <repository>
-            <id>rongyi-releases</id>
+            <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://192.168.1.101:8081/nexus/content/repositories/rongyi-releases/</url>
+            <url>http://120.25.197.98:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>rongyi-snapshots</id>
+            <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-             <url>http://192.168.1.101:8081/nexus/content/repositories/rongyi-snapshots/</url>
+            <url>http://120.25.197.98:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
 
     <build>
         <pluginManagement>

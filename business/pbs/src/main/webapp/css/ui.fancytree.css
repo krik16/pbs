@@ -315,16 +315,6 @@ span.fancytree-title {
   margin-left: 3px;
   cursor: pointer;
 }
-span.fancytree-title {
-  display: inline-block;
-  padding-left: 3px;
-  padding-right: 3px;
-  color: black;
-  vertical-align: top;
-  margin: 0px;
-  margin-left: 3px;
-  cursor: pointer;
-}
 span.fancytree-node.fancytree-error span.fancytree-title {
   color: red;
 }

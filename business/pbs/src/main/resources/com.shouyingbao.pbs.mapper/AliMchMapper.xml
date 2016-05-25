@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.shouyingbao.pbs.mapper.AliMchMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.AliMch" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pid, `key`, shop_id, create_at, create_by, update_at, update_by, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ali_mch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ali_mch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.AliMch" useGeneratedKeys="true" keyProperty="id" >
+    insert into ali_mch (pid, `key`, shop_id, 
+      create_at, create_by, update_at, 
+      update_by, is_delete)
+    values (#{pid,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.AliMch" useGeneratedKeys="true" keyProperty="id" >
+    insert into ali_mch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null and pid != ''" >
+      pid,
+      </if>
+      <if test="key != null and key != ''" >
+      `key`,
+      </if>
+      <if test="shopId != null and shopId != ''" >
+      shop_id,
+      </if>
+      <if test="createAt != null and createAt != ''" >
+      create_at,
+      </if>
+      <if test="createBy != null and createBy != ''" >
+      create_by,
+      </if>
+      <if test="updateAt != null and updateAt != ''" >
+      update_at,
+      </if>
+      <if test="updateBy != null and updateBy != ''" >
+      update_by,
+      </if>
+      <if test="isDelete != null and isDelete != ''" >
+      is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null and pid != ''" >
+      #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null and key != ''" >
+      #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null and shopId != ''" >
+      #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null and createAt != ''" >
+      #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null and createBy != ''" >
+      #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null and updateAt != ''" >
+      #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null and updateBy != ''" >
+      #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null and isDelete != ''" >
+      #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.AliMch" >
+    update ali_mch
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null" >
+        `key` = #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.AliMch" >
+    update ali_mch
+    set pid = #{pid,jdbcType=VARCHAR},
+      `key` = #{key,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByShopId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from ali_mch
+    where shop_id = #{shopId,jdbcType=INTEGER}
+  </select>
+</mapper>

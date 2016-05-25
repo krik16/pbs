@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.shouyingbao.pbs.mapper.UserExtendInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.UserExtendInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="cust_name" property="custName" jdbcType="VARCHAR" />
+    <result column="cust_phone" property="custPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, cust_name, cust_phone
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_extend_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_extend_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.UserExtendInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into user_extend_info (user_id, cust_name, cust_phone
+      )
+    values (#{userId,jdbcType=INTEGER}, #{custName,jdbcType=VARCHAR}, #{custPhone,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.UserExtendInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into user_extend_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      user_id,
+      cust_name,
+      cust_phone,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{userId,jdbcType=INTEGER},
+      #{custName,jdbcType=VARCHAR},
+      #{custPhone,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.UserExtendInfo" >
+    update user_extend_info
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="custName != null" >
+        cust_name = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="custPhone != null" >
+        cust_phone = #{custPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.UserExtendInfo" >
+    update user_extend_info
+    set user_id = #{userId,jdbcType=INTEGER},
+      cust_name = #{custName,jdbcType=VARCHAR},
+      cust_phone = #{custPhone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_extend_info
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+</mapper>

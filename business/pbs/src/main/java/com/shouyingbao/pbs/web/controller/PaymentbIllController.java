@@ -1,0 +1,190 @@
+package com.shouyingbao.pbs.web.controller;
+
+import com.shouyingbao.pbs.Exception.PermissionException;
+import com.shouyingbao.pbs.constants.ConstantEnum;
+import com.shouyingbao.pbs.core.bean.ResponseData;
+import com.shouyingbao.pbs.entity.Area;
+import com.shouyingbao.pbs.entity.Authority;
+import com.shouyingbao.pbs.entity.PaymentBill;
+import com.shouyingbao.pbs.entity.User;
+import com.shouyingbao.pbs.service.*;
+import com.shouyingbao.pbs.vo.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * kejun
+ * 2016/3/8 17:33
+ **/
+@Controller
+@RequestMapping("/bill")
+public class PaymentbIllController extends BaseController{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentbIllController.class);
+    @Autowired
+    PaymentBillService paymentBillService;
+    @Autowired
+    AuthorityService authorityService;
+
+    @Autowired
+    AreaService areaService;
+
+    @Autowired
+    AgentService agentService;
+
+    @Autowired
+    MchCompanyService mchCompanyService;
+
+    @Autowired
+    MchShopService mchShopService;
+
+    @Autowired
+    UserService userService;
+
+    @RequestMapping(value = "/search")
+    public String search(ModelMap model) {
+        Map<String,Object> map = new HashMap<>();
+        getDataPermission(map,getUser(),getAuthority());
+        List<Area> areaList = areaService.selectListByPage(map,null,null);
+        List<AgentVO> agentList = agentService.selectListByPage(map,null,null);
+        List<MchCompanyVO> companyList = mchCompanyService.selectListByPage(map,null,null);
+        List<MchShopVO> mchShopVOList = mchShopService.selectListByPage(map,null,null);
+        map.put("roleId",ConstantEnum.ROLE_MCH_CASHIER.getCodeInt());
+        List<UserVO> userList = userService.selectListByPage(map,null,null);
+        model.addAttribute("areaList",areaList);
+        model.addAttribute("agentList",agentList);
+        model.addAttribute("companyList",companyList);
+        model.addAttribute("shopList",mchShopVOList);
+        model.addAttribute("userList",userList);
+        return "/bill/bill";
+    }
+
+    @RequestMapping("/list")
+    public String list(ModelMap model, @RequestBody Map<String, Object> map) {
+        LOGGER.info("list:map={}", map);
+        try {
+            getDataPermission(map,getUser(),getAuthority());
+            Integer currpage = Integer.valueOf(map.get("currpage").toString());
+            List<PaymentBillVO> mchCompanyList = paymentBillService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+            Integer totalCount = paymentBillService.selectListCount(map);
+            model.addAttribute("inTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_0.getCodeInt()));
+            model.addAttribute("outTradeTotal",getTradeTotal(map,ConstantEnum.PAY_TRADE_TYPE_1.getCodeInt()));
+            model.addAttribute("rowCount", getRowCount(totalCount));
+            model.addAttribute("totalCount", totalCount);
+            model.addAttribute("currpage", currpage);
+            model.addAttribute("list", mchCompanyList);
+        }catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return "bill/list";
+    }
+    /**
+     *  Description: 移动端交易查询
+     *  @param map 查询参数
+     **/
+    @RequestMapping(value = "/mobileBillList", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData mobileBillList(@RequestBody Map<String, Object> map){
+        LOGGER.info("mobileBillList:map={}",map);
+        if(map.get("currpage") == null || map.get("userId") == null){
+            return ResponseData.failure(ConstantEnum.EXCEPTION_PARAM_NULL.getCodeStr(),ConstantEnum.EXCEPTION_PARAM_NULL.getValueStr());
+        }
+        User user = userService.selectById(Integer.valueOf(map.get("userId").toString()));
+        if(user == null){
+            return ResponseData.failure(ConstantEnum.EXCEPTION_USER_NOT_FOUND.getCodeStr(),ConstantEnum.EXCEPTION_USER_NOT_FOUND.getValueStr());
+        }
+        List<Authority> authorityList = authorityService.selectByUserId(user.getId());
+        if(authorityList == null || authorityList.isEmpty()){
+            return ResponseData.failure(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getCodeStr(),ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+        }
+        getDataPermission(map,getUser(),authorityList.get(0).getValue());
+        Integer currpage = Integer.valueOf(map.get("currpage").toString());
+        List<PaymentBillVO> paymentBillVOList = paymentBillService.selectListByPage(map, currpage, ConstantEnum.LIST_PAGE_SIZE.getCodeInt());
+        Integer totalCount = paymentBillService.selectListCount(map);
+        return  ResponseData.success(paymentBillVOList,currpage,ConstantEnum.LIST_PAGE_SIZE.getCodeInt(),totalCount);
+    }
+
+    @RequestMapping("/info")
+    public String info(ModelMap model,Integer id){
+        LOGGER.info("info:id={}",id);
+        try {
+            PaymentBillVO paymentBillVO = paymentBillService.selectDetailById(id);
+            model.addAttribute("entity", paymentBillVO);
+        }catch (Exception e){
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return "bill/info";
+    }
+
+    @RequestMapping("/mobile/detail")
+    @ResponseBody
+    public ResponseData detail(@RequestBody Map<String,Object> map){
+        LOGGER.info("detail:map={}",map);
+        ResponseData responseData;
+        try {
+            PaymentBill paymentBill = paymentBillService.selectById(Integer.valueOf(map.get("id").toString()));
+            responseData = ResponseData.success(paymentBill);
+        }catch (Exception e){
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            responseData = ResponseData.failure(ConstantEnum.EXCEPTION_BILL_DETAIL.getCodeStr(),ConstantEnum.EXCEPTION_BILL_DETAIL.getValueStr());
+        }
+        return responseData;
+    }
+
+    private Map<String,Object> getDataPermission(Map<String,Object> map,User user,String authority){
+        //数据权限
+        if(ConstantEnum.AUTHORITY_ADMINISTRATOR.getCodeStr().equals(authority)){
+            LOGGER.info("permission is admin");
+        }else  if(ConstantEnum.AUTHORITY_COMPANY_SHAREHOLDER.getCodeStr().equals(authority)){
+            map.put("stockholderId", user.getStockholderId());
+        }else  if (ConstantEnum.AUTHORITY_AREA_AGENT.getCodeStr().equals(authority)) {
+            map.put("areaId", user.getAreaId());
+        } else if (ConstantEnum.AUTHORITY_DISTRIBUTION_AGENT.getCodeStr().equals(authority)) {
+            map.put("agentId", user.getAgentId());
+        }  else if (ConstantEnum.AUTHORITY_MCH_COMPANY.getCodeStr().equals(authority)) {
+            map.put("companyId", user.getCompanyId());
+        } else if (ConstantEnum.AUTHORITY_MCH_SUB_COMPANY.getCodeStr().equals(authority)) {
+            map.put("subCompanyId", user.getSubCompanyId());
+        }else if (ConstantEnum.AUTHORITY_MCH_SHOPKEEPER.getCodeStr().equals(authority)) {
+            map.put("shopId", user.getShopId());
+        }else if (ConstantEnum.AUTHORITY_MCH_CASHIER.getCodeStr().equals(authority)) {
+            map.put("shopId", user.getShopId());
+        }else {
+            LOGGER.info(getUser().getUserAccount()+":"+ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+            throw new PermissionException(ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getCodeStr(),ConstantEnum.EXCEPTION_NO_DATA_PERMISSION.getValueStr());
+        }
+        return map;
+    }
+
+    /**
+     * 收入（支出）总数
+     **/
+    private TradeTotal getTradeTotal(Map<String, Object> map, Integer tradeType) {
+        TradeTotal tradeTotal = new TradeTotal();
+        if(Integer.valueOf(map.get("tradeType").toString()) < 0 || (Integer.valueOf(map.get("tradeType").toString()) >=0 && map.get("tradeType").equals(tradeType.toString()))){
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.putAll(map);
+            paramMap.put("tradeType", tradeType);
+            tradeTotal = paymentBillService.selectTradeTotal(paramMap);
+        }
+        if (tradeTotal.getAmountTotal() == null)
+                tradeTotal.setAmountTotal(0d);
+        if (tradeTotal.getCountTotal() == null)
+            tradeTotal.setCountTotal(0);
+        return tradeTotal;
+    }
+}

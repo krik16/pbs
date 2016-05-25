@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.shouyingbao.pbs.mapper.AuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.shouyingbao.pbs.entity.Authority" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, `name`, `value`
+  </sql>
+  <sql id="list_where_clause">
+
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from authority
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from authority
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shouyingbao.pbs.entity.Authority" useGeneratedKeys="true" keyProperty="id" >
+    insert into authority (`name`, `value`)
+    values (#{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shouyingbao.pbs.entity.Authority" useGeneratedKeys="true" keyProperty="id" >
+    insert into authority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      `name`,
+      `value`,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{name,jdbcType=VARCHAR},
+      #{value,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shouyingbao.pbs.entity.Authority" >
+    update authority
+    <set >
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        `value` = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shouyingbao.pbs.entity.Authority" >
+    update authority
+    set `name` = #{name,jdbcType=VARCHAR},
+      `value` = #{value,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from authority
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+    <if test="orderby == null">
+      order by create_at desc
+    </if>
+    <if test="currentPage != null">
+      limit
+      #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectListCount" parameterType="java.util.Map"
+          resultType="java.lang.Integer">
+    select
+    count(1)
+    from
+    authority
+    <where>
+      <include refid="list_where_clause" />
+    </where>
+  </select>
+
+  <select id="selectByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    a.id, a.`name`, a.`value`
+    from authority a left join role_authority ra on a.id = ra.authority_id
+    where ra.role_id = #{roleId}
+
+  </select>
+</mapper>

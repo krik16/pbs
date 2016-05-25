@@ -1,103 +1,138 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/common/tag.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<html lang="zh-CN">
+<%@ include file="/common/tag.jsp" %>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>容易移动商品管理系统</title>
-<script src="${ctx}/js/jquery.js" type="text/javascript"></script>
-<script src="${ctx}/js/jquery-ui.custom.js" type="text/javascript"></script>
-<script src="${ctx}/js/jquery.fancytree.js" type="text/javascript"></script>
-<link href="${ctx}/css/ui.fancytree.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/css/index.css" type="text/css" rel="stylesheet" />
-<style type="text/css">
-li ul li span.fancytree-title{
-	margin-left: 16px;
-}
-</style>
-<script type="text/javascript">
-	$(function(){ 
-		// --- Initialize sample trees
-		$("#tree").fancytree({
-			autoActivate: false, // we use scheduleAction()
-			autoCollapse: true,
-			//autoFocus: true,
-			autoScroll: true,
-			clickFolderMode: 3, // expand with single click
-			minExpandLevel: 1,
-			tabbable: false, // we don't want the focus frame
-			// scrollParent: null, // use $container
-			focus: function(event, data) {
-				var node = data.node;
-				// Auto-activate focused node after 1 second
-				if(node.data.href){
-					node.scheduleAction("activate", 1000);
-				}
-			},
-			blur: function(event, data) {
-				data.node.scheduleAction("cancel");
-			},
-			activate: function(event, data){
-				var node = data.node,
-					orgEvent = data.originalEvent;
+    <link href="${ctx}/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="${ctx}/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+    <link href="${ctx}/css/jquery-ui.min.css" type="text/css" rel="stylesheet"/>
+    <link href="${ctx}/css/summernote.css" type="text/css" rel="stylesheet"/>
+    <link href="${ctx}/css/ui.fancytree.css" type="text/css" rel="stylesheet"/>
+    <!-- 树状插件css-->
+    <link href="${ctx}/css/index.css" type="text/css" rel="stylesheet"/>
 
-				if(node.data.href){
-					window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
-				}
-			},
-			click: function(event, data){ // allow re-loads
-				var node = data.node,
-					orgEvent = data.originalEvent;
+    <script src="${ctx}/js/jquery/jquery.js" type="text/javascript"></script>
+    <script src="${ctx}/js/jquery/jquery-ui.js" type="text/javascript"></script>
+    <!-- 树状插件js-->
+    <script src="${ctx}/js/jquery/jquery-ui.custom.js" type="text/javascript"></script>
+    <script src="${ctx}/js/jquery/jquery.fancytree.js" type="text/javascript"></script>
+    <script src="${ctx}/js/jquery/jquery.nicescroll.js" type="text/javascript"></script>
+    <style type="text/css">
+        li ul li span.fancytree-title {
+            margin-left: 16px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
 
-				if(node.isActive() && node.data.href){
-					// data.tree.reactivate();
-					window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
-				}
-				$("span.fancytree-node").click(function(){
-					$("span.fancytree-title").attr("style","color:black;");
-					$(this).find(".fancytree-title").attr("style","color:#1ca822;");
-				})
-				if(data.node.getLevel() == 2){
-					$("span.fancytree-title").attr("style","color:black;");
-					var obj = event.srcElement ? event.srcElement : data.node.li;
-					var clickObj = $(obj).find(".fancytree-title");
-					if(clickObj.length == 0){
-						obj = $(obj).parent();
-					}
-					if($(obj).find(".fancytree-title").html() == null){
-						obj.style.color = "#1ca822";
-					}else{
-						$(obj).find(".fancytree-title").attr("style","color:#1ca822;");
-					}
-				}
-			}
-		});
-		$("span.fancytree-node").click(function(){
-			$("span.fancytree-title").attr("style","color:black;");
-			$(this).find(".fancytree-title").attr("style","color:#1ca822;");
-		})
-	});
-</script>
+
+
+            // --- Initialize sample trees
+            $("#tree").fancytree({
+                autoActivate: false, // we use scheduleAction()
+                autoCollapse: true,
+                //autoFocus: true,
+                autoScroll: true,
+                clickFolderMode: 3, // expand with single click
+                minExpandLevel: 1,
+                tabbable: false, // we don't want the focus frame
+                // scrollParent: null, // use $container
+                focus: function (event, data) {
+                    var node = data.node;
+                    // Auto-activate focused node after 1 second
+                    if (node.data.href) {
+                        node.scheduleAction("activate", 1000);
+                    }
+                },
+                blur: function (event, data) {
+                    data.node.scheduleAction("cancel");
+                },
+                activate: function (event, data) {
+                    var node = data.node,
+                            orgEvent = data.originalEvent;
+
+                    if (node.data.href) {
+                        window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
+                    }
+                },
+                click: function (event, data) { // allow re-loads
+                    var node = data.node,
+                            orgEvent = data.originalEvent;
+
+                    if (node.isActive() && node.data.href) {
+                        // data.tree.reactivate();
+                        window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
+                    }
+                }
+            });
+
+            /* $(".fancytree-title").eq(1).addClass("titletop"); */
+            $("span.fancytree-node").click(function () {
+                $("span.fancytree-title").attr("style", "color:black;");
+                $(this).find(".fancytree-title").attr("style", "color:#1ca822;");
+            });
+        });
+    </script>
+
 </head>
-
 <body>
-<div class="left">
-	<div id="tree">
-		<ul>
-			<li class="folder expanded"><a href="${ctx}/main/home" target="mainFrame">首页</a></li>
-			<li class="folder">支付管理
-				<ul>
-					<li><a href="${ctx}/payManager/index?shopId=&currpage=1" target="mainFrame">支付信息</a></li>
-				</ul>
-				<ul>
-					<li><a href="${ctx}/commodity/index?shopId=&currpage=1" target="mainFrame">退款信息</a></li>
-				</ul>
-			</li>
-			<ul>
-				<li></li>
-			</ul>
-		</ul>
-	</div>
+<div id="tree" class="left">
+    <ul class="nav nav-list">
+        <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+            <li class="folder"><span class="menu-text">公司管理</span>
+                <ul>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR">
+                        <li><a href="${ctx}/stockholder/search" target="mainFrame">股东管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER">
+                        <li><a href="${ctx}/area/search" target="mainFrame">区域管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT">
+                        <li><a href="${ctx}/agent/search" target="mainFrame">代理管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+                        <li><a href="${ctx}/user/search" target="mainFrame">账号管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,AREA_AGENT,DISTRIBUTION_AGENT">
+                        <li><a href="${ctx}/bill/search" target="mainFrame">交易查询</a></li>
+                    </sec:authorize>
+                </ul>
+            </li>
+        </sec:authorize>
+        <sec:authorize
+                ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+            <li class="folder expanded">商家服务
+                <ul>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY">
+                        <li><a href="${ctx}/mchCompany/search" target="mainFrame">公司管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,MCH_COMPANY,MCH_SUB_COMPANY">
+                        <li><a href="${ctx}/mchSubCompany/search" target="mainFrame">分公司管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize
+                            ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                        <li><a href="${ctx}/mchShop/search" target="mainFrame">门店管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize ifAnyGranted="ADMINISTRATOR,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER">
+                        <li><a href="${ctx}/mchUser/search" target="mainFrame">用户管理</a></li>
+                    </sec:authorize>
+                    <sec:authorize
+                            ifAnyGranted="ADMINISTRATOR,COMPANY_SHAREHOLDER,DISTRIBUTION_AGENT,MCH_COMPANY,MCH_SUB_COMPANY,MCH_SHOPKEEPER,MCH_CASHIER">
+                        <li><a href="${ctx}/mchBill/search" target="mainFrame">交易查询</a></li>
+                    </sec:authorize>
+                </ul>
+            </li>
+        </sec:authorize>
+        <li class="folder">账户中心
+            <ul>
+                <li><a href="${ctx}/user/info" target="mainFrame">账户概览</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="main-content" ng-view>
+
+</div>
+<div id="loading"></div>
 </div>
 </body>
-</html>

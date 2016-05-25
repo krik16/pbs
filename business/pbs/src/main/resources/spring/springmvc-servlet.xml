@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
-            http://www.springframework.org/schema/aop 
-			http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
-            http://www.springframework.org/schema/context  
+            http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context-4.0.xsd  
-            http://www.springframework.org/schema/tx  
-            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
-            http://www.springframework.org/schema/jdbc  
-            http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd 
-            http://www.springframework.org/schema/mvc 
-			http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+            http://www.springframework.org/schema/mvc
+			http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
-	<context:component-scan base-package="com.rongyi.rpb" use-default-filters="false">
+	<context:component-scan base-package="com.shouyingbao.pbs" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
@@ -53,20 +49,6 @@
 		</property>
 	</bean>
 
-	<!-- 手机访问vm模板地址 -->
-	<bean id="viewResolver2" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
-		<property name="contentType" value="text/html;charset=UTF-8" />
-		<property name="cache" value="true" />
-		<property name="prefix" value="view/" />
-		<property name="requestContextAttribute" value="rc" />
-		<property name="suffix" value=".vm" />
-		<property name="layoutUrl" value="layout/default.vm" />
-		<property name="dateToolAttribute">
-			<value>dateTool</value>
-		</property>
-		<property name="order" value="0" />
-	</bean>
-
 	<!-- 通用jsp地址配置 -->
 	<bean id="ViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
@@ -75,6 +57,6 @@
 		<property name="contentType" value="text/html;charset=UTF-8" />
 		<property name="order" value="1" />
 	</bean>
-
-
+	<aop:aspectj-autoproxy />
+	<bean class="com.shouyingbao.pbs.aop.LogAdvice" />
 </beans>
