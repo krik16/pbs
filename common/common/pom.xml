@@ -17,7 +17,7 @@
         <org.springframework.security.version>3.2.3.RELEASE</org.springframework.security.version>
         <slf4j.version>1.7.5</slf4j.version>
         <logback.version>1.0.11</logback.version>
-        <drools.version>6.1.0.Final</drools.version>
+        <drools.version>7.60.0.Final</drools.version>
         <!-- mybatis generator -->
         <mybatis.generator.configFile>${basedir}/src/main/resources/maven_build/generatorConfig.xml
         </mybatis.generator.configFile>
