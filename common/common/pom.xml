@@ -484,7 +484,7 @@
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
-                <version>1.2.2</version>
+                <version>1.3.3</version>
             </dependency>
             <!-- Spring 文件上传的依赖包 -->
             <dependency>
